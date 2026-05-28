@@ -1,10 +1,10 @@
 # STEP-Q214 Specification
 
-Version: v0.1 (Draft)  
-Status: Public Draft  
-Maintainer: holydraft  
-Author: Manuel Scholz  
-Date: 2026-02-11
+Version: v0.2 (Evaluable Public Draft)
+Status: Public Evaluable Draft
+Maintainer: holydraft
+Author: Manuel Scholz
+Date: 2026-05-28
 
 ---
 

@@ -1,8 +1,8 @@
 
 # STEP-Q214 Enumeration Registry
 
-Version: v0.1  
-Status: Draft  
+Version: v0.2
+Status: Draft
 Maintainer: holydraft
 
 ---
@@ -181,4 +181,4 @@ Deprecated values shall be listed here with replacement recommendations.
 | Version | Date       | Description          |
 |---------|------------|----------------------|
 | v0.1    | 2026-02-11 | Initial registry     |
-| Unreleased | 2026-05-28 | Added drawing-driven enums for hole finishing, heat treatment, and inspection level |
+| v0.2    | 2026-05-28 | Added drawing-driven enums for hole finishing, heat treatment, and inspection level |

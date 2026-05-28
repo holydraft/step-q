@@ -1,0 +1,41 @@
+name: Validate STEP-Q214 examples
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  validate-examples:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run conformant example checks
+        run: |
+          python tools/validate_step_q214.py examples/minimal.STEP
+          python tools/validate_step_q214.py examples/partial.STEP --documented-extension Q_SPECIAL_THREAD_NOTE
+          python tools/validate_step_q214.py examples/full.STEP
+          python tools/validate_step_q214.py examples/realSample.STEP
+          python tools/validate_step_q214.py examples/realSample.annotated.STEP
+
+      - name: Run expected non-conformance checks
+        run: |
+          if python tools/validate_step_q214.py examples/invalid_unknown_extension.STEP; then
+            echo "invalid_unknown_extension.STEP was expected to fail"
+            exit 1
+          fi
+
+          if python tools/validate_step_q214.py examples/invalid_malformed_entity.STEP; then
+            echo "invalid_malformed_entity.STEP was expected to fail"
+            exit 1
+          fi

@@ -1,8 +1,8 @@
 
 # STEP-Q214 Validation and Conformance Rules
 
-Version: v0.1  
-Status: Draft  
+Version: v0.2
+Status: Draft
 Maintainer: holydraft
 
 ---

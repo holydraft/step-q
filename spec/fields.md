@@ -1,8 +1,8 @@
 
 # STEP-Q214 Field Registry
 
-Version: v0.1  
-Status: Draft  
+Version: v0.2
+Status: Draft
 Maintainer: holydraft
 
 ---
@@ -650,4 +650,4 @@ Each proposal shall include:
 | Version | Date       | Description          |
 |---------|------------|----------------------|
 | v0.1    | 2026-02-11 | Initial registry     |
-| Unreleased | 2026-05-28 | Added drawing-driven supplementary fields for threads, hole finishing, roughness, heat treatment, coating, fit, and inspection |
+| v0.2    | 2026-05-28 | Added drawing-driven supplementary fields for threads, hole finishing, roughness, heat treatment, coating, fit, and inspection |

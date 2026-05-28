@@ -28,9 +28,24 @@ Backward compatibility is guaranteed within major versions.
 
 ## 3. Current Status
 
-### v0.1 — Initial Public Draft (Current)
+### v0.2 — Validation and Examples (Current)
 
 Focus:
+
+- Normative clarification for parser tolerance vs. conformance
+- Complete example STEP files
+- Minimal reference validator/parser for evaluable draft releases
+- Local evaluation tooling and quickstart guidance
+
+Status: Released
+
+---
+
+## 4. Short-Term Roadmap (v0.x Series)
+
+### v0.1 — Initial Public Draft
+
+Delivered:
 
 - Core specification (SPEC.md)
 - Field registry
@@ -39,22 +54,6 @@ Focus:
 - Governance framework
 
 Status: Released
-
----
-
-## 4. Short-Term Roadmap (v0.x Series)
-
-### v0.2 — Validation and Examples
-
-Planned Features:
-
-- Normative clarification for parser tolerance vs. conformance
-- Complete example STEP files
-- Minimal reference validator/parser for evaluable draft releases
-- Reference exporter template(s)
-- Short evaluation and implementer guidance
-
-Target: Proof of implementability for early adopters and partners
 
 ---
 

@@ -61,6 +61,7 @@ Goal: enable a reliable, low-friction conversion of technical requests into bind
     /CONTRIBUTING.md Contribution guidelines
     /GOVERNANCE.md Maintainer and decision process
     /ROADMAP.md Planned versions and scope growth
+    /CHANGELOG.md Release history for published drafts
     /LICENSE License
 
 ---
@@ -85,15 +86,19 @@ Goal: enable a reliable, low-friction conversion of technical requests into bind
 - CONTRIBUTING.md — Contribution process
 - GOVERNANCE.md — Maintainer structure
 - ROADMAP.md — Planned evolution
+- CHANGELOG.md — Release history
 - LICENSE — Usage and redistribution
+
+### Project Checks
+- .github/workflows/validate-examples.yml — Example-based validation checks for pull requests and pushes to `main`
 
 ---
 
 ## Status
 
-- Current version: **v0.1 (Draft)**
+- Current version: **v0.2 (Evaluable Public Draft)**
 - This is not an ISO standard; it is an open specification under active development.
-- Current publication goal: a **v0.2 evaluable public draft** with working examples and minimal reference tooling.
+- Current publication state: a **v0.2 evaluable public draft** with working examples and minimal reference tooling.
 
 ---
 
