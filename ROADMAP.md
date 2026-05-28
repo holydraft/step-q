@@ -48,12 +48,13 @@ Status: Released
 
 Planned Features:
 
-- Extended validation rules
+- Normative clarification for parser tolerance vs. conformance
 - Complete example STEP files
-- Reference exporter templates
-- Importer best practices
+- Minimal reference validator/parser for evaluable draft releases
+- Reference exporter template(s)
+- Short evaluation and implementer guidance
 
-Target: Improved implementability
+Target: Proof of implementability for early adopters and partners
 
 ---
 
@@ -64,7 +65,7 @@ Planned Features:
 - Mapping guides for major platforms
 - API integration examples
 - Metadata extraction libraries
-- Reference parsers
+- Importer best practices
 
 Target: First production pilots
 

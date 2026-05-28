@@ -137,7 +137,7 @@ Implementations shall comply with the following principles:
 - Missing fields shall not cause parsing errors
 - Missing values shall not cause parsing errors
 - Missing PROPERTY_SET containers shall not cause parsing errors
-- Unknown extensions shall be ignored
+- Unknown or unsupported extensions shall not cause parser aborts
 
 Fallback to manual completion is mandatory.
 
@@ -154,18 +154,30 @@ Parsers and quotation systems shall tolerate:
 
 No hard failures shall occur solely due to metadata issues.
 
+Validators may still classify metadata issues as warnings or errors
+for conformance reporting.
+
 ---
 
 ## 12. Conformance
 
-A STEP file is conformant with STEP-Q214 if:
+For conformance evaluation, STEP-Q214 distinguishes between
+parser tolerance and specification conformance.
+
+A STEP file is fully conformant with STEP-Q214 if:
 
 - Metadata is stored according to this specification
 - Only registered Q_ fields are used
 - Values conform to defined data types
 - No proprietary entities are present
 
-Partial conformance is permitted.
+Partial conformance is permitted when:
+
+- metadata is structurally parseable
+- registered fields used in the file remain valid
+- unsupported or extension metadata does not invalidate the overall import path
+
+Non-conformance applies when core structural or syntactic rules are violated.
 
 ---
 
@@ -177,7 +189,13 @@ Custom extensions are permitted if:
 - They are documented
 - They do not override registered fields
 
+Documented extensions may be used for experimentation and bilateral integration,
+but they are outside full conformance until officially registered.
+
 Undocumented extensions are non-conformant.
+
+Parsers shall ignore unsupported extensions for import continuity,
+while validators may report them in conformance output.
 
 ---
 

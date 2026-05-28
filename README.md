@@ -80,7 +80,7 @@ Goal: enable a reliable, low-friction conversion of technical requests into bind
 - CONTRIBUTING.md — Contribution process
 - GOVERNANCE.md — Maintainer structure
 - ROADMAP.md — Planned evolution
-- LICENSE.md — Usage and redistribution
+- LICENSE — Usage and redistribution
 
 ---
 
@@ -88,6 +88,40 @@ Goal: enable a reliable, low-friction conversion of technical requests into bind
 
 - Current version: **v0.1 (Draft)**
 - This is not an ISO standard; it is an open specification under active development.
+- Current publication goal: a **v0.2 evaluable public draft** with working examples and minimal reference tooling.
+
+---
+
+## What To Expect Today
+
+STEP-Q214 is currently intended for technical evaluation, early feedback,
+and proof-of-implementability work.
+
+It is not yet positioned as a production-ready industrial standard.
+
+Current priorities:
+
+- clarify the normative core for early adopters
+- provide real example STEP files
+- provide a minimal reference validator/parser
+- document a short evaluation path for implementers and partners
+
+---
+
+## Evaluation Focus
+
+The shortest path to evaluating STEP-Q214 is:
+
+1. Read the normative core in SPEC.md
+2. Review the registered fields and enums in spec/
+3. Inspect the example STEP files in examples/
+4. Run the reference validation tooling for your target draft version
+
+The v0.2 release is intended to make this evaluation path explicit and reproducible.
+
+Current MVP command:
+
+    python tools/validate_step_q214.py examples/minimal.step
 
 ---
 

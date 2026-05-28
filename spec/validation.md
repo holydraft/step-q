@@ -171,7 +171,7 @@ Validation findings shall be classified as follows:
 The following conditions shall produce errors:
 
 - Invalid field names
-- Unknown registered fields
+- Use of undocumented Q_ extensions in conformance validation
 - Invalid enum values
 - Forbidden entity types
 - Broken STEP structure
@@ -187,6 +187,7 @@ The following conditions shall produce warnings only:
 - Incomplete metadata sets
 - Ambiguous comments
 - Derived defaults
+- Use of documented but unregistered extension fields
 
 ---
 
@@ -198,6 +199,7 @@ Parsers shall comply with the following rules:
 - Continue processing on warnings
 - Log all validation findings
 - Support partial imports
+- Ignore unsupported extension fields during import
 
 ---
 
@@ -242,7 +244,7 @@ Example (JSON):
 | Level   | Description                          |
 |---------|--------------------------------------|
 | Full    | No errors, no critical warnings       |
-| Partial | No errors, warnings present           |
+| Partial | Core metadata valid, warnings or extension findings present |
 | Non     | Errors present                        |
 
 ---
