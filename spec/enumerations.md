@@ -53,7 +53,7 @@ Defines the main manufacturing process used for quotation.
 | punching      | Turret punching                      | Sheet parts with forms         |
 | milling       | CNC milling (3-5 axis)               | Machined housings              |
 | turning       | CNC turning                          | Shafts, bushings               |
-| grinding      | Precision grinding                  | Bearing seats                  |
+| grinding      | Precision grinding                   | Bearing seats                  |
 | additive      | Additive manufacturing               | Prototypes, lattice parts      |
 | casting       | Metal casting                        | Housings, blocks               |
 | forging       | Hot or cold forging                  | Structural parts               |
@@ -116,7 +116,55 @@ Defines packaging requirements.
 | individual  | Individually wrapped              | Precision parts          |
 | vacuum      | Vacuum sealed                     | Corrosion protection     |
 | foam        | Foam-protected packaging          | Sensitive components     |
-| custom      | Customer-defined packaging        | Special logistics         |
+| custom      | Customer-defined packaging        | Special logistics        |
+
+---
+
+### Q_HOLE_FINISH
+
+Defines a drawing-controlled finishing requirement for holes or bores.
+
+| Value         | Description                         | Typical Use                  |
+|---------------|-------------------------------------|------------------------------|
+| drilled       | Standard drilled hole               | General fastener holes       |
+| reamed        | Precision reamed hole               | Dowel or fit holes           |
+| tapped        | Internal thread created in hole     | Screw connections            |
+| countersunk   | Countersink added to hole           | Flat-head screws             |
+| counterbored  | Counterbore added to hole           | Socket head screws           |
+| spotfaced     | Local spotface for seating surface  | Bolted interfaces            |
+
+---
+
+### Q_HEAT_TREATMENT
+
+Defines heat-treatment requirements that are usually specified in the drawing or manufacturing notes.
+
+| Value             | Description                              | Typical Use                    |
+|-------------------|------------------------------------------|--------------------------------|
+| none              | No additional heat treatment required    | Standard stock material        |
+| stress_relieved   | Stress relieving after machining/welding | Distortion-sensitive parts     |
+| annealed          | Annealed condition                       | Machinability improvement      |
+| normalized        | Normalized material state                | Carbon steel components        |
+| hardened          | Hardened state required                  | Wear components                |
+| tempered          | Tempered after hardening                 | Toughness adjustment           |
+| quenched_tempered | Quenched and tempered                    | Mechanical strength parts      |
+| case_hardened     | Surface case hardening                   | Shafts, gears                  |
+| nitrided          | Nitrided surface                         | Low-distortion wear surfaces   |
+
+---
+
+### Q_INSPECTION_LEVEL
+
+Defines the inspection depth required by drawing or customer note.
+
+| Value          | Description                              | Typical Use                    |
+|----------------|------------------------------------------|--------------------------------|
+| none           | No additional inspection note            | Standard production            |
+| visual         | Visual inspection required               | Cosmetic parts                 |
+| sampling       | Sampling inspection                      | Series parts                   |
+| first_article  | First article inspection                 | New or changed parts           |
+| full_dimension | Full dimensional inspection              | Tight-tolerance parts          |
+| cmm_critical   | CMM inspection for critical features     | Complex precision components   |
 
 ---
 
@@ -133,3 +181,4 @@ Deprecated values shall be listed here with replacement recommendations.
 | Version | Date       | Description          |
 |---------|------------|----------------------|
 | v0.1    | 2026-02-11 | Initial registry     |
+| Unreleased | 2026-05-28 | Added drawing-driven enums for hole finishing, heat treatment, and inspection level |

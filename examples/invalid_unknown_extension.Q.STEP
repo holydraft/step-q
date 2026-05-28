@@ -1,7 +1,7 @@
 ISO-10303-21;
 HEADER;
 FILE_DESCRIPTION(('STEP-Q214 invalid example'),'2;1');
-FILE_NAME('invalid_unknown_extension.step','2026-05-27T00:00:00',('holydraft'),('holydraft'),'STEP-Q214','invalid example','');
+FILE_NAME('invalid_unknown_extension.Q.STEP','2026-05-27T00:00:00',('holydraft'),('holydraft'),'STEP-Q214','invalid example','');
 FILE_SCHEMA(('AUTOMOTIVE_DESIGN'));
 ENDSEC;
 DATA;

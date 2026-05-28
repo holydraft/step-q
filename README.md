@@ -54,9 +54,9 @@ Goal: enable a reliable, low-friction conversion of technical requests into bind
     validation.md Validation and conformance rules
     
     /examples/
-    minimal.step Minimal conformant example
-    partial.step Partial metadata example (fallback case)
-    full.step Fully populated metadata example
+    minimal.Q.STEP Minimal conformant example
+    partial.Q.STEP Partial metadata example (fallback case)
+    full.Q.STEP Fully populated metadata example
     
     /CONTRIBUTING.md Contribution guidelines
     /GOVERNANCE.md Maintainer and decision process
@@ -72,9 +72,13 @@ Goal: enable a reliable, low-friction conversion of technical requests into bind
 - spec/fields.md: Detailed field definitions (types, semantics, examples)
 - spec/enumerations.md: Controlled vocabulary (enums) and change process
 - spec/validation.md: Technical validation + parser resilience requirements
+- QUICKSTART.md: 5-minute evaluation path for the current draft
 
 ### Examples
 - examples/: Reference STEP files for implementers
+
+### Reference Tooling
+- tools/README.md — Current MVP validator scope and usage
 
 ### Project Governance
 - CONTRIBUTING.md — Contribution process
@@ -106,6 +110,12 @@ Current priorities:
 - provide a minimal reference validator/parser
 - document a short evaluation path for implementers and partners
 
+Recommended distribution convention:
+
+- STEP-Q214 content is identified by metadata inside the file, not by filename
+- `.Q.STEP` is recommended as a visibility convention for STEP-Q214 example, exchange, and marketing artifacts
+- raw AP214 exports without STEP-Q214 metadata should keep their normal `.STEP` or `.STP` names
+
 ---
 
 ## Evaluation Focus
@@ -121,7 +131,9 @@ The v0.2 release is intended to make this evaluation path explicit and reproduci
 
 Current MVP command:
 
-    python tools/validate_step_q214.py examples/minimal.step
+    python tools/validate_step_q214.py examples/minimal.Q.STEP
+
+For a guided first run, see QUICKSTART.md.
 
 ---
 
@@ -135,6 +147,7 @@ See **CONTRIBUTING.md**.
 
 ## Contact
 
+Manuel Scholz
 holydraft (manupa GbR)  
 https://www.holydraft.de  
 manuel@holydraft.com

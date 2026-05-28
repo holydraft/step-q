@@ -104,6 +104,16 @@ Example:
 
     Q_MATERIAL
 
+For file distribution and public communication, the filename suffix:
+
+    .Q.STEP
+
+is recommended for STEP files that already contain STEP-Q214 metadata.
+
+This suffix is informative only and is not required for conformance.
+Parsers and validators shall identify STEP-Q214 by file content,
+not by filename.
+
 ---
 
 ## 8. Core Field Registry
