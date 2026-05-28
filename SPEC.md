@@ -104,13 +104,14 @@ Example:
 
     Q_MATERIAL
 
-For file distribution and public communication, the filename suffix:
+No special filename suffix is required for STEP files that contain STEP-Q214 metadata.
+When an annotated companion file needs to be distinguished from a raw export,
+implementations may use an explicit workflow suffix before the STEP extension, such as:
 
-    .Q.STEP
+    realSample.rfq.STEP
 
-is recommended for STEP files that already contain STEP-Q214 metadata.
-
-This suffix is informative only and is not required for conformance.
+This naming remains informative only and is not required for conformance.
+Tools that generate annotated companion copies may require the user to choose that suffix explicitly.
 Parsers and validators shall identify STEP-Q214 by file content,
 not by filename.
 

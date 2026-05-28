@@ -54,14 +54,14 @@ Goal: enable a reliable, low-friction conversion of technical requests into bind
     validation.md Validation and conformance rules
     
     /examples/
-    minimal.Q.STEP Minimal conformant example
-    partial.Q.STEP Partial metadata example (fallback case)
-    full.Q.STEP Fully populated metadata example
+    minimal.STEP Minimal conformant example
+    partial.STEP Partial metadata example (fallback case)
+    full.STEP Fully populated metadata example
     
     /CONTRIBUTING.md Contribution guidelines
     /GOVERNANCE.md Maintainer and decision process
     /ROADMAP.md Planned versions and scope growth
-    /LICENSE.md License
+    /LICENSE License
 
 ---
 
@@ -79,6 +79,7 @@ Goal: enable a reliable, low-friction conversion of technical requests into bind
 
 ### Reference Tooling
 - tools/README.md — Current MVP validator scope and usage
+- tools/step_q214_workbench_web.py — Local web UI for reading and writing STEP-Q214 data
 
 ### Project Governance
 - CONTRIBUTING.md — Contribution process
@@ -113,7 +114,8 @@ Current priorities:
 Recommended distribution convention:
 
 - STEP-Q214 content is identified by metadata inside the file, not by filename
-- `.Q.STEP` is recommended as a visibility convention for STEP-Q214 example, exchange, and marketing artifacts
+- annotated files may either update the original STEP file or be written as a separate copy
+- when a separate annotated copy is created, the copy should carry an explicit user-chosen suffix before `.STEP` or `.STP`, for example `realSample.rfq.STEP`
 - raw AP214 exports without STEP-Q214 metadata should keep their normal `.STEP` or `.STP` names
 
 ---
@@ -131,9 +133,17 @@ The v0.2 release is intended to make this evaluation path explicit and reproduci
 
 Current MVP command:
 
-    python tools/validate_step_q214.py examples/minimal.Q.STEP
+    python tools/validate_step_q214.py examples/minimal.STEP
 
 For a guided first run, see QUICKSTART.md.
+
+To start the local STEP-Q214 workbench:
+
+    python tools/step_q214_workbench_web.py
+
+The workbench opens a browser window automatically, requires STEP source files to be chosen through the Windows file dialog, and starts in `Modify original file` mode on the write side.
+The left column writes STEP-Q214 data, while the right column reads and validates STEP-Q214 data from an existing STEP file.
+When writing a copy instead, the user must provide the suffix to insert before the STEP extension.
 
 ---
 

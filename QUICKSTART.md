@@ -31,7 +31,7 @@ Python 3.11 or newer available on the command line.
 1. Validate the minimal example:
 
 ```powershell
-python tools/validate_step_q214.py examples/minimal.Q.STEP
+python tools/validate_step_q214.py examples/minimal.STEP
 ```
 
 Expected outcome:
@@ -43,7 +43,7 @@ Expected outcome:
 2. Validate the partial example with one documented extension:
 
 ```powershell
-python tools/validate_step_q214.py examples/partial.Q.STEP --documented-extension Q_SPECIAL_THREAD_NOTE
+python tools/validate_step_q214.py examples/partial.STEP --documented-extension Q_SPECIAL_THREAD_NOTE
 ```
 
 Expected outcome:
@@ -55,7 +55,7 @@ Expected outcome:
 3. Validate the intentional error case:
 
 ```powershell
-python tools/validate_step_q214.py examples/invalid_unknown_extension.Q.STEP
+python tools/validate_step_q214.py examples/invalid_unknown_extension.STEP
 ```
 
 Expected outcome:
@@ -67,7 +67,7 @@ Expected outcome:
 4. Validate a structural L1 error case:
 
 ```powershell
-python tools/validate_step_q214.py examples/invalid_malformed_entity.Q.STEP
+python tools/validate_step_q214.py examples/invalid_malformed_entity.STEP
 ```
 
 Expected outcome:
@@ -94,3 +94,27 @@ Key fields:
 - Read `spec/fields.md` and `spec/enumerations.md` for the registered metadata model.
 - Read `examples/README.md` for the purpose of each example file.
 - Read `tools/README.md` for the current validator scope and limits.
+
+## Local STEP-Q214 Workbench
+
+You can also run the local browser-based STEP-Q214 workbench:
+
+```powershell
+python tools/step_q214_workbench_web.py
+```
+
+Default address:
+
+- `http://127.0.0.1:8765`
+
+The workbench lets you:
+
+- choose a STEP file through the Windows file dialog on both panels
+- write STEP-Q214 metadata on the left side
+- prefill existing STEP-Q214 values on the write side when the chosen source file already contains them
+- read STEP-Q214 metadata and validation output on the right side
+- start in `Modify original file` mode by default on the write side and switch to copy mode when needed
+- provide a mandatory custom suffix when a copy is written, for example `.rfq` or `.supplierA`
+- validate the written or read file immediately
+
+When the workbench starts, it opens the browser automatically on the local machine.

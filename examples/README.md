@@ -2,11 +2,12 @@
 
 This directory contains draft STEP-Q214 example files for evaluation.
 
-Recommended naming convention:
+Example naming convention in this repository:
 
-- files that already contain STEP-Q214 metadata use the suffix `.Q.STEP`
-- raw source exports without STEP-Q214 metadata keep their original `.STEP` or `.STP` names
-- the suffix is recommended for visibility only; conformance is still determined from file content
+- annotated example fixtures use ordinary `.STEP` names when no raw counterpart exists
+- annotated companion files use a descriptive suffix before the STEP extension when they must sit next to a raw export
+- the local workbench requires the user to enter that suffix whenever it creates a copy on the write side
+- conformance is determined from file content, not from filename
 
 ## Validation Fixtures
 
@@ -17,12 +18,15 @@ All positive fixtures include a minimal AP214-style product and shape scaffold,
 so STEP-Q214 metadata is shown in the context of a part representation,
 not as a metadata-only shell.
 
-### minimal.Q.STEP
+The invalid fixtures also keep a small AP214-style scaffold,
+so their STEP-Q214 numbering and block placement still mirror realistic annotated files.
+
+### minimal.STEP
 
 Purpose:
 
 - show the smallest useful metadata slice for early validation
-- demonstrate the expected STEP-Q214 container name
+- demonstrate a conformant annotated STEP container
 - provide a stable input for the MVP validator
 - include a minimal AP214-style product definition and shape representation
 
@@ -41,9 +45,9 @@ Expected validator result:
 
 Validation command:
 
-	python tools/validate_step_q214.py examples/minimal.Q.STEP
+	python tools/validate_step_q214.py examples/minimal.STEP
 
-### partial.Q.STEP
+### partial.STEP
 
 Purpose:
 
@@ -67,9 +71,9 @@ Expected validator result:
 
 Validation command:
 
-	python tools/validate_step_q214.py examples/partial.Q.STEP --documented-extension Q_SPECIAL_THREAD_NOTE
+	python tools/validate_step_q214.py examples/partial.STEP --documented-extension Q_SPECIAL_THREAD_NOTE
 
-### full.Q.STEP
+### full.STEP
 
 Purpose:
 
@@ -85,9 +89,9 @@ Expected validator result:
 
 Validation command:
 
-	python tools/validate_step_q214.py examples/full.Q.STEP
+	python tools/validate_step_q214.py examples/full.STEP
 
-### invalid_unknown_extension.Q.STEP
+### invalid_unknown_extension.STEP
 
 Purpose:
 
@@ -102,14 +106,14 @@ Expected validator result:
 
 Validation command:
 
-	python tools/validate_step_q214.py examples/invalid_unknown_extension.Q.STEP
+	python tools/validate_step_q214.py examples/invalid_unknown_extension.STEP
 
 Expected shell behavior:
 
 - exit code: 1
 - this is intentional because the file is designed to demonstrate non-conformance
 
-### invalid_malformed_entity.Q.STEP
+### invalid_malformed_entity.STEP
 
 Purpose:
 
@@ -124,7 +128,7 @@ Expected validator result:
 
 Validation command:
 
-	python tools/validate_step_q214.py examples/invalid_malformed_entity.Q.STEP
+	python tools/validate_step_q214.py examples/invalid_malformed_entity.STEP
 
 ## Reference Artifacts
 
@@ -148,20 +152,21 @@ Validation command:
 
 	python tools/validate_step_q214.py examples/realSample.STEP
 
-### realSample.Q.STEP
+### realSample.annotated.STEP
 
 Purpose:
 
 - demonstrate the same SolidWorks export with a minimal STEP-Q214 metadata overlay
 - provide a realistic adoption example for early implementers
+- show one concrete repository convention for the user-chosen copy suffix workflow
 
 Included fields:
 
-- Q_PART_ID
-- Q_MATERIAL
-- Q_PRIMARY_PROCESS
 - Q_QUANTITY
-- Q_DRAWING_REFERENCE
+- Q_SURFACE
+- Q_CERTIFICATE
+- Q_THREAD_SPEC
+- Q_THREAD_DEPTH
 
 Expected validator result:
 
@@ -171,5 +176,5 @@ Expected validator result:
 
 Validation command:
 
-	python tools/validate_step_q214.py examples/realSample.Q.STEP
+	python tools/validate_step_q214.py examples/realSample.annotated.STEP
 

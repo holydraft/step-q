@@ -1,0 +1,34 @@
+ISO-10303-21;
+HEADER;
+FILE_DESCRIPTION (( 'STEP AP214 with STEP-Q214 attributes' ),
+	'1' );
+FILE_NAME ('invalid_malformed_entity.STEP',
+	'2026-05-28T00:00:00',
+	( 'holydraft' ),
+	( 'holydraft' ),
+	'STEP-Q214',
+	'invalid malformed entity example',
+	'' );
+FILE_SCHEMA (( 'AUTOMOTIVE_DESIGN' ));
+ENDSEC;
+DATA;
+#25 = PROPERTY_SET ( 'STEP-Q214', $, $ ) ;
+#26 = DESCRIPTIVE_REPRESENTATION_ITEM ( 'Q_PART_ID', 'HD-2026-005' ) ;
+#27 = DESCRIPTIVE_REPRESENTATION_ITEM ( 'Q_THREAD_SPEC', 'M10x1.5' ;
+#10 = APPLICATION_CONTEXT ( 'automotive design' ) ;
+#11 = APPLICATION_PROTOCOL_DEFINITION ( 'international standard', 'automotive_design', 1994, #10 ) ;
+#12 = MECHANICAL_CONTEXT ( '', #10, 'mechanical' ) ;
+#13 = PRODUCT ( 'HD-2026-005', 'STEP-Q214 malformed bracket', '', ( #12 ) ) ;
+#14 = PRODUCT_DEFINITION_FORMATION ( '1', 'initial', #13 ) ;
+#15 = PRODUCT_DEFINITION_CONTEXT ( 'part definition', #10, 'design' ) ;
+#16 = PRODUCT_DEFINITION ( 'design', '', #14, #15 ) ;
+#17 = PRODUCT_DEFINITION_SHAPE ( '', '', #16 ) ;
+#18 = REPRESENTATION_CONTEXT ( '3D', 'shape representation' ) ;
+#19 = CARTESIAN_POINT ( 'origin', ( 0., 0., 0. ) ) ;
+#20 = DIRECTION ( 'z_axis', ( 0., 0., 1. ) ) ;
+#21 = DIRECTION ( 'x_axis', ( 1., 0., 0. ) ) ;
+#22 = AXIS2_PLACEMENT_3D ( 'part origin', #19, #20, #21 ) ;
+#23 = SHAPE_REPRESENTATION ( 'HD-2026-005', ( #22 ), #18 ) ;
+#24 = SHAPE_DEFINITION_REPRESENTATION ( #17, #23 ) ;
+ENDSEC;
+END-ISO-10303-21;
