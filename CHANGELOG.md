@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to published STEP-Q214 draft releases are documented in this file.
+All notable changes to published STEP-Q draft releases are documented in this file.
 
 ## v0.2 - 2026-05-28
 
@@ -8,8 +8,8 @@ All notable changes to published STEP-Q214 draft releases are documented in this
 
 - quickstart guidance for a reproducible evaluation path
 - a reference validator and metadata parser
-- a shared STEP-Q214 registry module for tooling
-- a local browser-based workbench for reading and writing STEP-Q214 metadata
+- a shared STEP-Q registry module for tooling
+- a local browser-based workbench for reading and writing STEP-Q metadata
 - realistic `.STEP` example fixtures, including raw and annotated real-world samples
 - GitHub Actions checks for the documented example validation path
 
@@ -24,6 +24,6 @@ All notable changes to published STEP-Q214 draft releases are documented in this
 
 ### Added
 
-- initial public draft of the core STEP-Q214 specification
+- initial public draft of the core STEP-Q specification
 - field registry, enumeration registry, and validation rules
 - contribution, governance, roadmap, and licensing documents

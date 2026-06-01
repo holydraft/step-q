@@ -1,5 +1,5 @@
 
-# STEP-Q214 Validation and Conformance Rules
+# STEP-Q Validation and Conformance Rules
 
 Version: v0.2
 Status: Draft
@@ -9,7 +9,7 @@ Maintainer: holydraft
 
 ## 1. Purpose
 
-This document defines validation rules and conformance requirements for STEP-Q214 files.
+This document defines validation rules and conformance requirements for STEP-Q files.
 
 It enables automated checking of metadata structure, data types, and semantic consistency.
 
@@ -25,7 +25,7 @@ Validation shall be performed on three levels:
 
 | Level | Name        | Description                                   |
 |-------|-------------|-----------------------------------------------|
-| L1    | Structural  | STEP/AP214 entity structure                   |
+| L1    | Structural  | STEP exchange structure for the active profile |
 | L2    | Syntactic   | Field types and formats                       |
 | L3    | Semantic    | Business and manufacturing plausibility       |
 
@@ -35,9 +35,9 @@ Validation shall be performed on three levels:
 
 ### 3.1 Metadata Container
 
-A conformant file may contain one (per Part):
+A conformant exchange using the current embedded profile may contain one (per part):
 
-PROPERTY_SET('STEP-Q214', ...)
+PROPERTY_SET('STEP-Q', ...)
 
 container.
 
@@ -47,7 +47,7 @@ Absence of such containers is permitted.
 
 ### 3.2 Allowed Entities
 
-Only the following entity types shall be used for STEP-Q214 metadata:
+Only the following entity types shall be used for STEP-Q metadata in the current embedded profile:
 
 - PROPERTY_SET
 - PROPERTY_DEFINITION
@@ -61,7 +61,7 @@ Use of proprietary entities is forbidden.
 
 Metadata containers shall be identified by the name:
 
-STEP-Q214
+STEP-Q
 
 Case-sensitive.
 

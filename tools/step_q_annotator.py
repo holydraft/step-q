@@ -9,7 +9,7 @@ FILE_DESCRIPTION_BLOCK = re.compile(
     re.IGNORECASE | re.DOTALL,
 )
 FILE_NAME_VALUE = re.compile(r"(FILE_NAME\s*\(\s*')(?P<name>[^']*)(')", re.IGNORECASE)
-PROPERTY_SET_LINE = re.compile(r"^\s*#[0-9]+\s*=\s*PROPERTY_SET\s*\(\s*'STEP-Q214'", re.IGNORECASE)
+PROPERTY_SET_LINE = re.compile(r"^\s*#[0-9]+\s*=\s*PROPERTY_SET\s*\(\s*'STEP-Q'", re.IGNORECASE)
 Q_FIELD_LINE = re.compile(
     r"^\s*#[0-9]+\s*=\s*DESCRIPTIVE_REPRESENTATION_ITEM\s*\(\s*'Q_[A-Z0-9_]+'",
     re.IGNORECASE,
@@ -97,7 +97,7 @@ def allocate_entity_ids(text: str, count: int) -> list[int]:
     return allocated
 
 
-def strip_existing_step_q214_lines(data_section: str) -> list[str]:
+def strip_existing_step_q_lines(data_section: str) -> list[str]:
     remaining_lines: list[str] = []
     for line in data_section.splitlines():
         if PROPERTY_SET_LINE.match(line) or Q_FIELD_LINE.match(line):
@@ -110,7 +110,7 @@ def build_metadata_lines(entity_ids: list[int], metadata: dict[str, str]) -> lis
     if len(entity_ids) != len(metadata) + 1:
         raise ValueError("Entity ID allocation does not match metadata payload")
 
-    lines = [f"#{entity_ids[0]} = PROPERTY_SET ( 'STEP-Q214', $, $ ) ;"]
+    lines = [f"#{entity_ids[0]} = PROPERTY_SET ( 'STEP-Q', $, $ ) ;"]
 
     for field_name, value, entity_id in zip(metadata.keys(), metadata.values(), entity_ids[1:]):
         escaped_value = value.replace("'", "''")
@@ -130,7 +130,7 @@ def update_file_name_value(text: str, output_name: str) -> str:
 
 
 def update_file_description_value(text: str, newline: str) -> str:
-    description = "STEP AP214 with STEP-Q214 attributes"
+    description = "STEP file with STEP-Q metadata"
     replacement = f"FILE_DESCRIPTION (( '{description}' ),{newline}    '1' );"
     updated_text, replacements = FILE_DESCRIPTION_BLOCK.subn(replacement, text, count=1)
     if replacements == 0:
@@ -140,12 +140,12 @@ def update_file_description_value(text: str, newline: str) -> str:
 
 def annotate_text(text: str, metadata: dict[str, str], output_name: str) -> str:
     if not metadata:
-        raise ValueError("No STEP-Q214 metadata was provided for annotation")
+        raise ValueError("No STEP-Q metadata was provided for annotation")
 
     newline = detect_newline(text)
     data_start_index, data_end_index = find_data_bounds(text)
     data_section = text[data_start_index:data_end_index]
-    cleaned_lines = strip_existing_step_q214_lines(data_section)
+    cleaned_lines = strip_existing_step_q_lines(data_section)
     metadata_entity_ids = allocate_entity_ids(text, len(metadata) + 1)
     metadata_lines = build_metadata_lines(metadata_entity_ids, metadata)
 

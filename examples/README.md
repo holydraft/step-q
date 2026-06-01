@@ -1,6 +1,6 @@
 ## Examples
 
-This directory contains draft STEP-Q214 example files for evaluation.
+This directory contains draft STEP-Q example files for evaluation.
 
 Example naming convention in this repository:
 
@@ -14,12 +14,12 @@ Example naming convention in this repository:
 These files are controlled fixtures for validator behavior, conformance classes,
 and expected findings.
 
-All positive fixtures include a minimal AP214-style product and shape scaffold,
-so STEP-Q214 metadata is shown in the context of a part representation,
+All positive fixtures include a compact STEP product and shape scaffold,
+so STEP-Q metadata is shown in the context of a part representation,
 not as a metadata-only shell.
 
-The invalid fixtures also keep a small AP214-style scaffold,
-so their STEP-Q214 numbering and block placement still mirror realistic annotated files.
+The invalid fixtures also keep a small carrier scaffold,
+so their STEP-Q numbering and block placement still mirror realistic annotated files.
 
 ### minimal.STEP
 
@@ -28,7 +28,7 @@ Purpose:
 - show the smallest useful metadata slice for early validation
 - demonstrate a conformant annotated STEP container
 - provide a stable input for the MVP validator
-- include a minimal AP214-style product definition and shape representation
+- include a minimal product definition and shape representation
 
 Included fields:
 
@@ -45,7 +45,7 @@ Expected validator result:
 
 Validation command:
 
-	python tools/validate_step_q214.py examples/minimal.STEP
+	python tools/validate_step_q.py examples/minimal.STEP
 
 ### partial.STEP
 
@@ -71,7 +71,7 @@ Expected validator result:
 
 Validation command:
 
-	python tools/validate_step_q214.py examples/partial.STEP --documented-extension Q_SPECIAL_THREAD_NOTE
+	python tools/validate_step_q.py examples/partial.STEP --documented-extension Q_SPECIAL_THREAD_NOTE
 
 ### full.STEP
 
@@ -89,7 +89,7 @@ Expected validator result:
 
 Validation command:
 
-	python tools/validate_step_q214.py examples/full.STEP
+	python tools/validate_step_q.py examples/full.STEP
 
 ### invalid_unknown_extension.STEP
 
@@ -106,7 +106,7 @@ Expected validator result:
 
 Validation command:
 
-	python tools/validate_step_q214.py examples/invalid_unknown_extension.STEP
+	python tools/validate_step_q.py examples/invalid_unknown_extension.STEP
 
 Expected shell behavior:
 
@@ -128,18 +128,18 @@ Expected validator result:
 
 Validation command:
 
-	python tools/validate_step_q214.py examples/invalid_malformed_entity.STEP
+	python tools/validate_step_q.py examples/invalid_malformed_entity.STEP
 
 ## Reference Artifacts
 
-These files represent real-world CAD exports and their STEP-Q214 annotation path.
+These files represent real-world CAD exports and their STEP-Q annotation path.
 
 ### realSample.STEP
 
 Purpose:
 
 - provide a raw SolidWorks AP214 export as parser reference input
-- demonstrate real geometry complexity without STEP-Q214 metadata
+- demonstrate real geometry complexity without STEP-Q metadata
 - serve as the baseline for the annotated companion file
 
 Expected validator result:
@@ -148,15 +148,20 @@ Expected validator result:
 - errors: 0
 - warnings: 2
 
+Expected warnings:
+
+- `STEP-Q PROPERTY_SET container not found`
+- `No STEP-Q metadata fields found`
+
 Validation command:
 
-	python tools/validate_step_q214.py examples/realSample.STEP
+	python tools/validate_step_q.py examples/realSample.STEP
 
 ### realSample.annotated.STEP
 
 Purpose:
 
-- demonstrate the same SolidWorks export with a minimal STEP-Q214 metadata overlay
+- demonstrate the same SolidWorks export with a minimal STEP-Q metadata overlay
 - provide a realistic adoption example for early implementers
 - show one concrete repository convention for the user-chosen copy suffix workflow
 
@@ -176,5 +181,5 @@ Expected validator result:
 
 Validation command:
 
-	python tools/validate_step_q214.py examples/realSample.annotated.STEP
+	python tools/validate_step_q.py examples/realSample.annotated.STEP
 

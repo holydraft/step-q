@@ -1,63 +1,65 @@
-# STEP-Q214
+# STEP-Q
 
-STEP-Q214 defines a standardized metadata layer for STEP AP214 files, focused on quotation (RFQ) and pricing workflows for industrially manufacturable parts and assemblies.
+STEP-Q is a lightweight RFQ metadata layer for STEP files.
 
-It is designed to work across online platforms, internal ERP/CAM systems, manufacturer software, and hybrid (semi-manual) quotation processes.
+STEP-Q is application-protocol agnostic. It can be used with AP203, AP214, AP242, or sidecar-based STEP exchange. AP203, AP214, and AP242 are possible STEP carrier formats for STEP-Q metadata.
+
+STEP-Q makes quotation-relevant manufacturing information explicit and machine-readable. It complements existing STEP geometry with structured request, quotation, manufacturing, quality, and commercial metadata that is often scattered across drawings, emails, comments, and assumptions.
 
 Developed and maintained by **holydraft**.
 
 ---
 
-## References
+## Positioning
 
-STEP-Q214 is based on and aligned with existing STEP standards and organizations:
+STEP-Q does not redefine geometry.
 
-- ISO 10303-214 — Automotive Design (AP214)
-- ISO TC 184/SC 4 — Industrial data
-- PDES, Inc. — Product Data Exchange using STEP
+STEP-Q does not replace AP242, PMI, ISO GPS, technical drawings, CAM, ERP, or quality management systems.
 
-Official resources:
+Instead, STEP-Q adds a small, explicit metadata layer for supplier exchange and quotation workflows:
 
-- https://www.iso.org/standard/63141.html
-- https://www.iso.org/committee/54158.html (https://committee.iso.org/home/tc184sc4)
-- https://www.pdesinc.org
-- https://www.steptools.com/stds/
+- material, quantity, and process assumptions
+- drawing-driven requirements that matter for quoting
+- quality, certificate, packaging, and delivery signals
+- commercial or procurement-side metadata that needs to travel with the technical model
 
----
+Practical goal:
 
-## Purpose
-
-Manufacturing buyers and quotation teams repeatedly enter the same information into forms and pricing systems (material, quantity, tolerances, surface, certificates, delivery targets, etc.). STEP-Q214 embeds these RFQ-relevant parameters directly into the STEP file in a structured, machine-readable way.
-
-Goal: enable a reliable, low-friction conversion of technical requests into binding quotations by allowing quotation engines to automatically discover and interpret metadata from STEP-Q214 files.
+> Make STEP-based supplier exchange more explicit, structured, and automatable.
 
 ---
 
-## Key Principles
+## Architecture
 
-- Based on **ISO 10303-214 (STEP AP214)** geometry and topology
-- **Backward compatible** with standard AP214 parsers
-- **No modification** of core geometry entities
-- Metadata stored only via standard AP214 entities (no proprietary entity types)
-- Strong **fallback**: all fields are optional; missing data must not cause parse errors
+STEP-Q is organized into four linked parts:
+
+- **STEP-Q Core**: field names, data types, meanings, required or optional status, and validation semantics
+- **STEP carrier compatibility**: how the same STEP-Q metadata can travel with AP203, AP214, AP242, or neutral sidecar exchange
+- **Metadata embedding methods**: p21 property-entity embedding, sidecar formats, and other transport options
+- **Validation rules**: structural, syntactic, and semantic checks plus parser-resilience requirements
+
+The current repository contains working examples and tooling around a p21/property-entity embedding profile.
 
 ---
 
 ## Repository Structure
-    
+
     /README.md Project overview (this file)
-    /SPEC.md Normative core specification
-    
+    /SPEC.md Normative STEP-Q umbrella specification
+
     /spec/
+    core.md STEP-Q Core overview
+    carrier-compatibility.md Carrier model and scope
+    embedding.md Metadata embedding methods
     fields.md Field catalog and definitions
     enumerations.md Enumeration registry
     validation.md Validation and conformance rules
-    
+
     /examples/
     minimal.STEP Minimal conformant example
     partial.STEP Partial metadata example (fallback case)
-    full.STEP Fully populated metadata example
-    
+    full.STEP Rich metadata example
+
     /CONTRIBUTING.md Contribution guidelines
     /GOVERNANCE.md Maintainer and decision process
     /ROADMAP.md Planned versions and scope growth
@@ -69,86 +71,108 @@ Goal: enable a reliable, low-friction conversion of technical requests into bind
 ## Documents
 
 ### Core Specification
-- SPEC.md: Normative core rules (what is required for STEP-Q214 conformance)
-- spec/fields.md: Detailed field definitions (types, semantics, examples)
-- spec/enumerations.md: Controlled vocabulary (enums) and change process
-- spec/validation.md: Technical validation + parser resilience requirements
-- QUICKSTART.md: 5-minute evaluation path for the current draft
+- SPEC.md: normative umbrella document for STEP-Q
+- spec/core.md: STEP-Q Core structure and principles
+- spec/carrier-compatibility.md: equal treatment of AP203, AP214, AP242, and neutral exchange forms
+- spec/embedding.md: current embedding profiles and transport options
+- spec/fields.md: detailed field definitions
+- spec/enumerations.md: controlled vocabulary and change process
+- spec/validation.md: validation logic and parser resilience requirements
+- QUICKSTART.md: short evaluation path for the current draft
 
 ### Examples
-- examples/: Reference STEP files for implementers
+- examples/: reference fixtures for current draft tooling
 
 ### Reference Tooling
-- tools/README.md — Current MVP validator scope and usage
-- tools/step_q214_workbench_web.py — Local web UI for reading and writing STEP-Q214 data
+- tools/README.md: current MVP validator and workbench scope
+- tools/step_q_workbench_web.py: local web UI for reading and writing STEP-Q data
 
 ### Project Governance
-- CONTRIBUTING.md — Contribution process
-- GOVERNANCE.md — Maintainer structure
-- ROADMAP.md — Planned evolution
-- CHANGELOG.md — Release history
-- LICENSE — Usage and redistribution
+- CONTRIBUTING.md: contribution process
+- GOVERNANCE.md: maintainer structure
+- ROADMAP.md: planned evolution
+- CHANGELOG.md: release history
+- LICENSE: usage and redistribution terms
 
 ### Project Checks
-- .github/workflows/validate-examples.yml — Example-based validation checks for pull requests and pushes to `main`
+- .github/workflows/validate-examples.yml: example-based validation checks for pull requests and pushes to `main`
 
 ---
 
 ## Status
 
 - Current version: **v0.2 (Evaluable Public Draft)**
-- This is not an ISO standard; it is an open specification under active development.
-- Current publication state: a **v0.2 evaluable public draft** with working examples and minimal reference tooling.
+- STEP-Q is not an ISO standard; it is an open draft specification under active development.
+- The current publication state is an evaluable public draft with working examples and minimal reference tooling.
+
+If you are evaluating STEP-Q for implementation or public review, start with QUICKSTART.md and treat the current tooling as draft evaluation tooling, not as a production validation stack.
 
 ---
 
 ## What To Expect Today
 
-STEP-Q214 is currently intended for technical evaluation, early feedback,
-and proof-of-implementability work.
+STEP-Q is currently intended for technical evaluation, early feedback, and proof-of-implementability work.
 
 It is not yet positioned as a production-ready industrial standard.
 
 Current priorities:
 
-- clarify the normative core for early adopters
-- provide real example STEP files
-- provide a minimal reference validator/parser
-- document a short evaluation path for implementers and partners
+- stabilize STEP-Q Core
+- keep examples and tooling aligned with the draft field registry
+- document carrier-agnostic usage clearly
+- provide a short, reproducible evaluation path for implementers and partners
 
-Recommended distribution convention:
+Current distribution convention:
 
-- STEP-Q214 content is identified by metadata inside the file, not by filename
+- STEP-Q content is identified by metadata inside the exchange payload, not by filename
 - annotated files may either update the original STEP file or be written as a separate copy
 - when a separate annotated copy is created, the copy should carry an explicit user-chosen suffix before `.STEP` or `.STP`, for example `realSample.rfq.STEP`
-- raw AP214 exports without STEP-Q214 metadata should keep their normal `.STEP` or `.STP` names
+- raw STEP exports without STEP-Q metadata should keep their normal `.STEP` or `.STP` names
 
 ---
 
 ## Evaluation Focus
 
-The shortest path to evaluating STEP-Q214 is:
+The shortest path to evaluating STEP-Q is:
 
 1. Read the normative core in SPEC.md
 2. Review the registered fields and enums in spec/
 3. Inspect the example STEP files in examples/
 4. Run the reference validation tooling for your target draft version
 
-The v0.2 release is intended to make this evaluation path explicit and reproducible.
-
 Current MVP command:
 
-    python tools/validate_step_q214.py examples/minimal.STEP
+    python tools/validate_step_q.py examples/minimal.STEP
 
 For a guided first run, see QUICKSTART.md.
 
-To start the local STEP-Q214 workbench:
+To start the local STEP-Q workbench:
 
-    python tools/step_q214_workbench_web.py
+    python tools/step_q_workbench_web.py
 
 The workbench opens a browser window automatically, requires STEP source files to be chosen through the Windows file dialog, and starts in `Modify original file` mode on the write side.
-The left column writes STEP-Q214 data, while the right column reads and validates STEP-Q214 data from an existing STEP file.
+The left column writes STEP-Q data, while the right column reads and validates STEP-Q data from an existing STEP file.
 When writing a copy instead, the user must provide the suffix to insert before the STEP extension.
+
+---
+
+## References
+
+STEP-Q is intended to complement existing STEP standards and institutions, including:
+
+- ISO 10303 as the broader STEP family
+- ISO 10303-203 (AP203)
+- ISO 10303-214 (AP214)
+- ISO 10303-242 (AP242)
+- ISO TC 184/SC 4
+- PDES, Inc.
+
+Official resources:
+
+- https://www.iso.org/committee/54158.html
+- https://committee.iso.org/home/tc184sc4
+- https://www.pdesinc.org
+- https://www.steptools.com/stds/
 
 ---
 
@@ -157,6 +181,8 @@ When writing a copy instead, the user must provide the suffix to insert before t
 Contributions are welcome via pull requests.
 
 See **CONTRIBUTING.md**.
+
+For bug reports, conformance questions, or draft feedback, open a GitHub issue and link the relevant example file, validator output, or specification section when possible.
 
 ---
 

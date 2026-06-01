@@ -1,5 +1,5 @@
 
-# Contributing to STEP-Q214
+# Contributing to STEP-Q
 
 Maintained by holydraft
 
@@ -7,7 +7,7 @@ Maintained by holydraft
 
 ## 1. Purpose
 
-This document defines the contribution process for the STEP-Q214 specification.
+This document defines the contribution process for the STEP-Q specification.
 
 Its goal is to ensure technical consistency, backward compatibility,
 and long-term stability.
@@ -86,6 +86,13 @@ All technical proposals must include:
 5. Migration strategy (if applicable)
 
 Incomplete proposals will not be reviewed.
+
+For bug reports, conformance questions, or draft feedback, contributors should include the most relevant available evidence, for example:
+
+- affected file or example path
+- validator output
+- specification section reference
+- expected versus actual behavior
 
 ---
 

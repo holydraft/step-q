@@ -1,18 +1,18 @@
 ISO-10303-21;
 HEADER;
-FILE_DESCRIPTION (( 'STEP AP214 with STEP-Q214 attributes' ),
+FILE_DESCRIPTION (( 'STEP file with STEP-Q metadata' ),
 	'1' );
 FILE_NAME ('full.STEP',
 	'2026-05-27T00:00:00',
 	( 'holydraft' ),
 	( 'holydraft' ),
-	'STEP-Q214',
+	'STEP-Q',
 	'full example',
 	'' );
 FILE_SCHEMA (( 'AUTOMOTIVE_DESIGN' ));
 ENDSEC;
 DATA;
-#25 = PROPERTY_SET ( 'STEP-Q214', $, $ ) ;
+#25 = PROPERTY_SET ( 'STEP-Q', $, $ ) ;
 #26 = DESCRIPTIVE_REPRESENTATION_ITEM ( 'Q_PART_ID', 'HD-2026-003' ) ;
 #27 = DESCRIPTIVE_REPRESENTATION_ITEM ( 'Q_MATERIAL', '1.4301' ) ;
 #28 = DESCRIPTIVE_REPRESENTATION_ITEM ( 'Q_PRIMARY_PROCESS', 'milling' ) ;
@@ -37,7 +37,7 @@ DATA;
 #10 = APPLICATION_CONTEXT ( 'automotive design' ) ;
 #11 = APPLICATION_PROTOCOL_DEFINITION ( 'international standard', 'automotive_design', 1994, #10 ) ;
 #12 = MECHANICAL_CONTEXT ( '', #10, 'mechanical' ) ;
-#13 = PRODUCT ( 'HD-2026-003', 'STEP-Q214 machined housing', '', ( #12 ) ) ;
+#13 = PRODUCT ( 'HD-2026-003', 'STEP-Q machined housing', '', ( #12 ) ) ;
 #14 = PRODUCT_DEFINITION_FORMATION ( '1', 'initial', #13 ) ;
 #15 = PRODUCT_DEFINITION_CONTEXT ( 'part definition', #10, 'design' ) ;
 #16 = PRODUCT_DEFINITION ( 'design', '', #14, #15 ) ;

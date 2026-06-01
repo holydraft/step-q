@@ -1,4 +1,4 @@
-# STEP-Q214 Roadmap
+# STEP-Q Roadmap
 
 Maintained by holydraft
 
@@ -6,23 +6,23 @@ Maintained by holydraft
 
 ## 1. Purpose
 
-This document describes the planned evolution of the STEP-Q214 specification.
+This document describes the planned evolution of the STEP-Q specification.
 
 It provides transparency regarding scope, priorities, and development stages.
 
-The roadmap is indicative and may be adjusted based on industry feedback.
+The roadmap is indicative and may be adjusted based on implementation feedback.
 
 ---
 
 ## 2. Versioning Model
 
-STEP-Q214 follows semantic versioning:
+STEP-Q follows semantic versioning:
 
 - v0.x — Draft and experimental phase
-- v1.x — Stable industrial standard
+- v1.x — Stable industrial draft release
 - v2.x — Major functional revision
 
-Backward compatibility is guaranteed within major versions.
+Backward compatibility is expected within major versions.
 
 ---
 
@@ -32,10 +32,10 @@ Backward compatibility is guaranteed within major versions.
 
 Focus:
 
-- Normative clarification for parser tolerance vs. conformance
-- Complete example STEP files
-- Minimal reference validator/parser for evaluable draft releases
-- Local evaluation tooling and quickstart guidance
+- normative clarification for parser tolerance vs. conformance
+- complete example STEP files
+- minimal reference validator/parser for evaluable draft releases
+- local evaluation tooling and quickstart guidance
 
 Status: Released
 
@@ -43,99 +43,103 @@ Status: Released
 
 ## 4. Short-Term Roadmap (v0.x Series)
 
-### v0.1 — Initial Public Draft
+### v0.3 — STEP-Q Core Stabilization
 
-Delivered:
+Planned features:
 
-- Core specification (SPEC.md)
-- Field registry
-- Enumeration registry
-- Validation rules
-- Governance framework
+- stabilize STEP-Q Core terminology and scope
+- align repository documentation to the carrier-agnostic STEP-Q model
+- document current examples and tools as AP-agnostic repository assets
+- improve extension handling and embedding-profile clarity across current examples and tools
 
-Status: Released
+Target: clearer draft semantics and lower implementation ambiguity
 
 ---
 
-### v0.3 — Platform Integration Support
+### v0.4 — Integration and Exchange Profiles
 
-Planned Features:
+Planned features:
 
-- Mapping guides for major platforms
+- mapping guides for major platforms
 - API integration examples
-- Metadata extraction libraries
-- Importer best practices
+- metadata extraction libraries
+- importer best practices
+- documented JSON sidecar exchange profile
+- documented comment-block or neutral embedding profile
 
-Target: First production pilots
+Target: first production pilots and clearer exchange guidance
 
 ---
 
-### v0.4 — Schema Definition
+### v0.5 — Toolchain Support
 
-Planned Features:
+Planned features:
 
 - JSON Schema
-- XML Schema
-- CLI validation tool
-- Automated conformance tests
+- CLI validation improvements
+- automated conformance tests
+- clearer profile documentation for direct embedding versus sidecar exchange
 
-Target: Toolchain support
+Target: repeatable implementation support
 
 ---
 
 ## 5. Medium-Term Roadmap (v1.x Series)
 
-### v1.0 — Stable Release
+### v1.0 — Stable STEP-Q Core
 
-Planned Features:
+Planned features:
 
-- Frozen core field set
-- Stable enumeration registry
-- Industry review cycle
-- Interoperability tests
+- frozen core field set
+- stable enumeration registry
+- interoperability review cycle
+- carrier-agnostic conformance guidance
 
-Target: Production-ready standard
+Target: production-ready core draft
 
 ---
 
-### v1.1–v1.5 — Ecosystem Expansion
+### v1.1–v1.5 — Broader Carrier Examples
 
-Planned Features:
+Planned features:
 
-- Extended process coverage
-- Logistics and packaging metadata
-- Certification automation
-- Cost model interfaces
+- curated examples for AP203, AP214, and AP242 carriers
+- sidecar JSON examples
+- logistics and packaging metadata growth
+- certificate and quality handoff refinements
+- platform-facing import/export guides
 
-Target: Broad industrial adoption
+Target: broader industrial adoption without privileging a single carrier
 
 ---
 
 ## 6. Long-Term Roadmap (v2.x Series)
 
-### v2.0 — Manufacturing Intelligence Layer
+### v2.0 — Extended Manufacturing Intelligence
 
-Planned Features:
+Planned features:
 
-- Advanced process modeling
-- Cost estimation models
-- Sustainability indicators
-- CO₂ footprint metadata
-- Energy consumption parameters
+- advanced process modeling
+- cost estimation models
+- sustainability indicators
+- CO2 footprint metadata
+- energy consumption parameters
 
-Target: Decision-support standard
+Target: decision-support standard
 
 ---
 
-### STEP-Q242 (Concept)
+### AP242 and MBD Integration Extensions (Concept)
 
 Long-term vision:
 
-- Extension aligned with STEP AP242
-- Full MBD/PMI integration
-- Closed-loop design-to-manufacturing workflows
+- deeper interoperability with AP242-based workflows
+- optional MBD and PMI-adjacent integration patterns
+- clearer links between STEP-Q quotation metadata and richer engineering datasets
 
 Status: Conceptual
+
+This is an extension path, not a replacement of STEP-Q Core and not a preferred near-term mainline.
 
 ---
 
@@ -143,10 +147,10 @@ Status: Conceptual
 
 Potential future directions:
 
-- Cooperation with research institutions
-- Industry consortium formation
-- DIN / ISO pre-standardization
-- Public funding projects
+- cooperation with research institutions
+- industry consortium formation
+- DIN or ISO pre-standardization
+- public funding projects
 
 These activities are exploratory.
 
@@ -159,8 +163,8 @@ The roadmap is reviewed at least once per year.
 Updates are published via:
 
 - GitHub releases
-- Changelog updates
-- Public announcements
+- changelog updates
+- public announcements
 
 ---
 

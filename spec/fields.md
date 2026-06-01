@@ -1,5 +1,5 @@
 
-# STEP-Q214 Field Registry
+# STEP-Q Field Registry
 
 Version: v0.2
 Status: Draft
@@ -9,10 +9,12 @@ Maintainer: holydraft
 
 ## 1. Purpose
 
-This document defines all registered STEP-Q214 fields, including their
+This document defines all registered STEP-Q Core fields, including their
 semantics, data types, formats, and interpretation rules.
 
 Only fields defined in this registry are considered normative.
+
+The same field registry can be used with STEP files independent of whether the carrier is AP203, AP214, or AP242.
 
 ---
 
