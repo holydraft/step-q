@@ -1,18 +1,20 @@
-# STEP-Q214 Specification
+# STEP-Q Specification
 
 Version: v0.2 (Evaluable Public Draft)
 Status: Public Evaluable Draft
 Maintainer: holydraft
 Author: Manuel Scholz
-Date: 2026-05-28
+Date: 2026-06-01
 
 ---
 
 ## 1. Purpose
 
-STEP-Q214 defines a standardized metadata layer for STEP AP214 files focused on quotation and RFQ workflows.
+STEP-Q is a lightweight RFQ metadata layer for STEP files.
 
-It enables automated and semi-automated interpretation of commercial and technical parameters for industrial manufacturing.
+STEP-Q is application-protocol agnostic. It defines a small, explicit metadata model for quotation and supplier-exchange workflows without redefining the underlying geometry.
+
+STEP-Q makes quotation-relevant manufacturing information explicit and machine-readable.
 
 ---
 
@@ -20,124 +22,145 @@ It enables automated and semi-automated interpretation of commercial and technic
 
 This specification applies to:
 
-- Individual parts
-- Assemblies
-- Industrial manufacturing requests
+- individual parts
+- assemblies
+- industrial manufacturing requests
+- supplier-exchange workflows where quotation-relevant metadata must travel with or next to a STEP model
 
 It is intended for use in:
 
-- Online manufacturing platforms
+- online manufacturing platforms
 - ERP and quotation systems
-- CAM-related costing workflows
-- Hybrid and manual quotation processes
+- procurement and supplier portals
+- costing and pre-manufacturing workflows
+- hybrid and manual quotation processes
 
 Excluded from scope:
 
-- Production planning
+- geometry definition itself
+- production planning
 - CAM toolpaths
-- Machine parameters
-- Quality inspection planning
-- Shopfloor scheduling
+- machine parameters
+- quality inspection planning
+- shopfloor scheduling
+- ERP execution logic
 
 ---
 
-## 3. Normative References
+## 3. Positioning and Non-Goals
 
-The following documents are indispensable for the application of this specification:
+STEP-Q does not redefine geometry.
 
-- ISO 10303-214 — Automotive Design (AP214)
-- ISO TC 184/SC 4 — Industrial data
+STEP-Q does not replace AP242, PMI, ISO GPS, technical drawings, CAM, ERP, or quality management systems.
+
+STEP-Q complements STEP-based geometry exchange by defining a stable metadata vocabulary for information that is often needed during request-for-quotation, supplier qualification, manufacturability review, and offer preparation.
+
+---
+
+## 4. Normative References
+
+The following references are relevant to the application context of this draft:
+
+- ISO 10303 as the broader STEP family
+- ISO 10303-203 (AP203)
+- ISO 10303-214 (AP214)
+- ISO 10303-242 (AP242)
+- ISO TC 184/SC 4
 
 Informative references:
 
 - STEP Tools — STEP Standards Overview
 - PDES, Inc.
 
----
-
-## 4. Base Standard
-
-STEP-Q214 is based exclusively on ISO 10303-214 (STEP AP214).
-
-All geometric and topological data shall conform to AP214.
-
-No proprietary or non-standard entity types shall be introduced.
+This draft does not define a new STEP application protocol.
 
 ---
 
-## 5. Design Principles
+## 5. STEP-Q Core
 
-STEP-Q214 implementations shall follow these principles:
+STEP-Q Core defines:
 
-1. Backward compatibility with AP214 parsers
-2. No modification of core geometry entities
-3. Use of standard AP214 property entities only
-4. Machine-readable structure
-5. Human-readable values where applicable
-6. Clear separation of quotation and production data
+- registered field names
+- data types and allowed formats
+- field meanings
+- controlled vocabularies
+- validation semantics
+- parser tolerance requirements
+
+The normative STEP-Q Core registry is defined in:
+
+    spec/fields.md
+
+Controlled vocabularies are defined in:
+
+    spec/enumerations.md
+
+All STEP-Q Core fields shall use the prefix:
+
+    Q_
+
+Only registered fields shall be used in conformant files unless an extension is explicitly documented.
 
 ---
 
-## 6. Metadata Architecture
+## 6. STEP Carrier Compatibility
 
-STEP-Q214 metadata shall be stored using the following AP214 entities:
+STEP-Q can be used with AP203, AP214, AP242, or sidecar-based STEP exchange.
+
+AP203, AP214, and AP242 are possible STEP carrier formats for STEP-Q metadata.
+
+Carrier compatibility is defined by the following principles:
+
+1. STEP-Q Core is independent of any single STEP application protocol.
+2. Geometry and topology remain governed by the carrier format in use.
+3. A carrier format may transport STEP-Q metadata directly inside the p21 payload or indirectly through a linked sidecar.
+4. No carrier shall be treated as the sole, preferred, or defining implementation of STEP-Q.
+
+Additional carrier guidance is provided in:
+
+    spec/carrier-compatibility.md
+
+---
+
+## 7. Metadata Embedding Methods
+
+STEP-Q may be exchanged through one of the following embedding methods:
+
+- p21 property-entity embedding inside a STEP file
+- sidecar metadata linked to a STEP file
+- documented future embedding methods that preserve the STEP-Q Core vocabulary
+
+The current repository examples and reference tools demonstrate a p21/property-entity embedding profile using:
 
 - PROPERTY_SET
 - PROPERTY_DEFINITION
 - DESCRIPTIVE_REPRESENTATION_ITEM
 
-Metadata containers shall be identified by:
+In this profile, the metadata container shall be identified by:
 
-    PROPERTY_SET('STEP-Q214', ...)
+    PROPERTY_SET('STEP-Q', ...)
 
-No proprietary entities or extensions are permitted.
+Additional embedding guidance is provided in:
+
+    spec/embedding.md
 
 ---
 
-## 7. Naming Convention
+## 8. Naming and Distribution Conventions
 
-All STEP-Q214 fields shall use the prefix:
+No special filename suffix is required for STEP payloads that contain STEP-Q metadata.
 
-    Q_
-
-Example:
-
-    Q_MATERIAL
-
-No special filename suffix is required for STEP files that contain STEP-Q214 metadata.
-When an annotated companion file needs to be distinguished from a raw export,
-implementations may use an explicit workflow suffix before the STEP extension, such as:
+When an annotated companion file needs to be distinguished from a raw export, implementations may use an explicit workflow suffix before the STEP extension, such as:
 
     realSample.rfq.STEP
 
 This naming remains informative only and is not required for conformance.
-Tools that generate annotated companion copies may require the user to choose that suffix explicitly.
-Parsers and validators shall identify STEP-Q214 by file content,
-not by filename.
+
+Parsers and validators shall identify STEP-Q by file content, not by filename.
 
 ---
 
-## 8. Core Field Registry
-
-The normative list of registered fields is defined in:
-
-    spec/fields.md
-
-Only registered fields shall be used in conformant files.
-
----
-
-## 9. Enumeration Registry
-
-All controlled vocabularies and enumerations are defined in:
-
-    spec/enumerations.md
-
-Only registered enumeration values shall be used.
-
----
-
-## 10. Validation and Parser Requirements
+## 9. Validation and Parser Requirements
 
 Validation rules are defined in:
 
@@ -145,74 +168,63 @@ Validation rules are defined in:
 
 Implementations shall comply with the following principles:
 
-- Missing fields shall not cause parsing errors
-- Missing values shall not cause parsing errors
-- Missing PROPERTY_SET containers shall not cause parsing errors
-- Unknown or unsupported extensions shall not cause parser aborts
-
-Fallback to manual completion is mandatory.
-
----
-
-## 11. Parser Resilience
+- missing fields shall not cause parsing errors
+- missing values shall not cause parsing errors
+- missing metadata containers shall not cause parser aborts
+- unknown or unsupported extensions shall not cause parser aborts
+- fallback to manual completion remains mandatory
 
 Parsers and quotation systems shall tolerate:
 
-- Incomplete metadata sets
-- Partial field definitions
-- Empty values
-- Unknown future extensions
+- incomplete metadata sets
+- partial field definitions
+- empty values
+- unknown future extensions
 
 No hard failures shall occur solely due to metadata issues.
 
-Validators may still classify metadata issues as warnings or errors
-for conformance reporting.
-
 ---
 
-## 12. Conformance
+## 10. Conformance
 
-For conformance evaluation, STEP-Q214 distinguishes between
-parser tolerance and specification conformance.
+For conformance evaluation, STEP-Q distinguishes between parser tolerance and specification conformance.
 
-A STEP file is fully conformant with STEP-Q214 if:
+A STEP payload is fully conformant with STEP-Q if:
 
-- Metadata is stored according to this specification
-- Only registered Q_ fields are used
-- Values conform to defined data types
-- No proprietary entities are present
+- metadata is stored according to a documented STEP-Q embedding method
+- only registered Q_ fields are used, except for documented extensions
+- values conform to defined data types
+- unsupported metadata does not break import continuity
 
 Partial conformance is permitted when:
 
 - metadata is structurally parseable
 - registered fields used in the file remain valid
-- unsupported or extension metadata does not invalidate the overall import path
+- extension metadata does not invalidate the overall import path
 
 Non-conformance applies when core structural or syntactic rules are violated.
 
 ---
 
-## 13. Extensions
+## 11. Extensions
 
 Custom extensions are permitted if:
 
-- They use the prefix Q_
-- They are documented
-- They do not override registered fields
+- they use the prefix Q_
+- they are documented
+- they do not override registered fields
 
-Documented extensions may be used for experimentation and bilateral integration,
-but they are outside full conformance until officially registered.
+Documented extensions may be used for experimentation and bilateral integration, but they are outside full conformance until officially registered.
 
 Undocumented extensions are non-conformant.
 
-Parsers shall ignore unsupported extensions for import continuity,
-while validators may report them in conformance output.
+Parsers shall ignore unsupported extensions for import continuity, while validators may report them in conformance output.
 
 ---
 
-## 14. Intellectual Property
+## 12. Intellectual Property
 
-STEP-Q214 is developed and maintained by holydraft.
+STEP-Q is developed and maintained by holydraft.
 
 This specification is not an ISO standard and implies no ISO certification.
 
@@ -220,7 +232,7 @@ No rights are waived by publication.
 
 ---
 
-## 15. Versioning
+## 13. Versioning
 
 Semantic versioning is applied.
 
@@ -232,7 +244,7 @@ Backward compatibility shall be maintained within a major version.
 
 ---
 
-## 16. Governance
+## 14. Governance
 
 Changes to this specification are managed via GitHub pull requests.
 
@@ -240,8 +252,8 @@ All changes are subject to maintainer review.
 
 ---
 
-## 17. Document Control
+## 15. Document Control
 
-This document is the normative reference for STEP-Q214.
+This document is the normative umbrella reference for STEP-Q.
 
 In case of conflicts, this document prevails over supplementary materials.

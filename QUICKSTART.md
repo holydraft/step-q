@@ -1,6 +1,6 @@
-# STEP-Q214 Quickstart
+# STEP-Q Quickstart
 
-This quickstart is the fastest way to evaluate the current STEP-Q214 draft.
+This quickstart is the fastest way to evaluate the current STEP-Q draft.
 
 ## Scope
 
@@ -8,16 +8,16 @@ The current repository state is intended for evaluation and proof-of-implementab
 
 What you can validate today:
 
-- registered STEP-Q214 field names
+- registered STEP-Q field names
 - basic data types and enum values
-- presence of the STEP-Q214 metadata container
+- presence of the STEP-Q metadata container
 - malformed or unterminated STEP entity statements in the `DATA;` section
 - documented versus undocumented extension fields
 - example conformance classification: full, partial, non
 
 What is not covered yet:
 
-- full AP214 geometry validation
+- full carrier-specific geometry validation
 - geometry-to-process plausibility checks
 - production-grade importer behavior
 - stable v1.0 compatibility guarantees
@@ -31,7 +31,7 @@ Python 3.11 or newer available on the command line.
 1. Validate the minimal example:
 
 ```powershell
-python tools/validate_step_q214.py examples/minimal.STEP
+python tools/validate_step_q.py examples/minimal.STEP
 ```
 
 Expected outcome:
@@ -43,7 +43,7 @@ Expected outcome:
 2. Validate the partial example with one documented extension:
 
 ```powershell
-python tools/validate_step_q214.py examples/partial.STEP --documented-extension Q_SPECIAL_THREAD_NOTE
+python tools/validate_step_q.py examples/partial.STEP --documented-extension Q_SPECIAL_THREAD_NOTE
 ```
 
 Expected outcome:
@@ -55,7 +55,7 @@ Expected outcome:
 3. Validate the intentional error case:
 
 ```powershell
-python tools/validate_step_q214.py examples/invalid_unknown_extension.STEP
+python tools/validate_step_q.py examples/invalid_unknown_extension.STEP
 ```
 
 Expected outcome:
@@ -67,7 +67,7 @@ Expected outcome:
 4. Validate a structural L1 error case:
 
 ```powershell
-python tools/validate_step_q214.py examples/invalid_malformed_entity.STEP
+python tools/validate_step_q.py examples/invalid_malformed_entity.STEP
 ```
 
 Expected outcome:
@@ -85,7 +85,7 @@ Key fields:
 - `conformance`: `full`, `partial`, or `non`
 - `errors`: count of blocking conformance findings
 - `warnings`: count of non-blocking findings
-- `fields`: extracted STEP-Q214 metadata fields
+- `fields`: extracted STEP-Q metadata fields
 - `messages`: individual validator findings
 
 ## Where To Go Next
@@ -95,12 +95,12 @@ Key fields:
 - Read `examples/README.md` for the purpose of each example file.
 - Read `tools/README.md` for the current validator scope and limits.
 
-## Local STEP-Q214 Workbench
+## Local STEP-Q Workbench
 
-You can also run the local browser-based STEP-Q214 workbench:
+You can also run the local browser-based STEP-Q workbench:
 
 ```powershell
-python tools/step_q214_workbench_web.py
+python tools/step_q_workbench_web.py
 ```
 
 Default address:
@@ -110,9 +110,9 @@ Default address:
 The workbench lets you:
 
 - choose a STEP file through the Windows file dialog on both panels
-- write STEP-Q214 metadata on the left side
-- prefill existing STEP-Q214 values on the write side when the chosen source file already contains them
-- read STEP-Q214 metadata and validation output on the right side
+- write STEP-Q metadata on the left side
+- prefill existing STEP-Q values on the write side when the chosen source file already contains them
+- read STEP-Q metadata and validation output on the right side
 - start in `Modify original file` mode by default on the write side and switch to copy mode when needed
 - provide a mandatory custom suffix when a copy is written, for example `.rfq` or `.supplierA`
 - validate the written or read file immediately

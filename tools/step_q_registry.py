@@ -1,3 +1,10 @@
+"""Shared STEP-Q field registry used by the draft reference tools.
+
+The normative field and enumeration definitions live in spec/fields.md and
+spec/enumerations.md. This module is the tool-facing registry for the current
+v0.2 evaluation workflow.
+"""
+
 REGISTERED_FIELDS = {
     "Q_PART_ID": {"type": "String"},
     "Q_MATERIAL": {"type": "String"},

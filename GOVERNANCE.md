@@ -1,4 +1,4 @@
-# STEP-Q214 Governance
+# STEP-Q Governance
 
 Maintained by holydraft
 
@@ -6,7 +6,7 @@ Maintained by holydraft
 
 ## 1. Purpose
 
-This document defines the governance structure of the STEP-Q214 specification.
+This document defines the governance structure of the STEP-Q specification.
 
 Its purpose is to ensure transparent, consistent, and sustainable development.
 
@@ -14,7 +14,7 @@ Its purpose is to ensure transparent, consistent, and sustainable development.
 
 ## 2. Governance Model
 
-STEP-Q214 follows a maintainer-led governance model.
+STEP-Q follows a maintainer-led governance model.
 
 Strategic and technical decisions are made by designated maintainers,
 with input from the community.
@@ -148,7 +148,7 @@ Governance changes are versioned.
 
 ## 10. External Relations
 
-Maintainers represent STEP-Q214 in:
+Maintainers represent STEP-Q in:
 
 - Industry partnerships
 - Research projects
@@ -161,7 +161,7 @@ No external party may claim official representation without approval.
 ## 11. Legal Responsibility
 
 holydraft is responsible for legal and administrative matters
-related to STEP-Q214.
+related to STEP-Q.
 
 ---
 

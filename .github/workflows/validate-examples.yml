@@ -1,4 +1,4 @@
-name: Validate STEP-Q214 examples
+name: Validate STEP-Q examples
 
 on:
   push:
@@ -22,20 +22,20 @@ jobs:
 
       - name: Run conformant example checks
         run: |
-          python tools/validate_step_q214.py examples/minimal.STEP
-          python tools/validate_step_q214.py examples/partial.STEP --documented-extension Q_SPECIAL_THREAD_NOTE
-          python tools/validate_step_q214.py examples/full.STEP
-          python tools/validate_step_q214.py examples/realSample.STEP
-          python tools/validate_step_q214.py examples/realSample.annotated.STEP
+          python tools/validate_step_q.py examples/minimal.STEP
+          python tools/validate_step_q.py examples/partial.STEP --documented-extension Q_SPECIAL_THREAD_NOTE
+          python tools/validate_step_q.py examples/full.STEP
+          python tools/validate_step_q.py examples/realSample.STEP
+          python tools/validate_step_q.py examples/realSample.annotated.STEP
 
       - name: Run expected non-conformance checks
         run: |
-          if python tools/validate_step_q214.py examples/invalid_unknown_extension.STEP; then
+          if python tools/validate_step_q.py examples/invalid_unknown_extension.STEP; then
             echo "invalid_unknown_extension.STEP was expected to fail"
             exit 1
           fi
 
-          if python tools/validate_step_q214.py examples/invalid_malformed_entity.STEP; then
+          if python tools/validate_step_q.py examples/invalid_malformed_entity.STEP; then
             echo "invalid_malformed_entity.STEP was expected to fail"
             exit 1
           fi

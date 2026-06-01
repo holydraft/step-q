@@ -1,5 +1,5 @@
 
-# STEP-Q214 Enumeration Registry
+# STEP-Q Enumeration Registry
 
 Version: v0.2
 Status: Draft
@@ -9,7 +9,7 @@ Maintainer: holydraft
 
 ## 1. Purpose
 
-This document defines all controlled vocabularies (enumerations) used by STEP-Q214.
+This document defines all controlled vocabularies (enumerations) used by STEP-Q.
 
 Only values registered in this document are considered valid for conformant files.
 

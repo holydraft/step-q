@@ -8,9 +8,9 @@ from tkinter import filedialog
 from urllib.parse import parse_qs
 from wsgiref.simple_server import make_server
 
-from step_q214_annotator import annotate_file
-from step_q214_registry import ANNOTATOR_FIELD_ORDER, REGISTERED_FIELDS, get_enum_values
-from validate_step_q214 import validate_file
+from step_q_annotator import annotate_file
+from step_q_registry import ANNOTATOR_FIELD_ORDER, REGISTERED_FIELDS, get_enum_values
+from validate_step_q import validate_file
 
 
 WRITE_MODE_OPTIONS = (
@@ -93,7 +93,7 @@ def render_message_list(messages: list[dict]) -> str:
 
 def render_field_summary(fields: dict[str, str]) -> str:
     if not fields:
-        return "<p class='hint'>No STEP-Q214 fields found.</p>"
+        return "<p class='hint'>No STEP-Q fields found.</p>"
 
     rows = "".join(
         f"<dt>{escape(field_name)}</dt><dd>{escape(field_value)}</dd>"
@@ -174,7 +174,7 @@ def render_page(
     if loaded_write_fields:
         loaded_fields_text = ", ".join(escape(field_name) for field_name in loaded_write_fields)
         loaded_fields_warning = (
-            "<p class='warning-note'><strong>Existing STEP-Q214 values loaded:</strong> "
+            "<p class='warning-note'><strong>Existing STEP-Q values loaded:</strong> "
             f"{loaded_fields_text}. Writing will overwrite these values in the selected target file.</p>"
         )
 
@@ -183,7 +183,7 @@ def render_page(
 <html lang='en'>
 <head>
   <meta charset='utf-8'>
-  <title>STEP-Q214 Workbench</title>
+    <title>STEP-Q Workbench</title>
   <style>
     body {{ font-family: Segoe UI, Arial, sans-serif; margin: 2rem auto; max-width: 78rem; line-height: 1.45; padding: 0 1rem; }}
     form {{ display: block; }}
@@ -213,13 +213,13 @@ def render_page(
   </style>
 </head>
 <body>
-  <h1>STEP-Q214 Workbench</h1>
-  <p class='hint'>Use the left panel to write STEP-Q214 data into a selected STEP file. Use the right panel to inspect an existing STEP file and read back STEP-Q214 metadata. The layout collapses to one column on narrower screens.</p>
+    <h1>STEP-Q Workbench</h1>
+    <p class='hint'>Use the left panel to write STEP-Q data into a selected STEP file. Use the right panel to inspect an existing STEP file and read back STEP-Q metadata. The layout collapses to one column on narrower screens.</p>
   <form method='post'>
     <div class='workspace'>
       <section class='panel'>
         <h2>Write</h2>
-        <p class='hint'>Choose a STEP file, decide whether to modify the original or create a copy, then write STEP-Q214 metadata.</p>
+        <p class='hint'>Choose a STEP file, decide whether to modify the original or create a copy, then write STEP-Q metadata.</p>
         {write_error_markup}
         <fieldset>
           <legend>File</legend>
@@ -234,7 +234,7 @@ def render_page(
                     <input type='hidden' name='write_loaded_fields' value='{escape(form_values.get('write_loaded_fields', ''))}'>
         </fieldset>
         <fieldset>
-          <legend>STEP-Q214 Metadata</legend>
+          <legend>STEP-Q Metadata</legend>
           <div class='metadata-grid'>
             {write_fields_markup}
           </div>
@@ -245,7 +245,7 @@ def render_page(
       </section>
       <section class='panel'>
         <h2>Read</h2>
-        <p class='hint'>Choose a STEP file and read back STEP-Q214 metadata plus the current conformance status. This panel never modifies the file.</p>
+        <p class='hint'>Choose a STEP file and read back STEP-Q metadata plus the current conformance status. This panel never modifies the file.</p>
         {read_error_markup}
         <fieldset>
           <legend>Source</legend>
@@ -254,7 +254,7 @@ def render_page(
             <button type='submit' name='form_action' value='browse_read'>Choose STEP file...</button>
           </div>
         </fieldset>
-        <button type='submit' name='form_action' value='read'>Read STEP-Q214 Data</button>
+        <button type='submit' name='form_action' value='read'>Read STEP-Q Data</button>
         {read_result_markup}
       </section>
     </div>
@@ -321,7 +321,7 @@ def application(environ, start_response):
                     if (value := form_values.get(f"write_{field_name}", "")).strip()
                 }
                 if not metadata:
-                    raise ValueError("At least one STEP-Q214 field must be filled before writing")
+                    raise ValueError("At least one STEP-Q field must be filled before writing")
 
                 written_path = annotate_file(source_path, metadata, write_mode=write_mode, copy_suffix=copy_suffix)
                 write_result = validate_file(written_path, set())
@@ -360,14 +360,14 @@ def application(environ, start_response):
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Run the local STEP-Q214 read/write workbench.")
+    parser = argparse.ArgumentParser(description="Run the local STEP-Q read/write workbench.")
     parser.add_argument("--host", default="127.0.0.1", help="Host interface to bind")
     parser.add_argument("--port", type=int, default=8765, help="Port to listen on")
     args = parser.parse_args()
 
     with make_server(args.host, args.port, application) as server:
         threading.Timer(0.5, lambda: webbrowser.open(f"http://{args.host}:{args.port}")).start()
-        print(f"STEP-Q214 workbench available at http://{args.host}:{args.port}")
+        print(f"STEP-Q workbench available at http://{args.host}:{args.port}")
         server.serve_forever()
 
     return 0

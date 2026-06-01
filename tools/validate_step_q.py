@@ -6,7 +6,7 @@ from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
 
-from step_q214_registry import REGISTERED_FIELDS
+from step_q_registry import REGISTERED_FIELDS
 
 ASSIGNMENT_STATEMENT = re.compile(
     r"#(?P<id>[0-9]+)\s*=\s*(?P<body>.+)\s*;",
@@ -176,7 +176,7 @@ def extract_metadata_fields(entities: list[StepEntity]) -> tuple[bool, dict[str,
     for entity in entities:
         if entity.name == "PROPERTY_SET" and entity.arguments:
             container_name = parse_string_argument(entity.arguments[0])
-            if container_name == "STEP-Q214":
+            if container_name == "STEP-Q":
                 has_metadata_container = True
             continue
 
@@ -263,7 +263,7 @@ def validate_file(path: Path, documented_extensions: set[str]) -> dict:
     has_metadata_container, fields = extract_metadata_fields(entities)
 
     if not has_metadata_container:
-        messages.append(Message("W", None, "STEP-Q214 PROPERTY_SET container not found"))
+        messages.append(Message("W", None, "STEP-Q PROPERTY_SET container not found"))
 
     for field, value in fields.items():
 
@@ -277,7 +277,7 @@ def validate_file(path: Path, documented_extensions: set[str]) -> dict:
         messages.extend(validate_type(field, value))
 
     if not fields:
-        messages.append(Message("W", None, "No STEP-Q214 metadata fields found"))
+        messages.append(Message("W", None, "No STEP-Q metadata fields found"))
 
     return build_report(path, fields, messages)
 
@@ -303,7 +303,7 @@ def build_report(path: Path, fields: dict[str, str], messages: list[Message]) ->
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Validate STEP-Q214 draft metadata in STEP files.")
+    parser = argparse.ArgumentParser(description="Validate STEP-Q draft metadata in STEP files.")
     parser.add_argument("files", nargs="+", help="STEP files to validate")
     parser.add_argument(
         "--documented-extension",
