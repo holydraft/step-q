@@ -1,12 +1,8 @@
 import argparse
 import json
-import math
 import re
 from dataclasses import dataclass
-from datetime import datetime
 from pathlib import Path
-
-from step_q_registry import REGISTERED_FIELDS
 
 ASSIGNMENT_STATEMENT = re.compile(
     r"#(?P<id>[0-9]+)\s*=\s*(?P<body>.+)\s*;",
@@ -17,6 +13,25 @@ ENTITY_INSTANCE = re.compile(
     r"#(?P<id>[0-9]+)\s*=\s*(?P<name>[A-Z0-9_]+)\s*\((?P<args>.*)\)\s*;",
     re.IGNORECASE,
 )
+
+MATERIAL_ENUM_BY_PRODUCT = {
+    "sheet": "Q_SHEET_MATERIAL",
+    "tube": "Q_TUBE_MATERIAL",
+    "turning": "Q_TURNING_MATERIAL",
+    "milling": "Q_MILLING_MATERIAL",
+}
+
+
+@dataclass
+class FieldDefinition:
+    field_type: str
+    enum_name: str | None
+
+
+@dataclass
+class Registry:
+    fields: dict[str, FieldDefinition]
+    enums: dict[str, set[str]]
 
 
 @dataclass
@@ -37,6 +52,134 @@ class StepEntity:
     entity_id: str
     name: str
     arguments: list[str]
+
+
+def load_registry() -> Registry:
+    tools_dir = Path(__file__).resolve().parent
+    spec_dir = tools_dir.parent / "spec"
+    fields_path = spec_dir / "fields.md"
+    enums_path = spec_dir / "enumerations.md"
+    materials_path = spec_dir / "materials.md"
+
+    if not fields_path.is_file() or not enums_path.is_file() or not materials_path.is_file():
+        missing = [
+            str(path)
+            for path in (fields_path, enums_path, materials_path)
+            if not path.is_file()
+        ]
+        raise FileNotFoundError("Required spec file(s) missing: " + ", ".join(missing))
+
+    fields = parse_fields_registry(fields_path.read_text(encoding="utf-8"))
+    enums = parse_enumerations_registry(enums_path.read_text(encoding="utf-8"))
+    enums.update(parse_materials_registry(materials_path.read_text(encoding="utf-8")))
+    return Registry(fields=fields, enums=enums)
+
+
+def parse_fields_registry(markdown: str) -> dict[str, FieldDefinition]:
+    definitions: dict[str, FieldDefinition] = {}
+
+    for raw_line in markdown.splitlines():
+        line = raw_line.strip()
+        if not line.startswith("| `Q_"):
+            continue
+
+        cells = [cell.strip() for cell in line.split("|")[1:-1]]
+        if len(cells) < 5:
+            continue
+
+        field_name = strip_backticks(cells[0]).upper()
+        field_type = cells[1]
+        unit_or_enum = cells[2]
+        enum_name = extract_enum_name(unit_or_enum)
+        if field_name == "Q_MATERIAL" and enum_name is None:
+            enum_name = "__PRODUCT_DEPENDENT_MATERIAL__"
+
+        incoming = FieldDefinition(field_type=field_type, enum_name=enum_name)
+        existing = definitions.get(field_name)
+        if existing is None:
+            definitions[field_name] = incoming
+            continue
+
+        # Keep one stable definition and avoid silent type drift.
+        if existing.field_type != incoming.field_type:
+            raise ValueError(
+                f"Conflicting type definitions for {field_name}: "
+                f"{existing.field_type} vs {incoming.field_type}"
+            )
+        if existing.enum_name is None and incoming.enum_name is not None:
+            definitions[field_name] = incoming
+
+    return definitions
+
+
+def parse_enumerations_registry(markdown: str) -> dict[str, set[str]]:
+    enums: dict[str, set[str]] = {}
+    sections = markdown.split("### ")[1:]
+
+    for section in sections:
+        lines = section.splitlines()
+        if not lines:
+            continue
+        enum_name = lines[0].strip()
+        if not enum_name.startswith("Q_"):
+            continue
+
+        values: set[str] = set()
+        for row in iter_markdown_table_rows(lines[1:]):
+            if row:
+                values.add(row[0])
+        if values:
+            enums[enum_name] = values
+
+    return enums
+
+
+def parse_materials_registry(markdown: str) -> dict[str, set[str]]:
+    section_map = {
+        "Sheet Materials": "Q_SHEET_MATERIAL",
+        "Tube Materials": "Q_TUBE_MATERIAL",
+        "Turning Materials": "Q_TURNING_MATERIAL",
+        "Milling Materials": "Q_MILLING_MATERIAL",
+    }
+    materials: dict[str, set[str]] = {name: set() for name in section_map.values()}
+    current_enum: str | None = None
+
+    for raw_line in markdown.splitlines():
+        line = raw_line.strip()
+        section_match = re.match(r"^##\s+\d+\.\s+(.+)$", line)
+        if section_match:
+            current_enum = section_map.get(section_match.group(1))
+            continue
+
+        if current_enum and line.startswith("- "):
+            value = line[2:].strip()
+            if value:
+                materials[current_enum].add(value)
+
+    return {key: values for key, values in materials.items() if values}
+
+
+def iter_markdown_table_rows(lines: list[str]) -> list[list[str]]:
+    rows: list[list[str]] = []
+    for line in lines:
+        stripped = line.strip()
+        if not stripped.startswith("|"):
+            continue
+        if "---" in stripped or "| Value |" in stripped or "| STEP-Q Field |" in stripped:
+            continue
+        cells = [cell.strip() for cell in stripped.split("|")[1:-1]]
+        if cells and cells[0]:
+            rows.append(cells)
+    return rows
+
+
+def strip_backticks(value: str) -> str:
+    return value.replace("`", "").strip()
+
+
+def extract_enum_name(unit_or_enum: str) -> str | None:
+    match = re.search(r"`(Q_[A-Z0-9_]+)`", unit_or_enum)
+    return match.group(1) if match else None
 
 
 def has_balanced_step_delimiters(text: str) -> bool:
@@ -193,52 +336,61 @@ def extract_metadata_fields(entities: list[StepEntity]) -> tuple[bool, dict[str,
     return has_metadata_container, fields
 
 
-def validate_type(field: str, value: str) -> list[Message]:
-    messages: list[Message] = []
-    definition = REGISTERED_FIELDS[field]
-    field_type = definition["type"]
+def resolve_field_enum_name(field: str, fields: dict[str, str], definition: FieldDefinition) -> str | None:
+    if definition.enum_name != "__PRODUCT_DEPENDENT_MATERIAL__":
+        return definition.enum_name
 
-    if field_type == "String":
-        if any(ord(char) < 32 and char not in {"\t", "\n", "\r"} for char in value):
-            messages.append(Message("E", field, "String value contains control characters"))
-        return messages
+    product_type = fields.get("Q_PRODUCT_TYPE", "").strip().lower()
+    if not product_type:
+        return None
+    return MATERIAL_ENUM_BY_PRODUCT.get(product_type)
+
+
+def validate_type(field: str, value: str, fields: dict[str, str], registry: Registry) -> list[Message]:
+    messages: list[Message] = []
+    definition = registry.fields[field]
+    field_type = definition.field_type
 
     if field_type == "Integer":
-        if not re.fullmatch(r"[0-9]+", value):
+        if not re.fullmatch(r"-?[0-9]+", value):
             messages.append(Message("E", field, "Integer value must be base-10 without decimals"))
-            return messages
-        if int(value) < definition.get("min", 0):
-            messages.append(Message("E", field, "Integer value is below the allowed minimum"))
         return messages
 
     if field_type == "Float":
-        try:
-            parsed = float(value)
-        except ValueError:
+        if not re.fullmatch(r"-?[0-9]+(\.[0-9]+)?", value):
             messages.append(Message("E", field, "Float value must use dot notation"))
-            return messages
-        if not math.isfinite(parsed):
-            messages.append(Message("E", field, "Float value must be finite"))
-        if parsed < definition.get("min", 0):
-            messages.append(Message("E", field, "Float value is below the allowed minimum"))
+        return messages
+
+    if field_type == "Bool":
+        if value not in {"true", "false"}:
+            messages.append(Message("E", field, "Bool value must be true or false"))
         return messages
 
     if field_type == "Enum":
-        if value not in definition["values"]:
-            messages.append(Message("E", field, "Enum value is not registered"))
-        return messages
+        enum_name = resolve_field_enum_name(field, fields, definition)
+        if enum_name is None:
+            messages.append(
+                Message(
+                    "E",
+                    field,
+                    "Field requires Q_PRODUCT_TYPE for product-specific enum validation",
+                )
+            )
+            return messages
 
-    if field_type == "Date":
-        try:
-            datetime.strptime(value, "%Y-%m-%d")
-        except ValueError:
-            messages.append(Message("E", field, "Date value must use YYYY-MM-DD format"))
+        allowed_values = registry.enums.get(enum_name)
+        if not allowed_values:
+            messages.append(Message("E", field, f"Enum registry {enum_name} not found"))
+            return messages
+
+        if value not in allowed_values:
+            messages.append(Message("E", field, "Enum value is not registered"))
         return messages
 
     return messages
 
 
-def validate_file(path: Path, documented_extensions: set[str]) -> dict:
+def validate_file(path: Path, documented_extensions: set[str], registry: Registry) -> dict:
     text = path.read_text(encoding="utf-8")
     messages: list[Message] = []
     fields: dict[str, str] = {}
@@ -266,15 +418,14 @@ def validate_file(path: Path, documented_extensions: set[str]) -> dict:
         messages.append(Message("W", None, "STEP-Q PROPERTY_SET container not found"))
 
     for field, value in fields.items():
-
-        if field not in REGISTERED_FIELDS:
+        if field not in registry.fields:
             if field in documented_extensions:
                 messages.append(Message("W", field, "Documented extension field is outside the registered core"))
             else:
                 messages.append(Message("E", field, "Undocumented extension field is non-conformant"))
             continue
 
-        messages.extend(validate_type(field, value))
+        messages.extend(validate_type(field, value, fields, registry))
 
     if not fields:
         messages.append(Message("W", None, "No STEP-Q metadata fields found"))
@@ -303,7 +454,7 @@ def build_report(path: Path, fields: dict[str, str], messages: list[Message]) ->
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Validate STEP-Q draft metadata in STEP files.")
+    parser = argparse.ArgumentParser(description="Validate STEP-Q v0.3 metadata against spec/*.md registries.")
     parser.add_argument("files", nargs="+", help="STEP files to validate")
     parser.add_argument(
         "--documented-extension",
@@ -313,8 +464,9 @@ def main() -> int:
     )
     args = parser.parse_args()
 
+    registry = load_registry()
     documented_extensions = {field.upper() for field in args.documented_extension}
-    reports = [validate_file(Path(file_name), documented_extensions) for file_name in args.files]
+    reports = [validate_file(Path(file_name), documented_extensions, registry) for file_name in args.files]
     print(json.dumps(reports, indent=2))
     return 1 if any(report["errors"] for report in reports) else 0
 

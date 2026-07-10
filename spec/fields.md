@@ -1,18 +1,16 @@
-
 # STEP-Q Field Registry
 
-Version: v0.2
-Status: Draft
+Version: v0.3  
+Status: Draft  
 Maintainer: holydraft
 
 ---
 
 ## 1. Purpose
 
-This document defines all registered STEP-Q Core fields, including their
-semantics, data types, formats, and interpretation rules.
+This document defines the registered STEP-Q fields for quotation-, manufacturability-, and production-relevant manufacturing parameters.
 
-Only fields defined in this registry are considered normative.
+Only fields defined in this registry are considered normative. All earlier generic fields not listed here are removed from the active registry.
 
 The same field registry can be used with STEP files independent of whether the carrier is AP203, AP214, or AP242.
 
@@ -22,634 +20,241 @@ The same field registry can be used with STEP files independent of whether the c
 
 ### 2.1 Naming
 
-- All fields shall use the prefix `Q_`
-- Uppercase letters and underscores only
-- No spaces or special characters
+- All fields shall use the prefix `Q_`.
+- Field names shall use uppercase letters and underscores only.
+- Enumeration values are defined in `spec/enumerations.md`.
+- Where external or UI keys use camelCase, STEP-Q fields shall use the normalized `Q_` field name.
 
 ### 2.2 Data Types
 
-| Type    | Description                         |
-|---------|-------------------------------------|
-| String  | UTF-8 text                          |
-| Integer | Signed integer (base 10)            |
-| Float   | Decimal number (dot as separator)   |
-| Enum    | Controlled vocabulary               |
-| Date    | ISO 8601 format (YYYY-MM-DD)        |
-| Bool    | true / false                        |
+| Type | Description |
+|---|---|
+| Integer | Signed integer, base 10 |
+| Float | Decimal number, dot as separator |
+| Enum | Controlled vocabulary from `spec/enumerations.md` |
+| Bool | `true` / `false` |
+
+Free-form `String`, `Object`, and `List` values are intentionally not part of the active v0.3 field registry. New fields should prefer explicit scalar fields and registered enums. Exceptions require a documented rationale in the field proposal.
 
 ### 2.3 Units
 
-All units shall follow SI conventions unless explicitly defined.
+- Length values shall use millimetres (`mm`) unless explicitly stated otherwise.
+- Quantity values shall use pieces (`pcs`).
 
-Currency values shall be expressed in ISO 4217 format where applicable.
+### 2.4 Product Type Applicability
 
----
+Each field defines the product types currently supported by STEP-Q in the column `Supported Product Types`.
 
-## 3. Core Fields
+The currently supported values for `Q_PRODUCT_TYPE` are:
 
----
+| Product Type | Meaning |
+|---|---|
+| `sheet` | Sheet-metal part, including laser-cut and bent sheet-metal parts |
+| `tube` | Tube or profile laser-cut part |
+| `turning` | Turned part |
+| `milling` | Milled CNC-machined part |
 
-### Q_PART_ID
-
-**Type:** String  
-**Required:** No  
-**Description:**  
-Unique identifier for the part or assembly within the RFQ context.
-
-**Format:**  
-Free text, recommended pattern: `[A-Z0-9-_]+`
-
-**Examples:**
-
-- HD-2026-001
-- PART_4711
-- A-9832-B
-
-**Fallback:**  
-If missing, internal system IDs shall be assigned.
-
-**Common Errors:**
-
-- Duplicate IDs within one RFQ
-- Use of whitespace
+A field is currently defined for the product types listed in its `Supported Product Types` entry. Future STEP-Q versions may extend this set.
 
 ---
 
-### Q_MATERIAL
+## 3. Common Fields
 
-**Type:** String  
-**Required:** No  
-**Description:**  
-Primary material designation of the part.
-
-**Format:**  
-Standardized material names according to applicable norms where possible.
-
-**Examples:**
-
-- EN AW-6082
-- S355MC
-- 1.4301
-- PA12
-
-**Fallback:**  
-Material must be clarified manually.
-
-**Common Errors:**
-
-- Trade names without specification
-- Incomplete alloy definitions
+| STEP-Q Field | Type | Unit / Enum | Source Key | Supported Product Types | Description |
+|---|---|---|---|---|---|
+| `Q_PRODUCT_TYPE` | Enum | `Q_PRODUCT_TYPE` | `productType` | `sheet`, `tube`, `turning`, `milling` | Product class for quotation and production routing. |
+| `Q_QUANTITY` | Integer | pcs | `quantity` | `sheet`, `tube`, `turning`, `milling` | Requested quantity. |
+| `Q_MATERIAL` | Enum | product-specific material registry | `material` | `sheet`, `tube`, `turning`, `milling` | Material designation. Each supported product type has its own material catalog. |
+| `Q_TEST_REPORT` | Enum | `Q_TEST_REPORT_TYPE` | `testReport` | `sheet`, `tube`, `turning`, `milling` | Inspection certificate according to EN 10204. |
+| `Q_SAMPLE_QUANTITY` | Integer | pcs | `sampleQuantity` | `sheet`, `tube`, `turning`, `milling` | Requested sample-part quantity. |
 
 ---
 
-### Q_PRIMARY_PROCESS
+## 4. Sheet Fields
 
-**Type:** Enum  
-**Required:** No  
-**Description:**  
-Main manufacturing process used for cost estimation.
+### 4.1 Grund-Spezifikationen
 
-**Reference:**  
-See `spec/enumerations.md`
+| STEP-Q Field | Type | Unit / Enum | Source Key | Description |
+|---|---|---|---|---|
+| `Q_QUANTITY` | Integer | pcs | `quantity` | Stückzahl. |
+| `Q_THICKNESS` | Enum | `Q_SHEET_THICKNESS` | `thickness` | Dicke. |
+| `Q_MATERIAL` | Enum | `Q_SHEET_MATERIAL` | `material` | Material. |
 
-**Examples:**
+### 4.2 Weiterbearbeitung
 
-- milling
-- laser_cutting
-- additive
+| STEP-Q Field | Type | Unit / Enum | Source Key | Description |
+|---|---|---|---|---|
+| `Q_MICRO_JOINTS` | Bool | — | `microJoints` | Mikrosteg(e) entfernen? |
+| `Q_DEBURRING` | Enum | `Q_DEBURRING` | `deburring` | Entgraten. |
+| `Q_EDGE_ROUNDING` | Bool | — | `edgeRounding` | Kanten verrunden. |
+| `Q_TEXT_ENGRAVING` | Bool | — | `textEngraving` | Gravuren. |
+| `Q_SHEET_METAL_FIT_TYPE` | Enum | `Q_SHEET_METAL_FIT_TYPE` | `sheetMetalFits` | Passungen. |
+| `Q_QUANTITY_THREADS` | Integer | pcs | `quantityThreads` | Gewinde. |
+| `Q_QUANTITY_EXTRUDED_THREADS` | Integer | pcs | `quantityExtrudedThreads` | Gewindedurchzüge. |
+| `Q_QUANTITY_COUNTERSINKS` | Integer | pcs | `quantityCountersinks` | Senkungen. |
+| `Q_CORNER_RELIEF` | Bool | — | `freecorner` | Ecken freistellen. |
+| `Q_LEVELING` | Bool | — | `leveling` | Richten. |
+| `Q_QUANTITY_WELDING_STUDS` | Integer | pcs | `quantityWeldingStuds` | Bolzenschweißen. |
+| `Q_QUANTITY_PRESS_NUTS` | Integer | pcs | `quantityPressNuts` | Einpressmuttern. |
+| `Q_CUTTING_TECHNOLOGY` | Enum | `Q_CUTTING_TECHNOLOGY` | `cuttingTechnology` | Schneidtechnologie. |
 
-**Fallback:**  
-Derived from geometry if possible.
+### 4.3 Oberfläche
 
-**Common Errors:**
+| STEP-Q Field | Type | Unit / Enum | Source Key | Description |
+|---|---|---|---|---|
+| `Q_TOP_SIDE` | Enum | `Q_TOP_SIDE` | `topSide` | Oberseite. |
+| `Q_ROLLING_DIRECTION` | Enum | `Q_ORIENTATION` | `rotation` | Walzrichtung. |
+| `Q_GALVANIZING` | Enum | `Q_GALVANIZING` | `galvanizing` | Verzinken. |
+| `Q_POWDER_COATING_APPLICATION` | Enum | `Q_POWDER_COATING_APPLICATION` | `powderCoating.application` | Pulverbeschichtungsanwendung. |
+| `Q_POWDER_COATING_GLOSS` | Enum | `Q_POWDER_COATING_GLOSS` | `powderCoating.gloss` | Pulverbeschichtungs-Glanzgrad. |
+| `Q_POWDER_COATING_TEXTURE` | Enum | `Q_POWDER_COATING_TEXTURE` | `powderCoating.texture` | Pulverbeschichtungs-Textur. |
 
-- Multiple conflicting processes
-- Process not matching geometry
+### 4.4 Zertifikate & Sonstiges
 
----
-
-### Q_QUANTITY
-
-**Type:** Integer  
-**Required:** No  
-**Unit:** pcs  
-**Description:**  
-Requested order quantity.
-
-**Format:**  
-Positive integer (>0)
-
-**Examples:**
-
-- 1
-- 50
-- 1000
-
-**Fallback:**  
-Assumed quantity = 1
-
-**Common Errors:**
-
-- Zero or negative values
-- Decimal quantities
+| STEP-Q Field | Type | Unit / Enum | Source Key | Description |
+|---|---|---|---|---|
+| `Q_TEST_REPORT` | Enum | `Q_TEST_REPORT_TYPE` | `testReport` | Abnahmeprüfzeugnis nach EN 10204. |
+| `Q_SAMPLE_QUANTITY` | Integer | pcs | `sampleQuantity` | Musterteile. |
 
 ---
 
-### Q_TOLERANCE_CLASS
+## 5. Tube Fields
 
-**Type:** Enum  
-**Required:** No  
-**Description:**  
-General dimensional tolerance class.
+### 5.1 Grund-Spezifikationen
 
-**Reference:**  
-See `spec/enumerations.md`
+| STEP-Q Field | Type | Unit / Enum | Source Key | Description |
+|---|---|---|---|---|
+| `Q_QUANTITY` | Integer | pcs | `quantity` | Stückzahl. |
+| `Q_MATERIAL` | Enum | `Q_TUBE_MATERIAL` | `material` | Material. |
 
-**Examples:**
+### 5.2 Weiterbearbeitung
 
-- ISO2768-m
-- ISO2768-f
+| STEP-Q Field | Type | Unit / Enum | Source Key | Description |
+|---|---|---|---|---|
+| `Q_TUBE_LASER_CUTTING_METHOD` | Enum | `Q_TUBE_LASER_CUTTING_METHOD` | `laserCuttingMethod` | Laserschnittverfahren. |
+| `Q_TEXT_ENGRAVING` | Bool | — | `textEngraving` | Gravuren. |
+| `Q_QUANTITY_THREADS` | Integer | pcs | `quantityThreads` | Gewinde. |
+| `Q_QUANTITY_COUNTERSINKS` | Integer | pcs | `quantityCountersinks` | Senkungen. |
 
-**Fallback:**  
-Default: ISO2768-m
+### 5.3 Zertifikate & Sonstiges
 
-**Common Errors:**
-
-- Mixed tolerance systems
-- Missing drawing reference
-
----
-
-### Q_SURFACE
-
-**Type:** Enum  
-**Required:** No  
-**Description:**  
-Surface treatment or finish requirement.
-
-**Reference:**  
-See `spec/enumerations.md`
-
-**Examples:**
-
-- anodized
-- powder_coated
-- polished
-
-**Fallback:**  
-Assumed: raw / untreated
-
-**Common Errors:**
-
-- Ambiguous terms (e.g. "nice finish")
-- Missing specification for visible parts
+| STEP-Q Field | Type | Unit / Enum | Source Key | Description |
+|---|---|---|---|---|
+| `Q_TEST_REPORT` | Enum | `Q_TEST_REPORT_TYPE` | `testReport` | Abnahmeprüfzeugnis nach EN 10204. |
+| `Q_SAMPLE_QUANTITY` | Integer | pcs | `sampleQuantity` | Musterteile. |
 
 ---
 
-### Q_DRAWING_REFERENCE
+## 6. Turning Fields
 
-**Type:** String  
-**Required:** No  
-**Description:**  
-Reference to external drawing or PMI document.
+### 6.1 Grund-Spezifikationen
 
-**Format:**  
-File name or document ID.
+| STEP-Q Field | Type | Unit / Enum | Source Key | Description |
+|---|---|---|---|---|
+| `Q_QUANTITY` | Integer | pcs | `quantity` | Stückzahl. |
+| `Q_MATERIAL` | Enum | `Q_TURNING_MATERIAL` | `material` | Material. |
 
-**Examples:**
+### 6.2 Weiterbearbeitung
 
-- DWG-1023
-- 2026-ALU-BRKT-A1.pdf
+| STEP-Q Field | Type | Unit / Enum | Source Key | Description |
+|---|---|---|---|---|
+| `Q_GENERAL_TOLERANCE_LENGTH_ANGLE` | Enum | `Q_GENERAL_TOLERANCE_LENGTH_ANGLE` | `tolerances.lengthsAndAngles` | Allgemeintoleranzen für Längen und Winkel. |
+| `Q_GENERAL_TOLERANCE_SHAPE_POSITION` | Enum | `Q_GENERAL_TOLERANCE_SHAPE_POSITION` | `tolerances.shapeAndPosition` | Allgemeintoleranzen für Form und Lage. |
+| `Q_ADDITIONAL_TOLERANCE_IT_CLASS` | Enum | `Q_IT_CLASS` | `fineTolerancesAndFits.it` | Weitere Toleranzen: IT-Klasse. |
+| `Q_ADDITIONAL_TOLERANCE_RANGE` | Enum | `Q_TOLERANCE_RANGE` | `fineTolerancesAndFits.tolerance` | Weitere Toleranzen: Toleranzbereich. |
+| `Q_THREAD_TYPE` | Enum | `Q_THREAD_TYPE` | `turningThreads.type` | Gewindeart. |
 
-**Fallback:**  
-Geometry and PMI are authoritative.
+### 6.3 Oberfläche
 
-**Common Errors:**
+| STEP-Q Field | Type | Unit / Enum | Source Key | Description |
+|---|---|---|---|---|
+| `Q_SURFACE_FINISH` | Enum | `Q_SURFACE_FINISH_RZ` | `surfaceFinish` | Oberflächengüte. |
+| `Q_GALVANIZING` | Enum | `Q_GALVANIZING` | `galvanizing` | Verzinken. |
+| `Q_ANODIZING` | Enum | `Q_PROCESS_SELECTION` | `anodizing` | Eloxieren. |
+| `Q_BURNISHING` | Enum | `Q_PROCESS_SELECTION` | `burnishing` | Brünieren. |
+| `Q_POWDER_COATING_APPLICATION` | Enum | `Q_POWDER_COATING_APPLICATION` | `powderCoating.application` | Pulverbeschichtungsanwendung. |
+| `Q_POWDER_COATING_GLOSS` | Enum | `Q_POWDER_COATING_GLOSS` | `powderCoating.gloss` | Pulverbeschichtungs-Glanzgrad. |
+| `Q_POWDER_COATING_TEXTURE` | Enum | `Q_POWDER_COATING_TEXTURE` | `powderCoating.texture` | Pulverbeschichtungs-Textur. |
 
-- Broken references
-- Outdated revisions
+### 6.4 Zertifikate & Sonstiges
 
----
-
-### Q_TARGET_PRICE
-
-**Type:** Float  
-**Required:** No  
-**Unit:** ISO 4217 currency  
-**Description:**  
-Target price per unit.
-
-**Format:**  
-Decimal, dot as separator.
-
-**Examples:**
-
-- 4.50
-- 12.00
-
-**Fallback:**  
-Ignored for automatic pricing.
-
-**Common Errors:**
-
-- Total price instead of unit price
-- Missing currency context
+| STEP-Q Field | Type | Unit / Enum | Source Key | Description |
+|---|---|---|---|---|
+| `Q_TEST_REPORT` | Enum | `Q_TEST_REPORT_TYPE` | `testReport` | Abnahmeprüfzeugnis nach EN 10204. |
+| `Q_SAMPLE_QUANTITY` | Integer | pcs | `sampleQuantity` | Musterteile. |
 
 ---
 
-### Q_DELIVERY_DATE
+## 7. Milling Fields
 
-**Type:** Date  
-**Required:** No  
-**Description:**  
-Requested delivery date.
+### 7.1 Grund-Spezifikationen
 
-**Format:**  
-YYYY-MM-DD
+| STEP-Q Field | Type | Unit / Enum | Source Key | Description |
+|---|---|---|---|---|
+| `Q_QUANTITY` | Integer | pcs | `quantity` | Stückzahl. |
+| `Q_MATERIAL` | Enum | `Q_MILLING_MATERIAL` | `material` | Material. |
 
-**Examples:**
+### 7.2 Weiterbearbeitung
 
-- 2026-03-15
-- 2026-06-01
+| STEP-Q Field | Type | Unit / Enum | Source Key | Description |
+|---|---|---|---|---|
+| `Q_GENERAL_TOLERANCE_LENGTH_ANGLE` | Enum | `Q_GENERAL_TOLERANCE_LENGTH_ANGLE` | `tolerances.lengthsAndAngles` | Allgemeintoleranzen für Längen und Winkel. |
+| `Q_GENERAL_TOLERANCE_SHAPE_POSITION` | Enum | `Q_GENERAL_TOLERANCE_SHAPE_POSITION` | `tolerances.shapeAndPosition` | Allgemeintoleranzen für Form und Lage. |
+| `Q_ADDITIONAL_TOLERANCE_IT_CLASS` | Enum | `Q_IT_CLASS` | `fineTolerancesAndFits.it` | Weitere Toleranzen: IT-Klasse. |
+| `Q_ADDITIONAL_TOLERANCE_RANGE` | Enum | `Q_TOLERANCE_RANGE` | `fineTolerancesAndFits.tolerance` | Weitere Toleranzen: Toleranzbereich. |
+| `Q_THREAD_TYPE` | Enum | `Q_THREAD_TYPE` | `threads.type` | Gewindeart. |
 
-**Fallback:**  
-Standard lead time applies.
+### 7.3 Oberfläche
 
-**Common Errors:**
+| STEP-Q Field | Type | Unit / Enum | Source Key | Description |
+|---|---|---|---|---|
+| `Q_SURFACE_FINISH` | Enum | `Q_SURFACE_FINISH_RZ` | `surfaceFinish` | Oberflächengüte. |
+| `Q_GALVANIZING` | Enum | `Q_GALVANIZING` | `galvanizing` | Verzinken. |
+| `Q_ANODIZING` | Enum | `Q_PROCESS_SELECTION` | `anodizing` | Eloxieren. |
+| `Q_BURNISHING` | Enum | `Q_PROCESS_SELECTION` | `burnishing` | Brünieren. |
+| `Q_POWDER_COATING_APPLICATION` | Enum | `Q_POWDER_COATING_APPLICATION` | `powderCoating.application` | Pulverbeschichtungsanwendung. |
+| `Q_POWDER_COATING_GLOSS` | Enum | `Q_POWDER_COATING_GLOSS` | `powderCoating.gloss` | Pulverbeschichtungs-Glanzgrad. |
+| `Q_POWDER_COATING_TEXTURE` | Enum | `Q_POWDER_COATING_TEXTURE` | `powderCoating.texture` | Pulverbeschichtungs-Textur. |
 
-- Locale-dependent formats
-- Impossible dates
+### 7.4 Zertifikate & Sonstiges
 
----
-
-### Q_CERTIFICATE
-
-**Type:** Enum  
-**Required:** No  
-**Description:**  
-Material or compliance certificate requirement.
-
-**Reference:**  
-See `spec/enumerations.md`
-
-**Examples:**
-
-- EN10204-3.1
-- EN10204-2.1
-
-**Fallback:**  
-No certificate assumed.
-
-**Common Errors:**
-
-- Non-standard certificates
-- Missing scope definition
+| STEP-Q Field | Type | Unit / Enum | Source Key | Description |
+|---|---|---|---|---|
+| `Q_TEST_REPORT` | Enum | `Q_TEST_REPORT_TYPE` | `testReport` | Abnahmeprüfzeugnis nach EN 10204. |
+| `Q_SAMPLE_QUANTITY` | Integer | pcs | `sampleQuantity` | Musterteile. |
 
 ---
 
-### Q_PACKAGING
+## 8. Compatibility Notes
 
-**Type:** Enum  
-**Required:** No  
-**Description:**  
-Packaging requirements.
-
-**Reference:**  
-See `spec/enumerations.md`
-
-**Examples:**
-
-- bulk
-- individual
-- vacuum
-
-**Fallback:**  
-Standard bulk packaging.
-
-**Common Errors:**
-
-- Missing protection requirements
-- Over-specification
+- `turning` and `milling` use the same field set except for the material enum referenced by `Q_MATERIAL`.
+- Product-specific material enum values for `Q_SHEET_MATERIAL`, `Q_TUBE_MATERIAL`, `Q_TURNING_MATERIAL`, and `Q_MILLING_MATERIAL` are maintained in `spec/materials.md`.
+- `String`, `Object`, and `List` are not active v0.3 field types. Proposed exceptions must include a rationale and validation semantics.
 
 ---
 
-### Q_COMMENTS
+## 9. Deprecation Policy
 
-**Type:** String  
-**Required:** No  
-**Description:**  
-Free-text remarks for special requirements.
-
-**Format:**  
-UTF-8 text, max. 1024 characters recommended.
-
-**Examples:**
-
-- Visible surface on side A
-- Protect edges
-
-**Fallback:**  
-Ignored in automation.
-
-**Common Errors:**
-
-- Critical info hidden in comments
-- Unstructured requirements
+Deprecated fields shall be marked explicitly. All previous v0.2 fields not listed in this registry are removed from the active v0.3 registry.
 
 ---
 
-## 4. Drawing-Driven Supplementary Fields
+## 10. Change Management
 
-The following fields capture manufacturing requirements that are often added in drawings,
-PMI, or manufacturing notes and are not reliably inferable from bare STEP geometry alone.
-
----
-
-### Q_THREAD_SPEC
-
-**Type:** String  
-**Required:** No  
-**Description:**  
-Thread specification called out in the drawing or PMI.
-
-**Format:**  
-Free text, recommended to include nominal size, pitch, and tolerance class where applicable.
-
-**Examples:**
-
-- M8x1.25-6H
-- M12-6H THRU
-- G1/4
-
-**Fallback:**  
-No thread requirement shall be assumed unless confirmed by drawing or PMI.
-
-**Common Errors:**
-
-- Missing pitch or tolerance class
-- Hole diameter used instead of thread designation
-
----
-
-### Q_THREAD_DEPTH
-
-**Type:** Float  
-**Required:** No  
-**Unit:** mm  
-**Description:**  
-Required thread engagement depth when it is not evident from the geometry.
-
-**Format:**  
-Positive decimal (>0)
-
-**Examples:**
-
-- 8.0
-- 12.5
-
-**Fallback:**  
-Thread depth must be clarified from the drawing note or manually.
-
-**Common Errors:**
-
-- Total hole depth confused with thread depth
-- Missing unit context
-
----
-
-### Q_HOLE_FINISH
-
-**Type:** Enum  
-**Required:** No  
-**Description:**  
-Required post-drilling or post-boring feature state called out on the drawing.
-
-**Reference:**  
-See `spec/enumerations.md`
-
-**Examples:**
-
-- reamed
-- tapped
-- countersunk
-
-**Fallback:**  
-Standard drilled state is assumed unless otherwise specified.
-
-**Common Errors:**
-
-- Multiple incompatible finishes for the same feature
-- Finish specified without identifying the affected holes
-
----
-
-### Q_SURFACE_ROUGHNESS_RA
-
-**Type:** Float  
-**Required:** No  
-**Unit:** um  
-**Description:**  
-Arithmetic average surface roughness value specified on the drawing.
-
-**Format:**  
-Positive decimal (>0)
-
-**Examples:**
-
-- 1.6
-- 3.2
-- 6.3
-
-**Fallback:**  
-Standard process capability applies unless a drawing note overrides it.
-
-**Common Errors:**
-
-- Rz or Rt values entered as Ra
-- Roughness value given without stating the affected surface
-
----
-
-### Q_HEAT_TREATMENT
-
-**Type:** Enum  
-**Required:** No  
-**Description:**  
-Heat-treatment requirement defined by the drawing or manufacturing note.
-
-**Reference:**  
-See `spec/enumerations.md`
-
-**Examples:**
-
-- stress_relieved
-- quenched_tempered
-- nitrided
-
-**Fallback:**  
-No additional heat treatment is assumed.
-
-**Common Errors:**
-
-- Treatment incompatible with material
-- Heat treatment specified without final hardness or acceptance criteria where needed
-
----
-
-### Q_HARDNESS
-
-**Type:** String  
-**Required:** No  
-**Description:**  
-Required final hardness after heat treatment or material conditioning.
-
-**Format:**  
-Free text, recommended to include hardness scale and allowed range.
-
-**Examples:**
-
-- 58-62 HRC
-- 220 HBW
-- 700 HV min
-
-**Fallback:**  
-Material standard applies unless a specific hardness note is given.
-
-**Common Errors:**
-
-- Missing hardness scale
-- Pre-treatment hardness specified instead of final condition
-
----
-
-### Q_EDGE_BREAK
-
-**Type:** String  
-**Required:** No  
-**Description:**  
-General deburring, chamfer, or radius note for edges that are not individually modeled.
-
-**Format:**  
-Free text, recommended to include size and note scope.
-
-**Examples:**
-
-- 0.2-0.5 deburr all edges
-- C0.5
-- R0.2 max
-
-**Fallback:**  
-Standard deburring only.
-
-**Common Errors:**
-
-- Ambiguous scope such as "all around" without context
-- Max and nominal requirements mixed in one note
-
----
-
-### Q_COATING_THICKNESS
-
-**Type:** Float  
-**Required:** No  
-**Unit:** um  
-**Description:**  
-Required coating or layer thickness when specified separately from the surface process.
-
-**Format:**  
-Positive decimal (>0)
-
-**Examples:**
-
-- 12.0
-- 25.0
-
-**Fallback:**  
-Thickness follows the referenced surface or coating standard if available.
-
-**Common Errors:**
-
-- Coating thickness specified without identifying the coating process
-- Micrometer and millimeter values mixed up
-
----
-
-### Q_FIT_CLASS
-
-**Type:** String  
-**Required:** No  
-**Description:**  
-Fit or tolerance system callout for bores, shafts, or bearing seats.
-
-**Format:**  
-Free text according to the applicable fit system.
-
-**Examples:**
-
-- H7
-- H7/g6
-- P9
-
-**Fallback:**  
-General tolerances apply unless a fit callout is specified.
-
-**Common Errors:**
-
-- Hole and shaft basis mixed without clear pairing
-- Nominal dimension given without the fit designation
-
----
-
-### Q_INSPECTION_LEVEL
-
-**Type:** Enum  
-**Required:** No  
-**Description:**  
-Inspection depth or method required by the drawing, customer note, or quality note.
-
-**Reference:**  
-See `spec/enumerations.md`
-
-**Examples:**
-
-- first_article
-- full_dimension
-- cmm_critical
-
-**Fallback:**  
-Standard inspection practice applies.
-
-**Common Errors:**
-
-- Inspection requirement stated without identifying the affected features
-- Visual-only approval used for dimension-critical parts
-
----
-
-## 5. Deprecation Policy
-
-Deprecated fields shall be marked explicitly.
-
-They remain supported for at least one major version.
-
----
-
-## 6. Change Management
-
-All new fields must be proposed via pull request.
-
-Each proposal shall include:
+All new fields must be proposed via pull request. Each proposal shall include:
 
 - Technical description
 - Business rationale
 - Examples
 - Backward compatibility analysis
+- Product-type applicability
 
 ---
 
-## 7. Change Log
+## 11. Change Log
 
-| Version | Date       | Description          |
-|---------|------------|----------------------|
-| v0.1    | 2026-02-11 | Initial registry     |
-| v0.2    | 2026-05-28 | Added drawing-driven supplementary fields for threads, hole finishing, roughness, heat treatment, coating, fit, and inspection |
+| Version | Date | Description |
+|---|---|---|
+| v0.1 | 2026-02-11 | Initial registry |
+| v0.2 | 2026-05-28 | Added drawing-driven supplementary fields |
+| v0.3 | 2026-07-02 | Defined current product type support as sheet, tube, turning, and milling; reduced field registry to the requested product-specific metadata fields |

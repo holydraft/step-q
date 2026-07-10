@@ -1,0 +1,1559 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>STEP-Q Metadatenformular</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: "Segoe UI", Calibri, sans-serif;
+      --ink: #17202a;
+      --muted: #5b6675;
+      --line: #d9e0e8;
+      --surface: #f7f9fb;
+      --surface-strong: #edf3f7;
+      --accent: #16705a;
+      --accent-dark: #0e5142;
+      --white: #ffffff;
+      --hero-bg: linear-gradient(180deg, #ffffff 0%, #f3f7f8 100%);
+      --header-bg: rgba(255, 255, 255, 0.94);
+      --shadow: 0 24px 80px rgba(23, 32, 42, 0.12);
+      --notice-bg: #f0f9f7;
+      --notice-text: #1a4d42;
+      --focus: #9ec5fe;
+      --status-error-bg: #fff1f0;
+      --status-error-border: #d9a09c;
+      --dialog-backdrop: rgba(31, 41, 51, 0.38);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        color-scheme: dark;
+        --ink: #f3f7fb;
+        --muted: #b7c3ce;
+        --line: #2a3b48;
+        --surface: #101a22;
+        --surface-strong: #1b2a35;
+        --accent: #51d8b7;
+        --accent-dark: #a3f1dd;
+        --white: #081015;
+        --hero-bg: radial-gradient(circle at 78% 12%, rgba(81, 216, 183, 0.12), transparent 34%), linear-gradient(180deg, #081015 0%, #0f1a22 100%);
+        --header-bg: rgba(8, 16, 21, 0.94);
+        --shadow: 0 24px 90px rgba(0, 0, 0, 0.42);
+        --notice-bg: #0a2723;
+        --notice-text: #a3f1dd;
+        --focus: #51d8b7;
+        --status-error-bg: #2b1a1e;
+        --status-error-border: #7a3f4d;
+        --dialog-backdrop: rgba(5, 9, 13, 0.72);
+      }
+    }
+
+    body { margin: 0; background: var(--hero-bg); color: var(--ink); }
+    main { max-width: 1180px; margin: 0 auto; padding: 36px 22px 52px; }
+    h1 { margin: 0 0 8px; font-size: 32px; letter-spacing: 0; }
+    h2 { margin-top: 20px; font-size: 20px; border-bottom: 1px solid var(--line); padding-bottom: 8px; }
+    h3 { margin: 24px 0 12px; font-size: 16px; }
+    p { line-height: 1.45; }
+    .panel { background: var(--header-bg); border: 1px solid var(--line); border-radius: 8px; padding: 20px; margin-top: 18px; box-shadow: var(--shadow); }
+    .form-layout { display: grid; grid-template-columns: minmax(280px, 40%) minmax(380px, 60%); gap: 18px; align-items: start; }
+    .viewer-column { justify-self: stretch; }
+    .viewer-panel { display: grid; gap: 12px; transition: min-height 2600ms cubic-bezier(0.2, 0.68, 0.18, 1); }
+    .viewer-controls { display: flex; justify-content: flex-end; }
+    .viewer-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 8px;
+      padding: 6px 10px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--surface);
+      color: var(--ink);
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+    .viewer-toggle input { width: 16px; height: 16px; accent-color: var(--accent); }
+    .viewer-stage { position: relative; margin-top: 20px; width: 100%; min-height: 380px; border: 1px dashed var(--line); border-radius: 8px; background: var(--surface-strong); overflow: hidden; cursor: pointer; }
+    .viewer-stage.drag-over { border-color: var(--accent); background: var(--surface); }
+    .viewer-placeholder { display: grid; place-items: center; min-height: 405px; color: var(--muted); text-align: center; padding: 20px; }
+    .file-input { display: none; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
+    label { display: block; font-weight: 700; margin-bottom: 5px; }
+    input, select, textarea, button { font: inherit; }
+    input[type="text"], input[type="number"], select, textarea { box-sizing: border-box; width: 100%; border: 1px solid var(--line); border-radius: 6px; padding: 9px 10px; background: var(--white); color: var(--ink); }
+    input:focus, select:focus, textarea:focus { outline: 2px solid var(--focus); border-color: var(--accent); }
+    textarea { min-height: 82px; resize: vertical; }
+    .field { border: 1px solid var(--line); border-radius: 8px; padding: 13px; background: var(--white); }
+    .field small { display: block; color: var(--muted); margin-top: 6px; }
+    .enum-row { display: block; }
+    .selection-control { position: relative; }
+    .selected-value { min-height: 20px; border: 1px solid var(--line); border-radius: 6px; padding: 9px 38px 9px 10px; background: var(--surface); color: var(--ink); cursor: pointer; }
+    .selected-value:hover { border-color: var(--accent); background: var(--white); }
+    .selected-value:focus { outline: 2px solid var(--focus); border-color: var(--accent); }
+    .selected-value.empty { color: var(--muted); }
+    .clear-selection { position: absolute; right: 5px; top: 50%; transform: translateY(-50%); width: 28px; height: 28px; padding: 0; border: 0; border-radius: 50%; background: transparent; color: var(--muted); font-weight: 700; line-height: 1; }
+    .clear-selection:hover { background: var(--surface-strong); color: var(--ink); filter: none; }
+    .clear-selection.hidden { display: none; }
+    button { border: 1px solid var(--accent-dark); border-radius: 6px; background: var(--accent); color: var(--white); padding: 9px 12px; cursor: pointer; }
+    button.secondary { background: var(--white); color: var(--accent-dark); }
+    button:hover { filter: brightness(.96); }
+    button:disabled { opacity: .55; cursor: not-allowed; }
+    .actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 20px; }
+    .copy-option { display: inline-flex; align-items: center; gap: 8px; padding: 0 4px; font-weight: 600; }
+    .copy-option input { width: 16px; height: 16px; }
+    .status { white-space: pre-wrap; border-radius: 6px; padding: 12px; margin-top: 16px; }
+    .status.ok { background: var(--notice-bg); border: 1px solid var(--accent); color: var(--notice-text); }
+    .status.error { background: var(--status-error-bg); border: 1px solid var(--status-error-border); }
+    dialog { width: min(880px, calc(100vw - 28px)); border: 1px solid var(--line); border-radius: 10px; padding: 0; background: var(--white); color: var(--ink); }
+    dialog::backdrop { background: var(--dialog-backdrop); }
+    .dialog-head { padding: 14px 16px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; gap: 12px; align-items: center; }
+    .dialog-body { padding: 16px; max-height: 65vh; overflow: auto; }
+    .catalog-search { margin-bottom: 12px; }
+    .catalog-item { width: 100%; text-align: left; color: var(--ink); background: var(--white); border: 1px solid var(--line); margin: 0 0 8px; }
+    .catalog-item strong { display: block; }
+    .catalog-item span { display: block; color: var(--muted); margin-top: 3px; }
+    .catalog-item.compact strong, .catalog-item.compact span { display: inline; margin-top: 0; }
+    .catalog-item.compact span::before { content: " · "; }
+    details.catalog-group { border: 1px solid var(--line); border-radius: 8px; margin: 0 0 10px; background: var(--white); }
+    details.catalog-group summary { cursor: pointer; font-weight: 700; padding: 10px 12px; }
+    details.catalog-group .catalog-group-body { padding: 0 12px 12px; }
+    .muted { color: var(--muted); }
+    .hidden { display: none; }
+    .field {
+      transition: opacity 720ms ease, transform 720ms ease, filter 720ms ease;
+      will-change: opacity, transform, filter;
+    }
+    .field.flight-source {
+      position: relative;
+      box-shadow: 0 16px 36px rgba(23, 32, 42, 0.22);
+      z-index: 4;
+      will-change: transform, opacity, filter;
+    }
+    .field.vanished {
+      opacity: 0;
+      transform: translateY(-8px) scale(0.98);
+      filter: saturate(0.8);
+      visibility: hidden;
+      pointer-events: none;
+    }
+    .field.gone {
+      display: none !important;
+    }
+    .viewer-annotation-layer {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 7;
+    }
+    .viewer-callout {
+      position: absolute;
+      max-width: 220px;
+      opacity: 0;
+      transform: translateY(8px) scale(0.98);
+      transition: opacity 220ms ease-out, transform 220ms ease-out;
+      will-change: opacity, transform;
+    }
+    .viewer-callout.is-visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+    .viewer-callout-label {
+      display: inline-block;
+      padding: 0 0 2px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      color: var(--accent-dark);
+      border-bottom: 2px solid rgba(81, 216, 183, 0.9);
+      text-shadow: 0 1px 6px rgba(0, 0, 0, 0.45);
+      white-space: nowrap;
+      max-width: 220px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .viewer-callout-line {
+      position: absolute;
+      height: 2px;
+      background: linear-gradient(90deg, rgba(81, 216, 183, 0.95), rgba(81, 216, 183, 0.38));
+      transform-origin: 0 50%;
+      box-shadow: 0 0 10px rgba(81, 216, 183, 0.35);
+    }
+    .viewer-callout-line::after {
+      content: "";
+      position: absolute;
+      right: -7px;
+      top: -4px;
+      width: 0;
+      height: 0;
+      border-top: 5px solid transparent;
+      border-bottom: 5px solid transparent;
+      border-left: 8px solid rgba(81, 216, 183, 0.95);
+      filter: drop-shadow(0 0 4px rgba(81, 216, 183, 0.45));
+    }
+    #metadataForm .basic-column,
+    #metadataForm #fieldsRoot,
+    #metadataForm .actions,
+    #metadataForm .viewer-controls {
+      transition: opacity 1600ms cubic-bezier(0.2, 0.7, 0.18, 1), transform 1600ms cubic-bezier(0.2, 0.7, 0.18, 1), max-height 1600ms cubic-bezier(0.2, 0.7, 0.18, 1), margin 1600ms cubic-bezier(0.2, 0.7, 0.18, 1), padding 1600ms cubic-bezier(0.2, 0.7, 0.18, 1);
+    }
+    #metadataForm.viewer-focus-mode .basic-column,
+    #metadataForm.viewer-focus-mode #fieldsRoot,
+    #metadataForm.viewer-focus-mode .actions,
+    #metadataForm.viewer-focus-mode .viewer-controls {
+      opacity: 0;
+      transform: translateY(16px);
+      max-height: 0;
+      overflow: hidden;
+      pointer-events: none;
+      margin: 0;
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+    #metadataForm.viewer-focus-mode .form-layout {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+    #metadataForm.viewer-focus-mode .viewer-column {
+      width: 100%;
+    }
+    #metadataForm.viewer-focus-mode .viewer-panel {
+      min-height: var(--viewer-focus-height, 520px);
+    }
+    #metadataForm.viewer-focus-mode .viewer-stage {
+      transition: min-height 2600ms cubic-bezier(0.2, 0.68, 0.18, 1), height 2600ms cubic-bezier(0.2, 0.68, 0.18, 1);
+    }
+    @media (max-width: 860px) {
+      .form-layout { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>STEP-Q Metadatenformular</h1>
+    <p class="muted">Wähle zuerst die Produktart. Danach werden die passenden Eingabefelder aus der Spezifikation geladen. Auswahlfelder werden ausschließlich über einen Katalog mit Kurzbeschreibungen gesetzt.</p>
+
+    <form id="metadataForm" class="panel" novalidate>
+      <div class="form-layout">
+        <section class="basic-column" aria-labelledby="basic-title">
+          <h2 id="basic-title">Grund-Spezifikationen</h2>
+          <div class="grid">
+            <div class="field" data-field-key="Q_PRODUCT_TYPE" data-type="Enum" data-enum-name="Q_PRODUCT_TYPE" data-label="Produktart">
+              <label for="productType">Produktart</label>
+              <div class="selection-control">
+                <div id="productTypeDisplay" class="selected-value empty" role="button" tabindex="0">Hinzufügen</div>
+                <button id="productTypeClear" class="clear-selection hidden" type="button" aria-label="Auswahl löschen">X</button>
+              </div>
+              <input id="productType" type="hidden" required>
+            </div>
+            <div id="basicFieldsRoot"></div>
+          </div>
+        </section>
+
+        <aside class="viewer-column" aria-label="STEP-Vorschau">
+          <div class="viewer-panel">
+            <div id="viewerStage" class="viewer-stage">
+              <div id="viewerPlaceholder" class="viewer-placeholder">STEP-Datei hier ablegen oder klicken.</div>
+            </div>
+            <div class="viewer-controls">
+              <label class="viewer-toggle" for="viewerNeonToggle">
+                <input id="viewerNeonToggle" type="checkbox">
+                Neongrün leuchtend (aus = Grau)
+              </label>
+            </div>
+            <input class="file-input" id="stepUpload" type="file" accept=".step,.stp,.STEP,.STP">
+          </div>
+        </aside>
+      </div>
+
+      <div id="fieldsRoot" class="hidden"></div>
+      <div class="actions">
+        <button type="submit">STEP-Q Metadaten übernehmen</button>
+        <label class="copy-option" for="createCopy"><input id="createCopy" type="checkbox">Kopie erstellen</label>
+      </div>
+    </form>
+
+    <section id="result" class="status hidden"></section>
+  </main>
+
+  <dialog id="catalogDialog">
+    <div class="dialog-head">
+      <strong id="catalogTitle">Auswahlkatalog</strong>
+      <button class="secondary" type="button" id="closeCatalog">Schließen</button>
+    </div>
+    <div class="dialog-body">
+      <input class="catalog-search" id="catalogSearch" type="text" placeholder="Katalog durchsuchen">
+      <div id="catalogItems"></div>
+    </div>
+  </dialog>
+
+  <script src="https://cdn.jsdelivr.net/npm/online-3d-viewer@0.18.0/build/engine/o3dv.min.js"></script>
+  <script src="./StepViewer_HTML/js/step-3d-viewer.js?v=neon-toggle-11"></script>
+  <script>
+    const VIEWER_FOCUS_VIEWPORT_GAP_PX = 72;
+    const VIEWER_FOCUS_GROWTH_MS = 2600;
+    const VIEWER_FOCUS_MODEL_SCALE = 0.70;
+    const PRODUCT_LABELS = { sheet: 'Blech', tube: 'Rohr/Profil', turning: 'Drehteil', milling: 'Frästeil' };
+    const TYPE_LABELS = { Enum: 'Auswahl', Integer: 'Ganzzahl', Float: 'Dezimalzahl', Bool: 'Ja/Nein' };
+    const ENUM_DESCRIPTIONS_DE = {
+      Q_PRODUCT_TYPE: { sheet: 'Blechbauteil', tube: 'Rohr- oder Profilteil', turning: 'Drehteil', milling: 'Frästeil' },
+      Q_CUTTING_TECHNOLOGY: { '2d_cutting': '2D-Laserschneiden', '3d_cutting': '3D-Laserschneiden', plasma_cutting: 'Plasmaschneiden', flame_cutting: 'Brennschneiden' },
+      Q_SHEET_THICKNESS: { thickness_0_5_mm: '0,5 mm', thickness_0_75_mm: '0,75 mm', thickness_0_8_mm: '0,8 mm', thickness_0_88_mm: '0,88 mm', thickness_0_9_mm: '0,9 mm', thickness_1_mm: '1 mm', thickness_1_25_mm: '1,25 mm', thickness_1_5_mm: '1,5 mm', thickness_2_mm: '2 mm', thickness_2_5_mm: '2,5 mm', thickness_3_mm: '3 mm', thickness_3_5_mm: '3,5 mm', thickness_4_mm: '4 mm', thickness_5_mm: '5 mm', thickness_6_mm: '6 mm', thickness_8_mm: '8 mm', thickness_10_mm: '10 mm', thickness_12_mm: '12 mm', thickness_15_mm: '15 mm', thickness_20_mm: '20 mm', thickness_25_mm: '25 mm', thickness_30_mm: '30 mm', thickness_40_mm: '40 mm', thickness_45_mm: '45 mm', thickness_50_mm: '50 mm', thickness_55_mm: '55 mm', thickness_70_mm: '70 mm', thickness_75_mm: '75 mm', thickness_90_mm: '90 mm' },
+      Q_TUBE_LASER_CUTTING_METHOD: { '2d_cutting': '2D-Rohrlaserschneiden', '3d_cutting': '3D-Rohrlaserschneiden' },
+      Q_TEST_REPORT_TYPE: { en_10204_2_1: 'Werksbescheinigung 2.1 nach EN 10204', en_10204_2_2: 'Werkszeugnis 2.2 nach EN 10204', en_10204_3_1: 'Abnahmeprüfzeugnis 3.1 nach EN 10204', en_10204_3_2: 'Abnahmeprüfzeugnis 3.2 nach EN 10204' },
+      Q_TOP_SIDE: { top_view: 'Oberseite entspricht der Draufsicht', bottom_view: 'Oberseite entspricht der Untersicht', pdf_file: 'Oberseite ist in Zeichnung/PDF definiert' },
+      Q_ORIENTATION: { arbitrary: 'Frei wählbare Richtung', perpendicular: 'Senkrechte Richtung, 90 Grad', parallel: 'Parallele Richtung, 180 Grad', see_pdf: 'Richtung ist in Zeichnung/PDF definiert' },
+      Q_DEBURRING: { one_sided_rear: 'Einseitig rückseitig entgraten', two_sided: 'Zweiseitig entgraten', barrel_finish: 'Trowalisieren / Gleitschleifen', manual_rear: 'Manuell rückseitig entgraten' },
+      Q_PROCESS_SELECTION: { required: 'Ausgewählt / erforderlich', see_pdf: 'Anforderung ist in Zeichnung/PDF definiert' },
+      Q_SHEET_METAL_FIT_TYPE: { tolerance_fit: 'Toleranz oder Passung laut Zeichnung', press_fit: 'Presspassung', slip_fit: 'Spiel- oder Gleitpassung', see_pdf: 'Passung ist in Zeichnung/PDF definiert' },
+      Q_GALVANIZING: { electro_galvanizing: 'Elektrolytisch verzinken', hot_dip_galvanizing: 'Feuerverzinken' },
+      Q_POWDER_COATING_APPLICATION: { interior: 'Innenanwendung', exterior: 'Außenanwendung' },
+      Q_POWDER_COATING_GLOSS: { glossy: 'Glänzend', semi_gloss: 'Seidenglänzend', satin_matt: 'Seidenmatt', matt: 'Matt' },
+      Q_POWDER_COATING_TEXTURE: { smooth: 'Glatt', fine_texture: 'Feinstruktur', texture: 'Struktur', coarse_texture: 'Grobstruktur' },
+      Q_GENERAL_TOLERANCE_LENGTH_ANGLE: { din_iso_2768_1_m: 'DIN ISO 2768-1 m, mittel', din_iso_2768_1_f: 'DIN ISO 2768-1 f, fein' },
+      Q_GENERAL_TOLERANCE_SHAPE_POSITION: { din_iso_2768_2_k: 'DIN ISO 2768-2 K, mittel', din_iso_2768_2_h: 'DIN ISO 2768-2 H, fein' },
+      Q_IT_CLASS: { lte_it5: 'IT-Klasse 5 oder kleiner', it_6: 'IT 6', it_7: 'IT 7', it_8: 'IT 8', it_9: 'IT 9', gte_it10: 'IT 10 oder größer' },
+      Q_TOLERANCE_RANGE: { ge_0_008: 'Toleranzspanne >= 0,008 mm', lt_0_008: 'Toleranzspanne < 0,008 mm', ge_0_01: 'Toleranzspanne >= 0,01 mm', lt_0_01: 'Toleranzspanne < 0,01 mm', ge_0_02: 'Toleranzspanne >= 0,02 mm', lt_0_02: 'Toleranzspanne < 0,02 mm', ge_0_05: 'Toleranzspanne >= 0,05 mm', ge_0_1: 'Toleranzspanne >= 0,1 mm', ge_0_25: 'Toleranzspanne >= 0,25 mm' },
+      Q_THREAD_TYPE: { isometric: 'ISO-metrisches Gewinde', whitworth: 'Whitworth-/Zollgewinde', uts: 'Unified Thread Standard', pipe: 'Rohrgewinde', trapezoidal: 'Trapezgewinde' },
+      Q_SURFACE_FINISH_RZ: { rz_4: 'Rz 4 / ungefähr Ra 1,0', rz_6_3: 'Rz 6,3 / ungefähr Ra 1,6', rz_12_5: 'Rz 12,5 / ungefähr Ra 3,2', rz_16: 'Rz 16 / ungefähr Ra 4,0', rz_25: 'Rz 25 / ungefähr Ra 6,3', rz_50: 'Rz 50 / ungefähr Ra 12,5' }
+    };
+    const MATERIAL_ENUM_BY_PRODUCT = {
+      sheet: 'Q_SHEET_MATERIAL',
+      tube: 'Q_TUBE_MATERIAL',
+      turning: 'Q_TURNING_MATERIAL',
+      milling: 'Q_MILLING_MATERIAL'
+    };
+
+    const state = {
+      fieldsByProduct: {},
+      enums: {},
+      currentCatalog: null,
+      currentEnumName: null,
+      currentInput: null,
+      currentDisplay: null,
+      currentClearButton: null,
+      currentAfterSelect: null,
+      stepViewer: null,
+      stepFile: null,
+      stepFileHandle: null,
+      stepText: '',
+      modelLoaded: false,
+      appearanceMode: 'original',
+      submitAnimationRunning: false,
+      viewerAnnotationTimeouts: []
+    };
+
+    const productTypeInput = document.querySelector('#productType');
+    const productTypeDisplay = document.querySelector('#productTypeDisplay');
+    const productTypeClear = document.querySelector('#productTypeClear');
+    const form = document.querySelector('#metadataForm');
+    const basicFieldsRoot = document.querySelector('#basicFieldsRoot');
+    const fieldsRoot = document.querySelector('#fieldsRoot');
+    const result = document.querySelector('#result');
+    const stepUpload = document.querySelector('#stepUpload');
+    const createCopyInput = document.querySelector('#createCopy');
+    const viewerNeonToggle = document.querySelector('#viewerNeonToggle');
+    const viewerStage = document.querySelector('#viewerStage');
+    const viewerPlaceholder = document.querySelector('#viewerPlaceholder');
+    const catalogDialog = document.querySelector('#catalogDialog');
+    const catalogTitle = document.querySelector('#catalogTitle');
+    const catalogSearch = document.querySelector('#catalogSearch');
+    const catalogItems = document.querySelector('#catalogItems');
+
+    init().catch(error => {
+      showResult(false, 'Formular konnte die Spec-Dateien nicht laden. Starte diese HTML-Datei über einen lokalen Webserver aus dem Repository-Root.\n\n' + error.message);
+    });
+
+    async function init() {
+      const [fieldsMd, enumsMd, materialsMd] = await Promise.all([
+        fetch('../spec/fields.md').then(assertOk).then(r => r.text()),
+        fetch('../spec/enumerations.md').then(assertOk).then(r => r.text()),
+        fetch('../spec/materials.md').then(assertOk).then(r => r.text())
+      ]);
+
+      state.enums = parseEnums(enumsMd);
+      Object.assign(state.enums, parseMaterials(materialsMd));
+      state.fieldsByProduct = parseFields(fieldsMd);
+
+      renderProductTypeSelect();
+      renderBasicFields('');
+      bindCatalogTrigger(productTypeDisplay, { description: 'Produktart', enumName: 'Q_PRODUCT_TYPE' }, productTypeInput, productTypeDisplay, productTypeClear, () => {
+        renderBasicFields(productTypeInput.value);
+        renderFields(productTypeInput.value);
+      });
+      bindClearTrigger(productTypeClear, productTypeInput, productTypeDisplay, () => {
+        renderBasicFields('');
+        renderFields('');
+      });
+      bindStepUpload();
+      viewerNeonToggle.addEventListener('change', () => {
+        state.appearanceMode = viewerNeonToggle.checked ? 'neon' : 'original';
+        syncViewerAppearance();
+      });
+      form.addEventListener('submit', onSubmit);
+      document.querySelector('#closeCatalog').addEventListener('click', () => catalogDialog.close());
+      catalogSearch.addEventListener('input', renderCatalogItems);
+    }
+
+    function syncViewerAppearance() {
+      if (!state.stepViewer || typeof state.stepViewer.setAppearanceMode !== 'function') return;
+      state.stepViewer.setAppearanceMode(state.appearanceMode);
+    }
+
+    function assertOk(response) {
+      if (!response.ok) throw new Error(response.url + ' returned HTTP ' + response.status);
+      return response;
+    }
+
+    function parseEnums(markdown) {
+      const enums = {};
+      const sections = markdown.split(/^### /m).slice(1);
+      for (const section of sections) {
+        const [nameLine, ...rest] = section.split('\n');
+        const enumName = nameLine.trim();
+        if (!enumName.startsWith('Q_')) continue;
+        const text = rest.join('\n');
+        const rows = [];
+        for (const line of text.split('\n')) {
+          if (!line.startsWith('|') || line.includes('|---') || line.includes('| Value |')) continue;
+          const cells = line.split('|').slice(1, -1).map(cell => cell.trim());
+          if (!cells[0]) continue;
+          rows.push({ value: cells[0], description: cells[1] || '', extra: cells[2] || '' });
+        }
+        if (rows.length) enums[enumName] = rows;
+      }
+      return enums;
+    }
+
+    function parseMaterials(markdown) {
+      const sectionMap = {
+        'Sheet Materials': 'Q_SHEET_MATERIAL',
+        'Tube Materials': 'Q_TUBE_MATERIAL',
+        'Turning Materials': 'Q_TURNING_MATERIAL',
+        'Milling Materials': 'Q_MILLING_MATERIAL'
+      };
+      const catalogs = {};
+      let currentEnum = null;
+      let currentFamily = '';
+
+      for (const rawLine of markdown.split('\n')) {
+        const line = rawLine.trim();
+        const productMatch = line.match(/^## \d+\. (.+)$/);
+        if (productMatch) {
+          currentEnum = sectionMap[productMatch[1]] || null;
+          currentFamily = '';
+          if (currentEnum) catalogs[currentEnum] = [];
+          continue;
+        }
+        if (!currentEnum) continue;
+        const familyMatch = line.match(/^### (.+)$/);
+        if (familyMatch) {
+          currentFamily = familyMatch[1];
+          continue;
+        }
+        if (line.startsWith('- ')) {
+          const value = line.slice(2).trim();
+          catalogs[currentEnum].push({ value, description: currentFamily || 'Material', group: currentFamily || 'Material' });
+        }
+      }
+      return catalogs;
+    }
+
+    function parseFields(markdown) {
+      const products = { sheet: [], tube: [], turning: [], milling: [] };
+      const common = [];
+      let section = 'common';
+      let group = 'Common Fields';
+
+      for (const rawLine of markdown.split('\n')) {
+        const line = rawLine.trim();
+        const sectionMatch = line.match(/^## \d+\. (Common|Sheet|Tube|Turning|Milling) Fields/);
+        if (sectionMatch) {
+          section = sectionMatch[1].toLowerCase();
+          group = sectionMatch[0].replace(/^## \d+\. /, '');
+          continue;
+        }
+        const groupMatch = line.match(/^### \d+\.\d+ (.+)$/);
+        if (groupMatch) {
+          group = groupMatch[1];
+          continue;
+        }
+        if (!line.startsWith('| `Q_')) continue;
+        const cells = line.split('|').slice(1, -1).map(cell => cell.trim());
+        const field = normalizeFieldRow(cells, section, group);
+        if (section === 'common') common.push(field);
+        else products[section].push(field);
+      }
+
+      for (const product of Object.keys(products)) {
+        const productFields = new Map();
+        for (const field of common) {
+          if (field.supportedProducts.includes(product) && field.key !== 'Q_PRODUCT_TYPE') productFields.set(field.key, field);
+        }
+        for (const field of products[product]) productFields.set(field.key, field);
+        products[product] = Array.from(productFields.values());
+      }
+      return products;
+    }
+
+    function normalizeFieldRow(cells, section, group) {
+      const hasSupportedProducts = cells.length >= 6;
+      const field = {
+        key: stripBackticks(cells[0]),
+        type: cells[1],
+        unitEnum: cells[2],
+        sourceKey: stripBackticks(cells[3]),
+        supportedProducts: hasSupportedProducts ? parseSupportedProducts(cells[4]) : [section],
+        description: hasSupportedProducts ? cells[5] : cells[4],
+        group
+      };
+      field.enumName = extractEnumName(field.unitEnum, field.key, section);
+      return field;
+    }
+
+    function stripBackticks(value) {
+      return value.replace(/`/g, '').trim();
+    }
+
+    function parseSupportedProducts(value) {
+      return Array.from(value.matchAll(/`([^`]+)`/g)).map(match => match[1]);
+    }
+
+    function extractEnumName(unitEnum, key, product) {
+      const enums = Array.from(unitEnum.matchAll(/`(Q_[A-Z0-9_]+)`/g)).map(match => match[1]);
+      if (key === 'Q_MATERIAL') return MATERIAL_ENUM_BY_PRODUCT[product];
+      return enums[0] || null;
+    }
+
+    function renderProductTypeSelect() {
+      productTypeInput.value = '';
+      productTypeDisplay.textContent = 'Hinzufügen';
+      productTypeDisplay.classList.add('empty');
+      productTypeClear.classList.add('hidden');
+    }
+
+    function renderBasicFields(productType) {
+      basicFieldsRoot.replaceChildren();
+
+      const quantityField = getField(productType, 'Q_QUANTITY') || {
+        key: 'Q_QUANTITY',
+        type: 'Integer',
+        description: 'Stückzahl',
+        sourceKey: 'quantity',
+        group: 'Grund-Spezifikationen'
+      };
+
+      basicFieldsRoot.appendChild(renderField(quantityField, productType));
+      basicFieldsRoot.appendChild(renderMaterialField(productType));
+
+      const thicknessField = getField(productType, 'Q_THICKNESS');
+      if (productType === 'sheet' && thicknessField) {
+        basicFieldsRoot.appendChild(renderField(thicknessField, productType));
+      }
+    }
+
+    function renderFields(productType) {
+      clearResult();
+      fieldsRoot.innerHTML = '';
+      if (!productType) {
+        fieldsRoot.classList.add('hidden');
+        form.classList.add('hidden');
+        return;
+      }
+      form.classList.remove('hidden');
+      fieldsRoot.classList.remove('hidden');
+      const fields = (state.fieldsByProduct[productType] || []).filter(field => !['Q_QUANTITY', 'Q_MATERIAL', 'Q_THICKNESS', 'Q_PRODUCT_TYPE'].includes(field.key));
+      const grouped = groupBy(fields, field => field.group);
+
+      for (const [group, groupFields] of Object.entries(grouped)) {
+        const section = document.createElement('section');
+        section.innerHTML = `<h2>${escapeHtml(group)}</h2><div class="grid"></div>`;
+        const grid = section.querySelector('.grid');
+        for (const field of groupFields) grid.appendChild(renderField(field, productType));
+        fieldsRoot.appendChild(section);
+      }
+    }
+
+    function renderField(field, productType) {
+      const wrapper = document.createElement('div');
+      wrapper.className = 'field';
+      wrapper.dataset.fieldKey = field.key;
+      wrapper.dataset.type = field.type;
+      wrapper.dataset.enumName = field.enumName || '';
+      wrapper.dataset.label = field.description;
+      const id = 'field_' + field.key;
+      const label = `<label for="${id}">${escapeHtml(trimTrailingPeriod(field.description))}</label>`;
+      wrapper.innerHTML = label + renderControl(field, id, productType);
+      const selectedValue = wrapper.querySelector('.selected-value');
+      const clearButton = wrapper.querySelector('.clear-selection');
+      const hiddenInput = wrapper.querySelector('input[type="hidden"]');
+      if (selectedValue) bindCatalogTrigger(selectedValue, field, hiddenInput, selectedValue, clearButton);
+      if (clearButton) bindClearTrigger(clearButton, hiddenInput, selectedValue);
+      return wrapper;
+    }
+
+    function renderMaterialField(productType) {
+      const materialField = getField(productType, 'Q_MATERIAL') || {
+        key: 'Q_MATERIAL',
+        type: 'Enum',
+        enumName: MATERIAL_ENUM_BY_PRODUCT[productType] || '',
+        description: 'Material',
+        sourceKey: 'material',
+        group: 'Grund-Spezifikationen'
+      };
+      const wrapper = renderField(materialField, productType);
+      const selectedValue = wrapper.querySelector('.selected-value');
+      if (!productType) {
+        selectedValue.textContent = 'Erst Produktart wählen';
+        selectedValue.classList.add('empty');
+        selectedValue.setAttribute('aria-disabled', 'true');
+      }
+      return wrapper;
+    }
+
+    function getField(productType, key) {
+      return (state.fieldsByProduct[productType] || []).find(field => field.key === key);
+    }
+
+    function renderControl(field, id) {
+      if (field.type === 'Enum') {
+        return `<div class="enum-row"><div class="selection-control"><div class="selected-value empty" role="button" tabindex="0">Hinzufügen</div><button class="clear-selection hidden" type="button" aria-label="Auswahl löschen">X</button></div></div><input id="${id}" name="${escapeHtml(field.key)}" type="hidden">`;
+      }
+      if (field.type === 'Integer') return `<input id="${id}" name="${escapeHtml(field.key)}" type="number" step="1" min="0" placeholder=" Menge angeben">`;
+      if (field.type === 'Float') return `<input id="${id}" name="${escapeHtml(field.key)}" type="text" inputmode="decimal" placeholder="z. B. 2.5">`;
+      if (field.type === 'Bool') return `<label><input id="${id}" name="${escapeHtml(field.key)}" type="checkbox"> Ja</label>`;
+      return `<input id="${id}" name="${escapeHtml(field.key)}" type="text" placeholder="Freitext nur für dokumentierte Ausnahmen">`;
+    }
+
+    function openCatalog(field, input, display, clearButton = null, afterSelect = null) {
+      const options = state.enums[field.enumName] || [];
+      if (!options.length) return;
+      state.currentCatalog = options;
+      state.currentEnumName = field.enumName;
+      state.currentInput = input;
+      state.currentDisplay = display;
+      state.currentClearButton = clearButton;
+      state.currentAfterSelect = afterSelect;
+      catalogTitle.textContent = trimTrailingPeriod(field.description);
+      catalogSearch.value = '';
+      renderCatalogItems();
+      if (!catalogDialog.open) catalogDialog.showModal();
+    }
+
+    function bindStepUpload() {
+      viewerStage.addEventListener('click', async () => {
+        if (!state.modelLoaded) await openStepFilePicker();
+      });
+      viewerStage.addEventListener('dragover', event => {
+        event.preventDefault();
+        viewerStage.classList.add('drag-over');
+      });
+      viewerStage.addEventListener('dragleave', () => {
+        viewerStage.classList.remove('drag-over');
+      });
+      viewerStage.addEventListener('drop', async event => {
+        event.preventDefault();
+        viewerStage.classList.remove('drag-over');
+        const { files, fileHandle } = await getDroppedStepSelection(event.dataTransfer);
+        await loadStepFiles(files, fileHandle);
+      });
+      stepUpload.addEventListener('change', async () => {
+        const files = Array.from(stepUpload.files || []);
+        await loadStepFiles(files, null);
+        stepUpload.value = '';
+      });
+
+      window.addEventListener('resize', () => {
+        if (form.classList.contains('viewer-focus-mode')) {
+          updateViewerFocusTargetHeight(true);
+          updateViewerModelScaleForFocus(true);
+          scrollViewerStageToViewportCenter(false);
+        }
+        state.stepViewer?.resize();
+        refreshViewerCalloutPointers();
+      });
+    }
+
+    async function openStepFilePicker() {
+      if (typeof window.showOpenFilePicker !== 'function') {
+        stepUpload.click();
+        return;
+      }
+      try {
+        const handles = await window.showOpenFilePicker({
+          multiple: false,
+          types: [{
+            description: 'STEP-Dateien',
+            accept: { 'application/step': ['.step', '.stp'] }
+          }]
+        });
+        const fileHandle = handles[0];
+        if (!fileHandle) return;
+        const file = await fileHandle.getFile();
+        await loadStepFiles([file], fileHandle);
+      } catch (error) {
+        if (error?.name !== 'AbortError') {
+          showResult(false, 'Dateiauswahl konnte nicht geöffnet werden:\n\n' + error.message);
+        }
+      }
+    }
+
+    async function getDroppedStepSelection(dataTransfer) {
+      const files = Array.from(dataTransfer?.files || []);
+      let fileHandle = null;
+      const firstStepFile = files.find(file => /\.(step|stp)$/i.test(file.name));
+
+      if (firstStepFile && dataTransfer?.items) {
+        for (const item of dataTransfer.items) {
+          if (item.kind !== 'file' || typeof item.getAsFileSystemHandle !== 'function') continue;
+          try {
+            const handle = await item.getAsFileSystemHandle();
+            if (handle?.kind === 'file' && handle.name === firstStepFile.name) {
+              fileHandle = handle;
+              break;
+            }
+          } catch {
+            fileHandle = null;
+          }
+        }
+      }
+
+      return { files, fileHandle };
+    }
+
+    async function loadStepFiles(files, fileHandle = null) {
+      const stepFiles = files.filter(file => /\.(step|stp)$/i.test(file.name));
+      if (!stepFiles.length) return;
+      const stepFile = stepFiles[0];
+
+      state.stepFile = stepFile;
+      state.stepFileHandle = fileHandle;
+      state.stepText = await stepFile.text();
+
+      if (!window.Step3DViewer) {
+        showResult(false, 'Der 3D-Viewer konnte nicht geladen werden. Prüfe die Netzwerkverbindung und die Viewer-Dateien.');
+        return;
+      }
+
+      viewerPlaceholder?.remove();
+      clearViewerAnnotations();
+      if (!state.stepViewer) {
+        state.stepViewer = Step3DViewer.create(viewerStage, {
+          onModelLoaded: () => {
+            state.modelLoaded = true;
+            syncViewerAppearance();
+            updateViewerModelScaleForFocus(true);
+          },
+          onModelLoadFailed: () => showResult(false, 'Die STEP-Datei konnte nicht angezeigt werden.')
+        });
+      }
+      syncViewerAppearance();
+      state.stepViewer.loadFromFiles(stepFiles);
+      state.modelLoaded = true;
+      state.stepViewer.resize();
+      updateViewerModelScaleForFocus(true);
+
+      const loadedMetadata = extractStepQMetadata(state.stepText);
+      if (Object.keys(loadedMetadata).length) {
+        applyMetadataToForm(loadedMetadata);
+        showResult(true, `STEP-Datei geladen. Vorhandene STEP-Q Werte wurden übernommen:\n\n${Object.keys(loadedMetadata).join(', ')}`);
+      } else {
+        showResult(true, 'STEP-Datei geladen. Keine vorhandenen STEP-Q Metadaten gefunden.');
+      }
+    }
+
+    function renderCatalogItems() {
+      const query = catalogSearch.value.toLowerCase().trim();
+      const options = (state.currentCatalog || []).filter(option => {
+        const haystack = `${option.value} ${option.description} ${option.extra}`.toLowerCase();
+        return !query || haystack.includes(query);
+      });
+      catalogItems.innerHTML = renderCatalogMarkup(options);
+      for (const item of catalogItems.querySelectorAll('.catalog-item')) {
+        item.addEventListener('click', () => {
+          state.currentInput.value = item.dataset.value;
+          state.currentDisplay.textContent = getSelectedDisplayValue(state.currentEnumName, item.dataset.value);
+          state.currentDisplay.classList.remove('empty');
+          if (state.currentClearButton) state.currentClearButton.classList.remove('hidden');
+          catalogDialog.close();
+          if (state.currentAfterSelect) state.currentAfterSelect(item.dataset.value);
+        });
+      }
+    }
+
+    function bindCatalogTrigger(trigger, field, input, display, clearButton = null, afterSelect = null) {
+      if (clearButton && typeof clearButton === 'function') {
+        afterSelect = clearButton;
+        clearButton = null;
+      }
+      const openWithClear = () => openCatalog(field, input, display, clearButton, afterSelect);
+      trigger.addEventListener('click', openWithClear);
+      trigger.addEventListener('keydown', event => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          openWithClear();
+        }
+      });
+    }
+
+    function bindClearTrigger(button, input, display, afterClear = null) {
+      button.addEventListener('click', event => {
+        event.stopPropagation();
+        input.value = '';
+        display.textContent = 'Hinzufügen';
+        display.classList.add('empty');
+        button.classList.add('hidden');
+        if (afterClear) afterClear();
+      });
+    }
+
+    function renderCatalogMarkup(options) {
+      if (!options.length) return '<p class="muted">Keine Treffer.</p>';
+      if (options.some(option => option.group)) {
+        return Object.entries(groupBy(options, option => option.group || 'Material')).map(([group, groupOptions]) => {
+          return `<details class="catalog-group"><summary>${escapeHtml(group)}</summary><div class="catalog-group-body">${groupOptions.map(renderCatalogButton).join('')}</div></details>`;
+        }).join('');
+      }
+      return options.map(renderCatalogButton).join('');
+    }
+
+    function renderCatalogButton(option) {
+      const description = getOptionDescription(state.currentEnumName, option);
+      const compactClass = state.currentEnumName === 'Q_SHEET_THICKNESS' ? ' compact' : '';
+      const label = getCatalogOptionLabel(state.currentEnumName, option);
+      return `<button class="catalog-item${compactClass}" type="button" data-value="${escapeHtml(option.value)}"><strong>${escapeHtml(label)}</strong><span>${escapeHtml(description || 'Keine Beschreibung')}</span></button>`;
+    }
+
+    async function onSubmit(event) {
+      event.preventDefault();
+      const errors = [];
+      const values = { Produktart: PRODUCT_LABELS[productTypeInput.value] || productTypeInput.value };
+      const metadata = {};
+
+      if (!productTypeInput.value) errors.push('Produktart ist erforderlich.');
+      else metadata.Q_PRODUCT_TYPE = productTypeInput.value;
+
+      for (const fieldNode of form.querySelectorAll('#basicFieldsRoot .field, #fieldsRoot .field')) {
+        const key = fieldNode.dataset.fieldKey;
+        if (key === 'Q_PRODUCT_TYPE') continue;
+        const type = fieldNode.dataset.type;
+        const enumName = fieldNode.dataset.enumName;
+        const label = fieldNode.dataset.label;
+        const control = fieldNode.querySelector('input, select, textarea');
+        const rawValue = type === 'Bool' ? control.checked : control.value.trim();
+        const validation = validateValue(type, rawValue, enumName);
+        if (!validation.ok) errors.push(`${label}: ${validation.message}`);
+        values[label] = validation.value;
+        const serializedValue = serializeMetadataValue(type, validation.value);
+        if (serializedValue !== '') metadata[key] = serializedValue;
+      }
+
+      if (errors.length) {
+        showResult(false, 'Syntaxprüfung fehlgeschlagen:\n\n' + errors.map(error => '- ' + error).join('\n'));
+        return;
+      }
+
+      if (!state.stepFile || !state.stepText) {
+        showResult(true, 'Syntaxprüfung erfolgreich. Lade eine STEP-Datei, um eine STEP-Q Kopie zu erzeugen.\n\n' + JSON.stringify(values, null, 2));
+        return;
+      }
+
+      const createCopy = createCopyInput.checked;
+      const outputName = createCopy ? deriveAnnotatedName(state.stepFile.name) : state.stepFile.name;
+      let overwriteWriter = null;
+
+      if (!createCopy) {
+        try {
+          overwriteWriter = await prepareOverwriteWriter();
+        } catch (error) {
+          showResult(false, 'STEP-Q Metadaten konnten nicht gespeichert werden:\n\n' + error.message);
+          return;
+        }
+      }
+
+      clearViewerAnnotations();
+      const filledFieldEntries = collectFilledFieldEntries();
+      const perFieldFlightMs = 1500;
+
+      await ensureViewerFullyVisible();
+
+      const glowDurationMs = filledFieldEntries.length * perFieldFlightMs;
+      triggerSubmitSpinStart(glowDurationMs);
+      triggerSubmitNeonRamp(glowDurationMs);
+
+      await playSubmitFieldFlightAnimation(filledFieldEntries, perFieldFlightMs);
+      triggerSubmitSpinStop();
+
+      try {
+        const annotatedText = annotateStepText(state.stepText, metadata, outputName);
+        if (createCopy) {
+          await writeStepCopy(annotatedText, outputName);
+          showResult(true, `Syntaxprüfung erfolgreich. STEP-Q Kopie wurde gespeichert.\n\n` + JSON.stringify(values, null, 2));
+          enterViewerFocusMode();
+        } else {
+          await overwriteOriginalStepFile(annotatedText, overwriteWriter);
+          overwriteWriter = null;
+          state.stepText = annotatedText;
+          state.stepFile = await state.stepFileHandle.getFile();
+          showResult(true, `Syntaxprüfung erfolgreich. Originaldatei wurde mit STEP-Q Metadaten überschrieben.\n\n` + JSON.stringify(values, null, 2));
+          enterViewerFocusMode();
+        }
+      } catch (error) {
+        showResult(false, 'STEP-Q Metadaten konnten nicht gespeichert werden:\n\n' + error.message);
+      } finally {
+        if (overwriteWriter && typeof overwriteWriter.abort === 'function') {
+          try {
+            await overwriteWriter.abort();
+          } catch {
+            // ignore cleanup errors when stream was already finalized
+          }
+        }
+      }
+    }
+
+    async function prepareOverwriteWriter() {
+      if (!state.stepFileHandle || typeof state.stepFileHandle.createWritable !== 'function') {
+        throw new Error('Überschreiben ist nur möglich, wenn die Datei über Klick-Auswahl oder Handle-fähiges Drag-and-drop geladen wurde. Aktiviere alternativ "Kopie erstellen".');
+      }
+
+      if (typeof state.stepFileHandle.requestPermission === 'function') {
+        const permission = await state.stepFileHandle.requestPermission({ mode: 'readwrite' });
+        if (permission !== 'granted') {
+          throw new Error('Schreibzugriff wurde nicht erlaubt.');
+        }
+      }
+
+      return state.stepFileHandle.createWritable();
+    }
+
+    async function playSubmitFieldFlightAnimation(preparedEntries = null, perFieldMs = 1500) {
+      if (state.submitAnimationRunning) return;
+
+      const entries = Array.isArray(preparedEntries) ? preparedEntries : collectFilledFieldEntries();
+      if (!entries.length) return;
+
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        entries.forEach(entry => {
+          entry.node.classList.add('vanished');
+          entry.node.classList.add('gone');
+        });
+        return;
+      }
+
+      state.submitAnimationRunning = true;
+      const staggerMs = perFieldMs;
+      const durationMs = perFieldMs;
+
+      try {
+        for (let index = 0; index < entries.length; index += 1) {
+          const entry = entries[index];
+          const rect = entry.node.getBoundingClientRect();
+          if (!rect.width || !rect.height) continue;
+
+          entry.node.classList.add('flight-source');
+
+          const targetCenter = getViewerTargetCenter();
+          if (!targetCenter) continue;
+
+          const destinationX = targetCenter.x;
+          const destinationY = targetCenter.y;
+          const translateX = destinationX - (rect.left + rect.width * 0.5);
+          const translateY = destinationY - (rect.top + rect.height * 0.5);
+
+          const fieldAnimation = entry.node.animate([
+            {
+              transform: 'translate3d(0, 0, 0) scale(1) rotate(0deg)',
+              opacity: 1,
+              filter: 'blur(0px)'
+            },
+            {
+              transform: `translate3d(${translateX * 0.56}px, ${translateY * 0.36}px, 0) scale(0.92) rotate(${(index % 2 === 0 ? 1 : -1) * 2}deg)`,
+              opacity: 0.98,
+              filter: 'blur(0px)',
+              offset: 0.34
+            },
+            {
+              transform: `translate3d(${translateX}px, ${translateY}px, 0) scale(0.28) rotate(0deg)`,
+              opacity: 0,
+              filter: 'blur(7px)'
+            }
+          ], {
+            duration: durationMs,
+            easing: 'cubic-bezier(0.23, 0.72, 0.15, 1)',
+            fill: 'forwards'
+          });
+
+          await wait(durationMs + 60);
+          entry.node.classList.remove('flight-source');
+          entry.node.classList.add('vanished');
+          spawnViewerPropertyCallout(entry.label, index, entries.length);
+          fieldAnimation.cancel();
+
+          if (index < entries.length - 1) {
+            await wait(Math.max(0, staggerMs - durationMs));
+          }
+        }
+        entries.forEach(entry => entry.node.classList.add('gone'));
+      } finally {
+        for (const node of form.querySelectorAll('.field.flight-source')) node.classList.remove('flight-source');
+        state.submitAnimationRunning = false;
+      }
+    }
+
+    function triggerSubmitNeonRamp(durationMs) {
+      if (durationMs <= 0) return;
+      if (!state.stepViewer) return;
+
+      state.appearanceMode = 'neon';
+      viewerNeonToggle.checked = true;
+
+      if (typeof state.stepViewer.setAppearanceMode === 'function') {
+        state.stepViewer.setAppearanceMode('neon');
+      }
+
+      if (typeof state.stepViewer.triggerNeonRamp === 'function') {
+        state.stepViewer.triggerNeonRamp(durationMs);
+      }
+    }
+
+    function triggerSubmitSpinStart(totalDurationMs) {
+      if (totalDurationMs <= 0) return;
+      if (!state.stepViewer || typeof state.stepViewer.startIngestionSpin !== 'function') return;
+      state.stepViewer.startIngestionSpin(totalDurationMs);
+    }
+
+    function triggerSubmitSpinStop() {
+      if (!state.stepViewer || typeof state.stepViewer.stopIngestionSpin !== 'function') return;
+      state.stepViewer.stopIngestionSpin(1200);
+    }
+
+    function getViewerTargetCenter() {
+      const canvas = viewerStage.querySelector('canvas');
+      const target = canvas || viewerStage;
+      const rect = target.getBoundingClientRect();
+      if (!rect.width || !rect.height) return null;
+      return {
+        x: rect.left + rect.width * 0.5,
+        y: rect.top + rect.height * 0.5,
+      };
+    }
+
+    function ensureViewerAnnotationLayer() {
+      let layer = viewerStage.querySelector('.viewer-annotation-layer');
+      if (layer) return layer;
+      layer = document.createElement('div');
+      layer.className = 'viewer-annotation-layer';
+      viewerStage.appendChild(layer);
+      return layer;
+    }
+
+    function clearViewerAnnotations() {
+      state.viewerAnnotationTimeouts.forEach(id => window.clearTimeout(id));
+      state.viewerAnnotationTimeouts = [];
+      const layer = viewerStage.querySelector('.viewer-annotation-layer');
+      if (layer) layer.replaceChildren();
+    }
+
+    function spawnViewerPropertyCallout(label, index, total) {
+      const targetCenter = getViewerTargetCenter();
+      if (!targetCenter) return;
+
+      const layer = ensureViewerAnnotationLayer();
+      const stageRect = viewerStage.getBoundingClientRect();
+      const targetX = targetCenter.x - stageRect.left;
+      const targetY = targetCenter.y - stageRect.top;
+
+      const callout = document.createElement('div');
+      callout.className = 'viewer-callout';
+      callout.dataset.calloutIndex = String(index);
+      callout.dataset.calloutTotal = String(Math.max(1, total || 1));
+
+      const labelNode = document.createElement('div');
+      labelNode.className = 'viewer-callout-label';
+      labelNode.textContent = label;
+      callout.appendChild(labelNode);
+      layer.appendChild(callout);
+
+      const line = document.createElement('div');
+      line.className = 'viewer-callout-line';
+      callout.appendChild(line);
+
+      layoutViewerCallout(callout, targetX, targetY, stageRect);
+
+      requestAnimationFrame(() => callout.classList.add('is-visible'));
+    }
+
+    function enterViewerFocusMode() {
+      if (form.classList.contains('viewer-focus-mode')) {
+        return;
+      }
+
+      const startHeight = Math.max(260, viewerStage.getBoundingClientRect().height);
+      const viewerPanel = viewerStage.closest('.viewer-panel');
+      const startPanelHeight = viewerPanel ? Math.max(startHeight, viewerPanel.getBoundingClientRect().height) : startHeight;
+
+      viewerStage.style.height = startHeight + 'px';
+      viewerStage.style.minHeight = startHeight + 'px';
+      if (viewerPanel) {
+        viewerPanel.style.minHeight = startPanelHeight + 'px';
+      }
+      form.classList.add('viewer-focus-mode');
+
+      const targetHeight = updateViewerFocusTargetHeight(false);
+
+      requestAnimationFrame(() => {
+        window.setTimeout(() => {
+          viewerStage.style.height = targetHeight + 'px';
+          viewerStage.style.minHeight = targetHeight + 'px';
+          if (viewerPanel) {
+            viewerPanel.style.minHeight = targetHeight + 'px';
+          }
+          updateViewerModelScaleForFocus(false);
+          keepViewerCenteredDuringGrowth(VIEWER_FOCUS_GROWTH_MS);
+          refreshViewerCalloutPointers();
+        }, 40);
+      });
+
+      window.setTimeout(() => {
+        state.stepViewer?.resize();
+        refreshViewerCalloutPointers();
+      }, 280);
+      window.setTimeout(() => {
+        state.stepViewer?.resize();
+        refreshViewerCalloutPointers();
+      }, 1300);
+      window.setTimeout(() => {
+        state.stepViewer?.resize();
+        refreshViewerCalloutPointers();
+      }, 2750);
+    }
+
+    function updateViewerFocusTargetHeight(applyImmediately) {
+      const targetHeight = Math.max(260, window.innerHeight - VIEWER_FOCUS_VIEWPORT_GAP_PX);
+
+      form.style.setProperty('--viewer-focus-height', targetHeight + 'px');
+
+      if (applyImmediately) {
+        viewerStage.style.height = targetHeight + 'px';
+        viewerStage.style.minHeight = targetHeight + 'px';
+        const viewerPanel = viewerStage.closest('.viewer-panel');
+        if (viewerPanel) {
+          viewerPanel.style.minHeight = targetHeight + 'px';
+        }
+      }
+
+      return targetHeight;
+    }
+
+    function updateViewerModelScaleForFocus(applyImmediately) {
+      const canvas = viewerStage.querySelector('canvas');
+      if (!canvas) return;
+
+      const inFocusMode = form.classList.contains('viewer-focus-mode');
+      const targetScale = inFocusMode ? VIEWER_FOCUS_MODEL_SCALE : 1;
+
+      canvas.style.transformOrigin = '50% 50%';
+      if (applyImmediately) {
+        canvas.style.transition = 'none';
+      } else {
+        canvas.style.transition = `scale ${VIEWER_FOCUS_GROWTH_MS}ms cubic-bezier(0.2, 0.68, 0.18, 1)`;
+      }
+      canvas.style.scale = targetScale.toFixed(3);
+
+      if (applyImmediately) {
+        requestAnimationFrame(() => {
+          if (canvas.style.transition === 'none') {
+            canvas.style.removeProperty('transition');
+          }
+        });
+      }
+    }
+
+    function keepViewerCenteredDuringGrowth(durationMs) {
+      const start = performance.now();
+
+      const step = now => {
+        scrollViewerStageToViewportCenter(false);
+        refreshViewerCalloutPointers();
+
+        if ((now - start) < durationMs) {
+          requestAnimationFrame(step);
+          return;
+        }
+
+        scrollViewerStageToViewportCenter(true);
+      };
+
+      requestAnimationFrame(step);
+    }
+
+    function scrollViewerStageToViewportCenter(smooth) {
+      const panel = viewerStage.closest('.viewer-panel') || viewerStage;
+      const panelRect = panel.getBoundingClientRect();
+      const panelCenterY = panelRect.top + (panelRect.height * 0.5);
+      const viewportCenterY = window.innerHeight * 0.5;
+      const delta = panelCenterY - viewportCenterY;
+
+      if (Math.abs(delta) < 2) return;
+
+      const targetTop = Math.max(0, window.scrollY + delta);
+      window.scrollTo({
+        top: targetTop,
+        behavior: smooth ? 'smooth' : 'auto'
+      });
+    }
+
+    function refreshViewerCalloutPointers() {
+      const center = getViewerTargetCenter();
+      if (!center) return;
+
+      const stageRect = viewerStage.getBoundingClientRect();
+      const targetX = center.x - stageRect.left;
+      const targetY = center.y - stageRect.top;
+
+      for (const callout of viewerStage.querySelectorAll('.viewer-callout')) {
+        layoutViewerCallout(callout, targetX, targetY, stageRect);
+      }
+    }
+
+    function layoutViewerCallout(callout, targetX, targetY, stageRect) {
+      const labelNode = callout.querySelector('.viewer-callout-label');
+      if (!labelNode) return;
+
+      const index = Number.parseInt(callout.dataset.calloutIndex || '0', 10) || 0;
+      const total = Math.max(1, Number.parseInt(callout.dataset.calloutTotal || '1', 10) || 1);
+      const inFocusMode = form.classList.contains('viewer-focus-mode');
+
+      const count = Math.max(1, total);
+      const angle = (-Math.PI / 2) + ((index % count) * ((Math.PI * 2) / count));
+      const radiusXCap = inFocusMode ? 520 : 210;
+      const radiusYCap = inFocusMode ? 420 : 150;
+      const radiusX = Math.max(80, Math.min(stageRect.width * 0.50, radiusXCap));
+      const radiusY = Math.max(62, Math.min(stageRect.height * 0.48, radiusYCap));
+
+      const labelWidth = Math.max(18, labelNode.offsetWidth);
+      const labelHeight = Math.max(12, labelNode.offsetHeight);
+
+      const orbitX = targetX + Math.cos(angle) * radiusX;
+      const orbitY = targetY + Math.sin(angle) * radiusY;
+
+      const preferredX = orbitX >= targetX
+        ? orbitX + 10
+        : orbitX - labelWidth - 10;
+      const preferredY = orbitY - (labelHeight * 0.5);
+
+      const calloutX = clampNumber(preferredX, 10, Math.max(10, stageRect.width - labelWidth - 10));
+      const calloutY = clampNumber(preferredY, 8, Math.max(8, stageRect.height - labelHeight - 8));
+
+      callout.style.left = calloutX + 'px';
+      callout.style.top = calloutY + 'px';
+
+      const line = callout.querySelector('.viewer-callout-line');
+      if (line) {
+        layoutViewerCalloutLine(callout, line, targetX, targetY);
+      }
+    }
+
+    function layoutViewerCalloutLine(callout, line, targetX, targetY) {
+      const calloutX = parseFloat(callout.style.left) || 0;
+      const calloutY = parseFloat(callout.style.top) || 0;
+      const labelNode = callout.querySelector('.viewer-callout-label');
+      const labelWidth = Math.max(18, labelNode ? labelNode.offsetWidth : 18);
+      const labelHeight = Math.max(12, labelNode ? labelNode.offsetHeight : 12);
+
+      const startX = (calloutX + labelWidth * 0.5) < targetX ? calloutX + labelWidth - 2 : calloutX + 2;
+      const startY = calloutY + labelHeight - 1;
+      const dx = targetX - startX;
+      const dy = targetY - startY;
+      const length = Math.max(8, Math.hypot(dx, dy) - 9);
+      const angleDeg = Math.atan2(dy, dx) * 180 / Math.PI;
+
+      line.style.left = (startX - calloutX) + 'px';
+      line.style.top = (startY - calloutY) + 'px';
+      line.style.width = length + 'px';
+      line.style.transform = `rotate(${angleDeg}deg)`;
+    }
+
+    function clampNumber(value, min, max) {
+      return Math.min(max, Math.max(min, value));
+    }
+
+    async function ensureViewerFullyVisible() {
+      const panel = viewerStage.closest('.viewer-panel') || viewerStage;
+      const rect = panel.getBoundingClientRect();
+      const topMargin = 16;
+      const isFullyVisible = rect.top >= topMargin && rect.bottom <= window.innerHeight - topMargin;
+      if (isFullyVisible) return;
+
+      const targetTop = Math.max(0, window.scrollY + rect.top - topMargin);
+      window.scrollTo({ top: targetTop, behavior: 'smooth' });
+      await wait(360);
+    }
+
+    function wait(ms) {
+      return new Promise(resolve => window.setTimeout(resolve, ms));
+    }
+
+    function collectFilledFieldEntries() {
+      const entries = [];
+      for (const fieldNode of form.querySelectorAll('#basicFieldsRoot .field, #fieldsRoot .field')) {
+        if (fieldNode.classList.contains('vanished')) continue;
+        const type = fieldNode.dataset.type;
+        const label = trimTrailingPeriod(fieldNode.dataset.label || 'Feld');
+        const control = fieldNode.querySelector('input, select, textarea');
+        if (!control) continue;
+
+        let valueText = '';
+        if (type === 'Bool') {
+          if (!control.checked) continue;
+          valueText = 'Ja';
+        } else if (type === 'Enum') {
+          const selectedValue = control.value.trim();
+          if (!selectedValue) continue;
+          const displayNode = fieldNode.querySelector('.selected-value');
+          valueText = (displayNode?.textContent || selectedValue).trim();
+        } else {
+          const raw = control.value.trim();
+          if (!raw) continue;
+          valueText = raw;
+        }
+
+        entries.push({ node: fieldNode, label, valueText });
+      }
+      return entries;
+    }
+
+    function validateValue(type, value, enumName) {
+      if (type === 'String' || type === 'Object' || type === 'List') return { ok: false, message: `${type} ist kein aktiver v0.3 Feldtyp und benötigt eine dokumentierte Ausnahme.` };
+      if (type !== 'Bool' && value === '') return { ok: true, value: null };
+      if (type === 'Bool') return { ok: true, value: Boolean(value) };
+      if (type === 'Integer') return /^-?\d+$/.test(value) ? { ok: true, value: Number(value) } : { ok: false, message: 'Integer erwartet, z. B. 12.' };
+      if (type === 'Float') return /^-?\d+(\.\d+)?$/.test(value) ? { ok: true, value: Number(value) } : { ok: false, message: 'Float mit Punkt als Dezimaltrennzeichen erwartet, z. B. 2.5.' };
+      if (type === 'Enum') {
+        const allowed = (state.enums[enumName] || []).map(option => option.value);
+        return allowed.includes(value) ? { ok: true, value } : { ok: false, message: 'Wert ist nicht im Auswahlkatalog registriert.' };
+      }
+      return { ok: true, value };
+    }
+
+    function serializeMetadataValue(type, value) {
+      if (value === null || value === undefined || value === '') return '';
+      if (type === 'Bool') return value ? 'true' : '';
+      return String(value);
+    }
+
+    function extractStepQMetadata(text) {
+      const fields = {};
+      const dataSection = extractDataSection(text);
+      if (!dataSection) return fields;
+      const itemPattern = /#\d+\s*=\s*DESCRIPTIVE_REPRESENTATION_ITEM\s*\(\s*'(?<field>Q_[A-Z0-9_]+)'\s*,\s*'(?<value>(?:[^']|'')*)'\s*\)\s*;/gi;
+      for (const match of dataSection.matchAll(itemPattern)) {
+        fields[match.groups.field.toUpperCase()] = match.groups.value.replace(/''/g, "'");
+      }
+      return fields;
+    }
+
+    function applyMetadataToForm(metadata) {
+      const productType = metadata.Q_PRODUCT_TYPE;
+      if (productType && state.enums.Q_PRODUCT_TYPE?.some(option => option.value === productType)) {
+        setEnumSelection(productTypeInput, productTypeDisplay, productTypeClear, 'Q_PRODUCT_TYPE', productType);
+        renderBasicFields(productType);
+        renderFields(productType);
+      }
+
+      for (const [fieldKey, value] of Object.entries(metadata)) {
+        if (fieldKey === 'Q_PRODUCT_TYPE') continue;
+        setFormFieldValue(fieldKey, value);
+      }
+    }
+
+    function setFormFieldValue(fieldKey, value) {
+      const fieldNode = form.querySelector(`[data-field-key="${fieldKey}"]`);
+      if (!fieldNode) return;
+      const type = fieldNode.dataset.type;
+      const enumName = fieldNode.dataset.enumName;
+      const control = fieldNode.querySelector('input');
+      if (!control) return;
+
+      if (type === 'Enum') {
+        const display = fieldNode.querySelector('.selected-value');
+        const clearButton = fieldNode.querySelector('.clear-selection');
+        if (state.enums[enumName]?.some(option => option.value === value)) {
+          setEnumSelection(control, display, clearButton, enumName, value);
+        }
+        return;
+      }
+
+      if (type === 'Bool') {
+        control.checked = value === 'true';
+        return;
+      }
+
+      control.value = value;
+    }
+
+    function setEnumSelection(input, display, clearButton, enumName, value) {
+      input.value = value;
+      display.textContent = getSelectedDisplayValue(enumName, value);
+      display.classList.remove('empty');
+      clearButton?.classList.remove('hidden');
+    }
+
+    function annotateStepText(text, metadata, outputName) {
+      if (!Object.keys(metadata).length) throw new Error('Keine STEP-Q Metadaten zum Schreiben vorhanden.');
+      const newline = text.includes('\r\n') ? '\r\n' : '\n';
+      const bounds = findDataBounds(text);
+      const dataSection = text.slice(bounds.start, bounds.end);
+      const cleanedLines = dataSection.split(/\r?\n/).filter(line => {
+        return !/^\s*#\d+\s*=\s*PROPERTY_SET\s*\(\s*'STEP-Q'/i.test(line)
+          && !/^\s*#\d+\s*=\s*DESCRIPTIVE_REPRESENTATION_ITEM\s*\(\s*'Q_[A-Z0-9_]+'/i.test(line)
+          && line.trim();
+      });
+      const ids = allocateEntityIds(text, Object.keys(metadata).length + 1);
+      const metadataLines = buildMetadataLines(ids, metadata);
+      const rebuiltDataSection = newline + metadataLines.concat(cleanedLines).join(newline) + newline;
+      let annotatedText = text.slice(0, bounds.start) + rebuiltDataSection + text.slice(bounds.end);
+      annotatedText = updateFileDescription(annotatedText, newline);
+      return updateFileName(annotatedText, outputName);
+    }
+
+    function extractDataSection(text) {
+      const upper = text.toUpperCase();
+      const dataStart = upper.indexOf('DATA;');
+      if (dataStart === -1) return null;
+      const contentStart = dataStart + 'DATA;'.length;
+      const dataEnd = upper.indexOf('ENDSEC;', contentStart);
+      if (dataEnd === -1) return null;
+      return text.slice(contentStart, dataEnd);
+    }
+
+    function findDataBounds(text) {
+      const upper = text.toUpperCase();
+      const dataStart = upper.indexOf('DATA;');
+      if (dataStart === -1) throw new Error('STEP-Datei enthält keinen DATA-Abschnitt.');
+      const start = dataStart + 'DATA;'.length;
+      const end = upper.indexOf('ENDSEC;', start);
+      if (end === -1) throw new Error('STEP-Datei DATA-Abschnitt ist nicht korrekt beendet.');
+      return { start, end };
+    }
+
+    function allocateEntityIds(text, count) {
+      const used = new Set(Array.from(text.matchAll(/#(?<id>\d+)\s*=/g)).map(match => Number(match.groups.id)));
+      const ids = [];
+      let next = Math.max(0, ...used) + 1;
+      while (ids.length < count) ids.push(next++);
+      return ids;
+    }
+
+    function buildMetadataLines(ids, metadata) {
+      const entries = Object.entries(metadata);
+      const lines = [`#${ids[0]} = PROPERTY_SET ( 'STEP-Q', $, $ ) ;`];
+      entries.forEach(([field, value], index) => {
+        lines.push(`#${ids[index + 1]} = DESCRIPTIVE_REPRESENTATION_ITEM ( '${field}', '${escapeStepString(value)}' ) ;`);
+      });
+      return lines;
+    }
+
+    function updateFileDescription(text, newline) {
+      const replacement = `FILE_DESCRIPTION (( 'STEP file with STEP-Q metadata' ),${newline}    '1' );`;
+      return text.replace(/FILE_DESCRIPTION\s*\(\s*\(\s*'(?:[^']|'')*'\s*\)\s*,\s*'(?:[^']|'')*'\s*\)\s*;/i, replacement);
+    }
+
+    function updateFileName(text, outputName) {
+      const escapedName = escapeStepString(outputName);
+      return text.replace(/(FILE_NAME\s*\(\s*')([^']*)(')/i, `$1${escapedName}$3`);
+    }
+
+    function escapeStepString(value) {
+      return String(value).replace(/'/g, "''");
+    }
+
+    function deriveAnnotatedName(fileName) {
+      return fileName.replace(/(\.stp|\.step)$/i, '.step-q$1');
+    }
+
+    async function overwriteOriginalStepFile(text, writableOverride = null) {
+      if (!state.stepFileHandle || typeof state.stepFileHandle.createWritable !== 'function') {
+        throw new Error('Überschreiben ist nur möglich, wenn die Datei über Klick-Auswahl oder Handle-fähiges Drag-and-drop geladen wurde. Aktiviere alternativ "Kopie erstellen".');
+      }
+      const writer = writableOverride || await state.stepFileHandle.createWritable();
+      await writer.write(text);
+      await writer.close();
+    }
+
+    async function writeStepCopy(text, suggestedName) {
+      if (typeof window.showSaveFilePicker === 'function') {
+        const handle = await window.showSaveFilePicker({
+          suggestedName,
+          types: [{
+            description: 'STEP-Dateien',
+            accept: { 'application/step': ['.step', '.stp'] }
+          }]
+        });
+        const writer = await handle.createWritable();
+        await writer.write(text);
+        await writer.close();
+        return;
+      }
+      downloadTextFile(suggestedName, text);
+    }
+
+    function downloadTextFile(fileName, text) {
+      const blob = new Blob([text], { type: 'application/step' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = fileName;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    function groupBy(items, keyFn) {
+      return items.reduce((groups, item) => {
+        const key = keyFn(item);
+        groups[key] ||= [];
+        groups[key].push(item);
+        return groups;
+      }, {});
+    }
+
+    function showResult(ok, message) {
+      result.className = 'status ' + (ok ? 'ok' : 'error');
+      result.textContent = message;
+    }
+
+    function clearResult() {
+      result.className = 'status hidden';
+      result.textContent = '';
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? '').replace(/[&<>"]/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[char]));
+    }
+
+    function getOptionDescription(enumName, option) {
+      return ENUM_DESCRIPTIONS_DE[enumName]?.[option.value] || option.description || option.extra || '';
+    }
+
+    function getSelectedDisplayValue(enumName, value) {
+      if (enumName === 'Q_PRODUCT_TYPE') return PRODUCT_LABELS[value] || value;
+      if (enumName === 'Q_SHEET_THICKNESS') return ENUM_DESCRIPTIONS_DE.Q_SHEET_THICKNESS[value] || value;
+      return value;
+    }
+
+    function getCatalogOptionLabel(enumName, option) {
+      if (enumName === 'Q_SHEET_THICKNESS') return ENUM_DESCRIPTIONS_DE.Q_SHEET_THICKNESS[option.value] || option.value;
+      return option.value;
+    }
+
+    function trimTrailingPeriod(value) {
+      return String(value ?? '').replace(/\.$/, '');
+    }
+  </script>
+</body>
+</html>
