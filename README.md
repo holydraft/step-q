@@ -84,8 +84,8 @@ The current repository contains working examples and tooling around a p21/proper
 - examples/: reference fixtures for current draft tooling
 
 ### Reference Tooling
-- tools/README.md: current MVP validator and workbench scope
-- tools/step_q_workbench_web.py: local web UI for reading and writing STEP-Q data
+- tools/README.md: current validator and browser-tooling scope
+- tools/step_q_form.html: browser UI for reading, validating, and writing STEP-Q data
 
 ### Project Governance
 - CONTRIBUTING.md: contribution process
@@ -146,13 +146,13 @@ Current MVP command:
 
 For a guided first run, see QUICKSTART.md.
 
-To start the local STEP-Q workbench:
+To use the browser form locally, run a static server from the repository root (for example `python -m http.server 8080`) and open:
 
-    python tools/step_q_workbench_web.py
+    http://localhost:8080/tools/step_q_form.html
 
-The workbench opens a browser window automatically, requires STEP source files to be chosen through the Windows file dialog, and starts in `Modify original file` mode on the write side.
-The left column writes STEP-Q data, while the right column reads and validates STEP-Q data from an existing STEP file.
-When writing a copy instead, the user must provide the suffix to insert before the STEP extension.
+For repeatable CLI and CI checks, continue using:
+
+    python tools/validate_step_q.py examples/minimal.STEP
 
 ---
 

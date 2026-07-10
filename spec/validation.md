@@ -1,7 +1,7 @@
 
 # STEP-Q Validation and Conformance Rules
 
-Version: v0.2
+Version: v0.3
 Status: Draft
 Maintainer: holydraft
 
@@ -12,6 +12,8 @@ Maintainer: holydraft
 This document defines validation rules and conformance requirements for STEP-Q files.
 
 It enables automated checking of metadata structure, data types, and semantic consistency.
+
+The controlled vocabulary registry is distributed across `spec/enumerations.md` and product-specific material catalog values in `spec/materials.md`.
 
 Validation shall primarily be performed by importing systems.
 Exporting tools may perform optional pre-validation,
@@ -74,6 +76,7 @@ Case-sensitive.
 - Must start with Q_
 - Must be uppercase
 - Must match registered fields
+- Fields with type `Enum` must reference a registered enum in `spec/enumerations.md` or a product-specific material enum backed by `spec/materials.md`.
 
 ---
 
@@ -81,12 +84,23 @@ Case-sensitive.
 
 | Type    | Validation Rule                          |
 |---------|------------------------------------------|
-| String  | UTF-8, non-control characters            |
 | Integer | Base 10, no decimals                     |
 | Float   | Dot separator, finite value              |
-| Enum    | Must exist in enumeration registry       |
-| Date    | ISO 8601 (YYYY-MM-DD)                    |
+| Enum    | Must exist in `spec/enumerations.md` or in the applicable material catalog in `spec/materials.md` |
 | Bool    | true / false                             |
+
+`String`, `Object`, and `List` are not active v0.3 field types. If a future field proposal requires one of these types, the proposal must define field-specific validation semantics and justify why scalar or enum-backed fields are insufficient.
+
+### 4.2.1 Material Enum Validation
+
+Material enums use a distributed registry model:
+
+- `Q_SHEET_MATERIAL` values are validated against `spec/materials.md`, section `Sheet Materials`.
+- `Q_TUBE_MATERIAL` values are validated against `spec/materials.md`, section `Tube Materials`.
+- `Q_TURNING_MATERIAL` values are validated against `spec/materials.md`, section `Turning Materials`.
+- `Q_MILLING_MATERIAL` values are validated against `spec/materials.md`, section `Milling Materials`.
+
+Validation tools may compare either the catalog display label or a normalized enum identifier derived from that label. Missing material catalogs shall raise warnings unless a conformance profile requires strict material-catalog validation.
 
 ---
 
@@ -172,7 +186,7 @@ The following conditions shall produce errors:
 
 - Invalid field names
 - Use of undocumented Q_ extensions in conformance validation
-- Invalid enum values
+- Invalid enum values, including material enum values when strict material-catalog validation is enabled
 - Forbidden entity types
 - Broken STEP structure
 

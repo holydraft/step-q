@@ -20,22 +20,60 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Run conformant example checks
+      - name: Validate expected conformance classes
         run: |
-          python tools/validate_step_q.py examples/minimal.STEP
-          python tools/validate_step_q.py examples/partial.STEP --documented-extension Q_SPECIAL_THREAD_NOTE
-          python tools/validate_step_q.py examples/full.STEP
-          python tools/validate_step_q.py examples/realSample.STEP
-          python tools/validate_step_q.py examples/realSample.annotated.STEP
+          python - <<'PY'
+          import json
+          import subprocess
+          import sys
 
-      - name: Run expected non-conformance checks
+          checks = [
+              ("examples/minimal.STEP", "full", []),
+              ("examples/partial.STEP", "partial", ["--documented-extension", "Q_SPECIAL_THREAD_NOTE"]),
+              ("examples/full.STEP", "full", []),
+              ("examples/realSample.STEP", "partial", []),
+              ("examples/realSample.annotated.STEP", "full", []),
+              ("examples/invalid_unknown_extension.STEP", "non", []),
+              ("examples/invalid_malformed_entity.STEP", "non", []),
+          ]
+
+          for file_path, expected_conformance, extra_args in checks:
+              cmd = ["python", "tools/validate_step_q.py", file_path] + extra_args
+              completed = subprocess.run(cmd, capture_output=True, text=True)
+              if not completed.stdout.strip():
+                  print(f"No JSON output from validator for {file_path}")
+                  print(completed.stderr)
+                  sys.exit(1)
+
+              try:
+                  report = json.loads(completed.stdout)[0]
+              except Exception as error:
+                  print(f"Could not parse validator output for {file_path}: {error}")
+                  print(completed.stdout)
+                  print(completed.stderr)
+                  sys.exit(1)
+
+              actual = report.get("conformance")
+              if actual != expected_conformance:
+                  print(f"Conformance mismatch for {file_path}: expected {expected_conformance}, got {actual}")
+                  print(json.dumps(report, indent=2))
+                  sys.exit(1)
+
+          print("All fixture conformance checks passed.")
+          PY
+
+  validate-browser-form:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Validate step_q_form inline script syntax
         run: |
-          if python tools/validate_step_q.py examples/invalid_unknown_extension.STEP; then
-            echo "invalid_unknown_extension.STEP was expected to fail"
-            exit 1
-          fi
-
-          if python tools/validate_step_q.py examples/invalid_malformed_entity.STEP; then
-            echo "invalid_malformed_entity.STEP was expected to fail"
-            exit 1
-          fi
+          node -e "const fs=require('fs'); const html=fs.readFileSync('tools/step_q_form.html','utf8'); const match=html.match(/<script>[\s\S]*<\/script>/); if(!match){ throw new Error('No inline script block found in tools/step_q_form.html'); } const script=match[0].replace(/^<script>|<\/script>$/g,''); new Function(script); console.log('Inline script syntax OK');"

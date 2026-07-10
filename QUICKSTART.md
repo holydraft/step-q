@@ -76,6 +76,18 @@ Expected outcome:
 - errors: greater than `0`
 - at least one message about a malformed or unterminated STEP entity statement
 
+5. Validate the raw carrier sample without STEP-Q metadata:
+
+```powershell
+python tools/validate_step_q.py examples/realSample.STEP
+```
+
+Expected outcome:
+
+- conformance: `partial`
+- errors: `0`
+- warnings: at least `2` (`PROPERTY_SET` missing and no STEP-Q fields found)
+
 ## How To Read The Output
 
 The validator prints structured JSON.
@@ -95,26 +107,21 @@ Key fields:
 - Read `examples/README.md` for the purpose of each example file.
 - Read `tools/README.md` for the current validator scope and limits.
 
-## Local STEP-Q Workbench
+## Browser Form
 
-You can also run the local browser-based STEP-Q workbench:
+Use the HTML/JS form as the primary interactive workflow:
 
 ```powershell
-python tools/step_q_workbench_web.py
+python -m http.server 8080
 ```
 
-Default address:
+Then open:
 
-- `http://127.0.0.1:8765`
+- `http://localhost:8080/tools/step_q_form.html`
 
-The workbench lets you:
+The form lets you:
 
-- choose a STEP file through the Windows file dialog on both panels
-- write STEP-Q metadata on the left side
-- prefill existing STEP-Q values on the write side when the chosen source file already contains them
-- read STEP-Q metadata and validation output on the right side
-- start in `Modify original file` mode by default on the write side and switch to copy mode when needed
-- provide a mandatory custom suffix when a copy is written, for example `.rfq` or `.supplierA`
-- validate the written or read file immediately
-
-When the workbench starts, it opens the browser automatically on the local machine.
+- choose product type and fill v0.3 fields from spec-driven catalogs
+- load STEP files and prefill existing STEP-Q metadata
+- overwrite the original file (with file-handle permission) or create a copy
+- validate syntax before writing metadata
