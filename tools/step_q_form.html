@@ -258,12 +258,6 @@
             <div id="viewerStage" class="viewer-stage">
               <div id="viewerPlaceholder" class="viewer-placeholder">STEP-Datei hier ablegen oder klicken.</div>
             </div>
-            <div class="viewer-controls">
-              <label class="viewer-toggle" for="viewerNeonToggle">
-                <input id="viewerNeonToggle" type="checkbox">
-                Neongrün leuchtend (aus = Grau)
-              </label>
-            </div>
             <input class="file-input" id="stepUpload" type="file" accept=".step,.stp,.STEP,.STP">
           </div>
         </aside>
@@ -341,7 +335,6 @@
       stepFileHandle: null,
       stepText: '',
       modelLoaded: false,
-      appearanceMode: 'original',
       submitAnimationRunning: false,
       viewerAnnotationTimeouts: []
     };
@@ -355,7 +348,6 @@
     const result = document.querySelector('#result');
     const stepUpload = document.querySelector('#stepUpload');
     const createCopyInput = document.querySelector('#createCopy');
-    const viewerNeonToggle = document.querySelector('#viewerNeonToggle');
     const viewerStage = document.querySelector('#viewerStage');
     const viewerPlaceholder = document.querySelector('#viewerPlaceholder');
     const catalogDialog = document.querySelector('#catalogDialog');
@@ -389,18 +381,9 @@
         renderFields('');
       });
       bindStepUpload();
-      viewerNeonToggle.addEventListener('change', () => {
-        state.appearanceMode = viewerNeonToggle.checked ? 'neon' : 'original';
-        syncViewerAppearance();
-      });
       form.addEventListener('submit', onSubmit);
       document.querySelector('#closeCatalog').addEventListener('click', () => catalogDialog.close());
       catalogSearch.addEventListener('input', renderCatalogItems);
-    }
-
-    function syncViewerAppearance() {
-      if (!state.stepViewer || typeof state.stepViewer.setAppearanceMode !== 'function') return;
-      state.stepViewer.setAppearanceMode(state.appearanceMode);
     }
 
     function assertOk(response) {
@@ -744,13 +727,11 @@
         state.stepViewer = Step3DViewer.create(viewerStage, {
           onModelLoaded: () => {
             state.modelLoaded = true;
-            syncViewerAppearance();
             updateViewerModelScaleForFocus(true);
           },
           onModelLoadFailed: () => showResult(false, 'Die STEP-Datei konnte nicht angezeigt werden.')
         });
       }
-      syncViewerAppearance();
       state.stepViewer.loadFromFiles(stepFiles);
       state.modelLoaded = true;
       state.stepViewer.resize();
@@ -1006,9 +987,6 @@
     function triggerSubmitNeonRamp(durationMs) {
       if (durationMs <= 0) return;
       if (!state.stepViewer) return;
-
-      state.appearanceMode = 'neon';
-      viewerNeonToggle.checked = true;
 
       if (typeof state.stepViewer.setAppearanceMode === 'function') {
         state.stepViewer.setAppearanceMode('neon');
