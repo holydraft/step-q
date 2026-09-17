@@ -77,3 +77,21 @@ jobs:
       - name: Validate step_q_form inline script syntax
         run: |
           node -e "const fs=require('fs'); const html=fs.readFileSync('tools/step_q_form.html','utf8'); const match=html.match(/<script>[\s\S]*<\/script>/); if(!match){ throw new Error('No inline script block found in tools/step_q_form.html'); } const script=match[0].replace(/^<script>|<\/script>$/g,''); new Function(script); console.log('Inline script syntax OK');"
+
+  validate-mappings:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Validate mapping libraries
+        run: python tools/validate_mappings.py
+
+      - name: Run mapping contract tests
+        run: python -m unittest mappings/orderspot/tests/test_mapping_contract.py -v

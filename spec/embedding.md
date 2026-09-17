@@ -1,6 +1,6 @@
 # STEP-Q Metadata Embedding Methods
 
-Version: v0.2
+Version: v0.3
 Status: Draft
 Maintainer: holydraft
 

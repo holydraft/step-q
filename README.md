@@ -37,6 +37,7 @@ STEP-Q is organized into four linked parts:
 - **STEP carrier compatibility**: how the same STEP-Q metadata can travel with AP203, AP214, AP242, or neutral sidecar exchange
 - **Metadata embedding methods**: p21 property-entity embedding, sidecar formats, and other transport options
 - **Validation rules**: structural, syntactic, and semantic checks plus parser-resilience requirements
+- **Mapping libraries**: external RFQ normalization into registered STEP-Q fields, maintained outside the Core
 
 The current repository contains working examples and tooling around a p21/property-entity embedding profile.
 
@@ -60,6 +61,13 @@ The current repository contains working examples and tooling around a p21/proper
     partial.STEP Partial metadata example (fallback case)
     full.STEP Rich metadata example
 
+    /mappings/
+    mapping-schema.yaml generic mapping contract
+    orderspot/ first reference material mapping library
+
+    /integrations/
+    three91-quote.md orchestration architecture for downstream integrations
+
     /CONTRIBUTING.md Contribution guidelines
     /GOVERNANCE.md Maintainer and decision process
     /ROADMAP.md Planned versions and scope growth
@@ -78,6 +86,9 @@ The current repository contains working examples and tooling around a p21/proper
 - spec/fields.md: detailed field definitions
 - spec/enumerations.md: controlled vocabulary and change process
 - spec/validation.md: validation logic and parser resilience requirements
+- mappings/README.md: generic mapping contract and library policy
+- mappings/orderspot/README.md: first reference mapping library
+- integrations/three91-quote.md: planned orchestration architecture
 - QUICKSTART.md: short evaluation path for the current draft
 
 ### Examples
@@ -101,7 +112,7 @@ The current repository contains working examples and tooling around a p21/proper
 
 ## Status
 
-- Current version: **v0.2 (Evaluable Public Draft)**
+- Current version: **v0.3.0 (Integration Preview, planned)**
 - STEP-Q is not an ISO standard; it is an open draft specification under active development.
 - The current publication state is an evaluable public draft with working examples and minimal reference tooling.
 
@@ -120,6 +131,8 @@ Current priorities:
 - stabilize STEP-Q Core
 - keep examples and tooling aligned with the draft field registry
 - document carrier-agnostic usage clearly
+- define reusable mapping libraries without extending STEP-Q Core
+- document downstream producer and manufacturing integrations behind `three91:quote`
 - provide a short, reproducible evaluation path for implementers and partners
 
 Current distribution convention:

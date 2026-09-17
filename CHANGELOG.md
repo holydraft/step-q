@@ -2,6 +2,20 @@
 
 All notable changes to published STEP-Q draft releases are documented in this file.
 
+## Next release: v0.3.0 - Integration Preview (planned)
+
+### Added
+
+- generic, platform-neutral mapping contract under `mappings/`
+- Orderspot as the first reference mapping library, outside STEP-Q Core
+- deterministic local validation for mapping libraries
+- planned `three91:quote` orchestration architecture for downstream producer and manufacturing integrations
+
+### Changed
+
+- clarified that mappings normalize external RFQ data to registered STEP-Q fields without extending the Core
+- documented `partial` and `unmapped` integration values as explicit non-automated outcomes
+
 ## v0.2 - 2026-05-28
 
 ### Added

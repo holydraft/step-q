@@ -36,3 +36,7 @@ These outcomes reflect the current validator behavior against v0.3 spec registri
 - `invalid_*` files are negative fixtures and should continue to fail.
 - `realSample.STEP` is a raw carrier reference (no STEP-Q metadata).
 - legacy positive fixtures are kept for parser/backward-compatibility regression checks while the repository transitions examples to native v0.3 field sets.
+
+Mapping examples are maintained separately under `mappings/orderspot/examples/`.
+They demonstrate source resolution and explicit unmapped handling without
+changing STEP-Q example conformance fixtures.

@@ -1,0 +1,101 @@
+﻿materialAliases;materialGroup;materialSubGroup;materialTypeNumber;name;productionMethod;surfaceDescription;surfaceNorm
+"[""AlMg3"",""AW5754""]";Aluminium;EN AW-5754;33.535;AlMg3;gewalzt H111;einseitig foliert;1sF
+"[""eloxiert"",""AW5005A""]";Aluminium;EN AW-5005A;33.315;AlMg1;gewalzt H14/24;eloxiert einseitig foliert;elo1sF
+"[""AlMg3"",""AW5754"",""Warzenblech"",""Quintettblech"",""Riffelblech""]";Aluminium;EN AW-5754;33.535;AlMg3;gewalzt H114;Riffelblech, Duettblech walzblank;1MRD
+"[""AlMg3"",""AW5754"",""Warzenblech"",""Quintettblech"",""Riffelblech""]";Aluminium;EN AW-5754;33.535;AlMg3;gewalzt H114;Riffelblech, Quintettblech walzblank;1MRQ
+[];Aluminium;EN AW-1050A;30.255;Al99,5;gewalzt H14/24;Stucco-Dessin;Stucco
+[];Aluminium;EN AW-1050A;30.255;Al99,5;gewalzt H14/24;walzblank;wb
+"[""EN AW-2017A"",""AW2017A""]";Aluminium;EN AW-2017A;31.325;AlCu4MgSi(A);T451;walzblank;wb
+[];Aluminium;EN AW-6082;32.315;AlSi1MgMn;T6;walzblank;wb
+"[""AW5005A""]";Aluminium;EN AW-5005A;33.315;AlMg1;gewalzt H14/24;walzblank;wb
+"[""AlMg3"",""AW5754""]";Aluminium;EN AW-5754;33.535;AlMg3;gewalzt H111;walzblank;wb
+"[""AlMg3"",""AW5754""]";Aluminium;EN AW-5754;33.535;AlMg3;gewalzt H22;walzblank;wb
+"[""AlMg4"",""AW5083""]";Aluminium;EN AW-5083;33.547;AlMg4,5Mn0,7;gewalzt H111;walzblank;wb
+"[""AW5083"",""AlMg4""]";Aluminium;EN AW-5083;33.547;AlMg4,5Mn0,7;gewalzt H22;walzblank;wb
+[];Aluminium;EN AW-7075;34.365;AlZnMgCu1,5;T6;walzblank;wb
+[];Aluminium;EN AW-7075;34.365;AlZnMgCu1,5;T651;walzblank;wb
+"[""Zincor ZE 25/25"",""St 12 ZE""]";Baustahl;Unlegierter Qualitätsstahl;10.330;DC01 + ZE;kaltgewalzt;elektrolytisch verzinkt 25/25;EVZ25-25
+"[""ST 02 Z"",""DX51 Z275"",""Sendzimierverzinkt""]";Baustahl;Feuerverzinkter Stahl;10.226;DX51D+Z;gewalzt;feuerverzinkt;FVZ
+"[""RSt37-2""]";Baustahl;Baustahl;10.038;S235JR;warmgewalzt;gebeizt und geölt;1Dg
+"[""St12"",""FeP01"",""ST 1203"",""S235""]";Baustahl;Unlegierter Qualitätsstahl;10.330;DC01;kaltgewalzt;gebeizt und geölt;2Dg
+"[""StW22""]";Baustahl;weicher, nichtlegierter Stahl;10.332;DD11;warmgewalzt;gebeizt und geölt;1Dg
+"[""StW 23"",""RRStW23""]";Baustahl;weicher, nichtlegierter Stahl;10.398;DD12;warmgewalzt;gebeizt und geölt;1Dg
+"[""ST 52-3 N""]";Baustahl;Hochfester Feinkornbaustahl;10.577;S355J2 +N;warmgewalzt;gebeizt und geölt;1Dg
+"[""QstE360TM""]";Baustahl;Microlegierter Stahl;10.976;S355MC;warmgewalzt;gebeizt und geölt;1Dg
+"[""QstE420TM""]";Baustahl;Feinkörniger Konstruktionsstahl;10.980;S420MC;warmgewalzt;gebeizt und geölt;1Dg
+[];Baustahl;Hochfester Feinkornbaustahl;10.984;S500MC;warmgewalzt;gebeizt und geölt;1Dg
+"[""QstE690TM""]";Baustahl;Hochfester Feinkornbaustahl;18.974;S700MC;warmgewalzt;gebeizt und geölt;1Dg
+"[""RSt37-2""]";Baustahl;Baustahl;10.038;S235JR;warmgewalzt;gestrahlt;1E
+"[""ST 52-3 N""]";Baustahl;Hochfester Feinkornbaustahl;10.577;S355J2 +N;warmgewalzt;gestrahlt;1E
+"[""RSt37-2""]";Baustahl;Baustahl;10.038;S235JR;warmgewalzt;schwarz / walzblau;1C
+"[""St45.8""]";Baustahl;Warmfester Druckbehälterstahl;10.425;P265GH;warmgewalzt;schwarz / walzblau;1C
+"[""AISI 1045""]";Baustahl;Unlegierter Vergütungsstahl;10.503;C45;warmgewalzt;schwarz / walzblau;1C
+"[""ST 52-3 N""]";Baustahl;Hochfester Feinkornbaustahl;10.577;S355J2 +N;warmgewalzt;schwarz / walzblau;1C
+"[""QstE360TM""]";Baustahl;Microlegierter Stahl;10.976;S355MC;warmgewalzt;schwarz / walzblau;1C
+"[""QstE420TM""]";Baustahl;Feinkörniger Konstruktionsstahl;10.980;S420MC;warmgewalzt;schwarz / walzblau;1C
+"[""XAR"",""Dillidur"",""Hardox"",""20 MnCr6-5"",""Quard"",""HB300"",""RAEX""]";Baustahl;Verschleißfester Stahl;18.704;HB300;warmgewalzt;schwarz / walzblau;1C
+"[""Dillidur"",""Durostat"",""Fora"",""RAEX"",""Brinar"",""Abrazo"",""23MnCr4-3"",""Quard"",""Hardox"",""XAR"",""HB400""]";Baustahl;Verschleißfester Stahl;18.714;HB400;warmgewalzt;schwarz / walzblau;1C
+"[""HB450"",""Abrazo"",""Quard"",""Hardox"",""XAR"",""Dillidur"",""Durostat"",""Fora""]";Baustahl;Verschleißfester Stahl;18.722;HB450;warmgewalzt;schwarz / walzblau;1C
+"[""Quard"",""Abrazo"",""HB500"",""Fora"",""Dillidur"",""28MnCr4-3"",""RAEX"",""XAR"",""Brinar"",""Hardox"",""Durostat""]";Baustahl;Verschleißfester Stahl;18.734;HB500;warmgewalzt;schwarz / walzblau;1C
+"[""QstE690TM""]";Baustahl;Hochfester Feinkornbaustahl;18.974;S700MC;warmgewalzt;schwarz / walzblau;1C
+"[""RSt37-2""]";Baustahl;Baustahl;10.038;S235JR;warmgewalzt;Tränenblech;1MT
+"[""Ust14"",""St13""]";Baustahl;Kaltgewalzter Tiefziehstahl;10.347;DC03;kaltgewalzt;walzblank;wb
+"[""RRStW23"",""StW23""]";Baustahl;weicher, nichtlegierter Stahl;10.398;DD12;warmgewalzt;walzblank;wb
+"[""COR-TEN A"",""CORTEN""]";Baustahl;Wetterfester Baustahl mit Rostpatina;18.946;S355J2WP ;warmgewalzt;walzblank;wb
+"[""CORTEN"",""WTSt52-3"",""COR-TEN B""]";Baustahl;Wetterfester Baustahl mit Rostpatina;18.965;S355J2W;warmgewalzt;walzblank;wb
+"[""SE-Cu57"",""Cu-HCP""]";Kupfer;Kupferblech;2.009;CW021A;gewalzt;walzblank;wb
+"[""E-Kupfer"",""E-Cu57"",""Cu-ETP""]";Kupfer;Kupferblech;20.060;CW004A;gewalzt;walzblank;wb
+"[""Cu-DHP"",""Desoxidiertes Kupfer"",""SF-Cu""]";Kupfer;Kupferblech;20.090;CW024A;gewalzt;walzblank;wb
+"[""Messing"",""Cu Zn37"",""Ms63""]";Messing;Messingblech;20.321;CW508L;gewalzt;Körn. 240 eins. geschl., eins. foliert;K2401sF
+"[""Ms63"",""Cu Zn37"",""Messing""]";Messing;Messingblech;20.321;CW508L;gewalzt;walzblank;wb
+"[""CuZn39Pb2"",""Messing"",""MS58""]";Messing;Messingblech;20.402;CW612N;gewalzt;walzblank;wb
+"[""AISI 304"",""SUS304"",""V2A"",""Edelstahl"",""VA""]";Nichtrostender Stahl;Nichtrostender austenitischer Stahl;14.301;X5CrNi18-10;kaltgewalzt;einseitig gebürstet, einseitig foliert;G1sF
+[];Nichtrostender Stahl;Nichtrostender austenitischer Stahl;14.404;X2CrNiMo17-12-2;kaltgewalzt;einseitig gebürstet, einseitig foliert;G1sF
+"[""V2A"",""Edelstahl"",""AISI 304"",""VA"",""SUS304""]";Nichtrostender Stahl;Nichtrostender austenitischer Stahl;14.301;X5CrNi18-10;warmgewalzt;gebeizt;1D
+"[""Edelstahl"",""V4A"",""VA"",""AISI 316""]";Nichtrostender Stahl;Nichtrostender austenitischer Stahl;14.401;X5CrNiMo17-12-2;warmgewalzt;gebeizt;1D
+"[""V4A"",""AISI 316L""]";Nichtrostender Stahl;Nichtrostender austenitischer Stahl;14.404;X2CrNiMo17-12-2;warmgewalzt;gebeizt;1D
+"[""VA"",""V4A"",""Edelstahl"",""AISI 318LN""]";Nichtrostender Stahl;Nichtrostender austenitischer Stahl;14.462;X2CrNiMoN22-5-3;warmgewalzt;gebeizt;1D
+[];Nichtrostender Stahl;Nichtrostender austenitischer Stahl;14.501;X2CrNiMoCuWN25-7-4;warmgewalzt;gebeizt;1D
+"[""AISI 316Ti"",""Edelstahl"",""V4A"",""VA""]";Nichtrostender Stahl;Nichtrostender austenitischer Stahl;14.571;X6CrNiMoTi17-12-2;warmgewalzt;gebeizt;1D
+"[""AISI 309"",""hitzebeständig"",""Edelstahl""]";Nichtrostender Stahl;Nichtrostender aust. hitzebest. Stahl;14.828;X15CrNiSi20-12;warmgewalzt;gebeizt;1D
+"[""VA"",""AISI 430"",""3D"",""IIID"",""Edelstahl""]";Nichtrostender Stahl;Nichtrostender ferritischer Stahl;14.016;X6Cr17;kaltgewalzt;Glatt, blank, reflektierend;2R
+"[""V4A"",""AISI 316L""]";Nichtrostender Stahl;Nichtrostender austenitischer Stahl;14.404;X2CrNiMo17-12-2;kaltgewalzt;Glatt, blank, reflektierend;2R
+"[""Edelstahl"",""VA"",""AISI 430"",""IIID"",""3D""]";Nichtrostender Stahl;Nichtrostender ferritischer Stahl;14.016;X6Cr17;kaltgewalzt;Glatt, blank, reflektierend eins. foliert;2R1sF
+"[""AISI 304"",""V2A""]";Nichtrostender Stahl;Nichtrostender austenitischer Stahl;14.301;X5CrNi18-10;kaltgewalzt;Körn. 180 eins. geschl., eins. foliert;K1801sF
+"[""AISI 304"",""V2A""]";Nichtrostender Stahl;Nichtrostender austenitischer Stahl;14.301;X5CrNi18-10;kaltgewalzt;Körn. 240 beids. geschl., beids. foliert;K240-2sF
+"[""Edelstahl"",""V2A"",""VA"",""AISI 304"",""SUS304""]";Nichtrostender Stahl;Nichtrostender austenitischer Stahl;14.301;X5CrNi18-10;kaltgewalzt;Körn. 240 beids. geschl., eins. foliert;2sK240-1sF
+"[""AISI 430"",""Edelstahl"",""VA""]";Nichtrostender Stahl;Nichtrostender ferritischer Stahl;14.016;X6Cr17;kaltgewalzt;Körn. 240 eins. geschl., eins. foliert;K2401sF
+"[""VA"",""SUS304"",""V2A"",""AISI 304"",""Edelstahl""]";Nichtrostender Stahl;Nichtrostender austenitischer Stahl;14.301;X5CrNi18-10;kaltgewalzt;Körn. 240 eins. geschl., eins. foliert;K2401sF
+[];Nichtrostender Stahl;Nichtrostender austenitischer Stahl;14.404;X2CrNiMo17-12-2;kaltgewalzt;Körn. 240 eins. geschl., eins. foliert;K2401sF
+"[""AISI 316Ti"",""VA"",""V4A"",""Edelstahl""]";Nichtrostender Stahl;Nichtrostender austenitischer Stahl;14.571;X6CrNiMoTi17-12-2;kaltgewalzt;Körn. 240 eins. geschl., eins. foliert;K2401sF
+"[""Edelstahl"",""VA"",""SUS304"",""AISI 304"",""V2A""]";Nichtrostender Stahl;Nichtrostender austenitischer Stahl;14.301;X5CrNi18-10;kaltgewalzt;Körn. 320 eins. geschl., eins. foliert;K3201sF
+"[""Edelstahl"",""V4A"",""VA"",""AISI 316""]";Nichtrostender Stahl;Nichtrostender austenitischer Stahl;14.401;X5CrNiMo17-12-2;kaltgewalzt;Körn. 320 eins. geschl., eins. foliert;K3201sF
+"[""V4A"",""AISI 316L""]";Nichtrostender Stahl;Nichtrostender austenitischer Stahl;14.404;X2CrNiMo17-12-2;kaltgewalzt;Körn. 320 eins. geschl., eins. foliert;K3201sF
+"[""AISI 304"",""Edelstahl"",""VA"",""V2A"",""SUS304""]";Nichtrostender Stahl;Nichtrostender austenitischer Stahl;14.301;X5CrNi18-10;kaltgewalzt;"mustergewalzt 5WL +
+einseitig Folie";5WL1sF
+"[""VA"",""AISI 304"",""V2A"",""Edelstahl"",""SUS304""]";Nichtrostender Stahl;Nichtrostender austenitischer Stahl;14.301;X5CrNi18-10;kaltgewalzt;mustergewalzt Karo + einseitig Folie;Karo1sF
+"[""SUS304"",""VA"",""V2A"",""AISI 304"",""Edelstahl""]";Nichtrostender Stahl;Nichtrostender austenitischer Stahl;14.301;X5CrNi18-10;kaltgewalzt;mustergewalzt Leinen + einseitig Folie;Lein1sF
+"[""VA"",""V2A"",""SUS304"",""AISI 304"",""Edelstahl""]";Nichtrostender Stahl;Nichtrostender austenitischer Stahl;14.301;X5CrNi18-10;kaltgewalzt;mustergewalzt Raute + einseitig Folie;Raut1sF
+"[""Edelstahl"",""AISI 318LN"",""V4A"",""VA""]";Nichtrostender Stahl;Nichtrostender austenitischer Stahl;14.462;X2CrNiMoN22-5-3;kaltgewalzt;rau, stumpf, mechanisch entzundert;2E
+"[""V4A"",""Edelstahl"",""AISI 904L"",""VA""]";Nichtrostender Stahl;Nichtrostender austenitischer Stahl;14.539;X1NiCrMoCu25-20-5;kaltgewalzt;rau, stumpf, mechanisch entzundert;2E
+"[""SUS304"",""V2A"",""Edelstahl"",""AISI 304"",""VA""]";Nichtrostender Stahl;Nichtrostender austenitischer Stahl;14.301;X5CrNi18-10;kaltgewalzt;spiegelpoliert No. 8;2P8
+"[""SUS304"",""V2A"",""Edelstahl"",""AISI 304"",""VA""]";Nichtrostender Stahl;Nichtrostender austenitischer Stahl;14.301;X5CrNi18-10;warmgewalzt;Tränenblech;1MT
+"[""Edelstahl"",""AISI 430"",""VA""]";Nichtrostender Stahl;Nichtrostender ferritischer Stahl;14.016;X6Cr17;kaltgewalzt;visuell glatte Oberfläche;2B
+"[""SUS304"",""V2A"",""Edelstahl"",""AISI 304"",""VA""]";Nichtrostender Stahl;Nichtrostender austenitischer Stahl;14.301;X5CrNi18-10;kaltgewalzt;visuell glatte Oberfläche;2B
+"[""VA"",""V4A"",""Edelstahl"",""AISI 316""]";Nichtrostender Stahl;Nichtrostender austenitischer Stahl;14.401;X5CrNiMo17-12-2;kaltgewalzt;visuell glatte Oberfläche;2B
+"[""V4A"",""AISI 316L""]";Nichtrostender Stahl;Nichtrostender austenitischer Stahl;14.404;X2CrNiMo17-12-2;kaltgewalzt;visuell glatte Oberfläche;2B
+[];Nichtrostender Stahl;Nichtrostender austenitischer Stahl;14.541;X6CrNiTi18-10;kaltgewalzt;visuell glatte Oberfläche;2B
+"[""AISI 316Ti"",""Edelstahl"",""V4A"",""VA""]";Nichtrostender Stahl;Nichtrostender austenitischer Stahl;14.571;X6CrNiMoTi17-12-2;kaltgewalzt;visuell glatte Oberfläche;2B
+"[""AISI 309"",""hitzebeständig"",""Edelstahl""]";Nichtrostender Stahl;Nichtrostender aust. hitzebest. Stahl;14.828;X15CrNiSi20-12;kaltgewalzt;visuell glatte Oberfläche;2B
+"[""Edelstahl"",""V2A"",""VA"",""SUS304"",""AISI 304""]";Nichtrostender Stahl;Nichtrostender austenitischer Stahl;14.301;X5CrNi18-10;kaltgewalzt;visuell glatte Oberfläche, einseitig foliert;2B1sF
+"[""Edelstahl"",""V4A"",""AISI 316"",""VA""]";Nichtrostender Stahl;Nichtrostender austenitischer Stahl;14.401;X5CrNiMo17-12-2;kaltgewalzt;visuell glatte Oberfläche, einseitig foliert;2B1sF
+"[""AISI 316L"",""V4A""]";Nichtrostender Stahl;Nichtrostender austenitischer Stahl;14.404;X2CrNiMo17-12-2;kaltgewalzt;visuell glatte Oberfläche, einseitig foliert;2B1sF
+"[""VA"",""AISI 316Ti"",""Edelstahl"",""V4A""]";Nichtrostender Stahl;Nichtrostender austenitischer Stahl;14.571;X6CrNiMoTi17-12-2;kaltgewalzt;visuell glatte Oberfläche, einseitig foliert;2B1sF
+"[""VA"",""Edelstahl"",""V2A"",""Federbandstahl"",""Federstahl"",""federhart"",""AISI 301"",""Federblech""]";Nichtrostender Stahl;Nichtrostender austenitischer Stahl;14.310;X10CrNi18-8 (Festigkeit 1200 - 1600 N/mm²);kaltgewalzt;;2H
+"[""AISI 316L"",""V4A""]";Nichtrostender Stahl;Nichtrostender austenitischer Stahl;14.404;X2CrNiMo17-12-2;kaltgewalzt;;2H
+"[""AISI Alloy C-4"",""Hastelloy"",""N06455"",""Nickel-Molybdän-Chrom""]";Nickellegierung;Nickel-Molybdän-Chrom-Legierung;24.610;NiMo16Cr16Ti;warmgewalzt;gebeizt;1D
+"[""N06455"",""AISI Alloy C-4"",""Hastelloy"",""Nickel-Molybdän-Chrom""]";Nickellegierung;Nickel-Molybdän-Chrom-Legierung;24.610;NiMo16Cr16Ti;kaltgewalzt;visuell glatte Oberfläche;2B
+[];Nickellegierung;Nickel-Chrom-Eisen-Molybdän-Legierung;24.668;NiCr19Fe19Nb5Mo3;kaltgewalzt;visuell glatte Oberfläche;2B
+"[""Nickel-Molybdän-Chrom""]";Nickellegierung;Nickel-Molybdän-Chrom-Wolfram-Legierung;24.819;NiMo16Cr15W;kaltgewalzt;visuell glatte Oberfläche;2B
+"[""TiGr1"",""Ti995-Ti-grade1"",""R50250"",""T1"",""Titan Grade 1""]";Titan;Titan Grade 1;37.025;Ti995-Ti-grade1;gewalzt;walzblank;wb
+"[""T2"",""Titan Grade 2"",""Ti994-Ti-grade2"",""R50400"",""TiGr2""]";Titan;Titan Grade 2;37.035;Ti994-Ti-grade2;gewalzt;walzblank;wb

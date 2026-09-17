@@ -1,0 +1,32 @@
+{
+  "schema_id": "step-q-mapping",
+  "schema_version": "0.1.0",
+  "description": "Platform-neutral mapping contract for translating external RFQ data to or from STEP-Q.",
+  "mapping_directions": ["source_to_step_q", "step_q_to_source", "bidirectional"],
+  "lossiness_values": ["lossless", "normalized", "lossy", "unmapped"],
+  "mapping_status_values": ["exact", "normalized", "partial", "unmapped"],
+  "required_mapping_fields": [
+    "source_field",
+    "step_q_field",
+    "data_type",
+    "unit",
+    "enum_transform",
+    "direction",
+    "required",
+    "lossiness",
+    "fallback",
+    "comment"
+  ],
+  "mapping_entry": {
+    "source_field": "string or source field path",
+    "step_q_field": "registered STEP-Q field",
+    "data_type": "STEP-Q field data type",
+    "unit": "unit identifier or null",
+    "enum_transform": "named transformation or null",
+    "direction": "source_to_step_q | step_q_to_source | bidirectional",
+    "required": "boolean",
+    "lossiness": "lossless | normalized | lossy | unmapped",
+    "fallback": "explicit fallback policy or null",
+    "comment": "human-readable mapping rationale"
+  }
+}

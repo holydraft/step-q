@@ -6,6 +6,7 @@ This directory contains the current STEP-Q reference tooling for v0.3 evaluation
 
 - `step_q_form.html`: primary browser UI for reading, validating, and writing STEP-Q metadata.
 - `validate_step_q.py`: CLI validator for reproducible checks in terminal and CI.
+- `validate_mappings.py`: local validator for the generic mapping contract and Orderspot library.
 - `StepViewer_HTML/js/step-3d-viewer.js`: minimal viewer wrapper used by `step_q_form.html`.
 
 The preferred workflow is HTML/JS-first. Python is retained only for validator automation.
@@ -42,6 +43,13 @@ Validate one or more STEP files:
 
 ```powershell
 python tools/validate_step_q.py examples/minimal.STEP
+```
+
+Validate the mapping libraries:
+
+```powershell
+python tools/validate_mappings.py
+python -m unittest mappings/orderspot/tests/test_mapping_contract.py -v
 ```
 
 Mark extension fields as documented (warning instead of error):

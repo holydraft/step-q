@@ -1,0 +1,8 @@
+{
+  "source": {
+    "label": "DX51D+AS120"
+  },
+  "resolved": null,
+  "status": "unmapped",
+  "policy": "Report the missing source record; do not replace it with a generic material."
+}

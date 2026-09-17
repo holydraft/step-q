@@ -1,6 +1,6 @@
 # STEP-Q Specification
 
-Version: v0.2 (Evaluable Public Draft)
+Version: v0.3.0 (Integration Preview, planned)
 Status: Public Evaluable Draft
 Maintainer: holydraft
 Author: Manuel Scholz
@@ -146,7 +146,28 @@ Additional embedding guidance is provided in:
 
 ---
 
-## 8. Naming and Distribution Conventions
+## 8. External Mapping and Orchestration Boundary
+
+STEP-Q defines the normalized, transportable metadata model. External systems
+may use mapping libraries to translate platform-specific or customer-specific
+fields into registered STEP-Q fields.
+
+Mapping libraries are maintained outside the STEP-Q Core under:
+
+    mappings/
+
+Orderspot is the first reference mapping library. It is not a normative Core
+dependency, and unresolved source values must remain explicit as `partial` or
+`unmapped` rather than being replaced with generic values.
+
+`three91:quote` is documented as an orchestration and interpretation system for
+downstream producer, manufacturer, and fabricator integrations. It is not a
+producer and does not add confidence, provenance, or internal reasoning fields
+to STEP-Q Core.
+
+---
+
+## 9. Naming and Distribution Conventions
 
 No special filename suffix is required for STEP payloads that contain STEP-Q metadata.
 

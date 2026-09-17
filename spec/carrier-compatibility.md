@@ -1,6 +1,6 @@
 # STEP-Q Carrier Compatibility
 
-Version: v0.2
+Version: v0.3
 Status: Draft
 Maintainer: holydraft
 

@@ -1,0 +1,14 @@
+{
+  "source": {
+    "materialTypeNumber": "33.535",
+    "surfaceNorm": "1sF",
+    "productionMethod": "gewalzt H111"
+  },
+  "resolved": {
+    "step_q_field": "Q_SHEET_MATERIAL",
+    "step_q_label": "EN AW-5754 (AlMg3) 3.3535·H111 Mill-finish · Laserfolie einseitig",
+    "status": "exact",
+    "lossiness": "lossless"
+  },
+  "policy": "The STEP-Q catalog label is canonical; Orderspot fields are lookup coordinates."
+}

@@ -36,17 +36,22 @@ Registered values for `Q_SHEET_MATERIAL`.
 ### Aluminium
 
 - Beliebiges Aluminium·blank
+- EN AW-5754 (AlMg3) 3.3535·H114 Mill-finish · Riffelblech Duett
 - EN AW-5754 (AlMg3) 3.3535·H111 Mill-finish
 - EN AW-7020 (AlZn4,5Mg1) 3.4335·T651
 - EN AW 1050A (Al99,5) 3.0255· H14/H24
+- EN AW 1050A (Al99,5) 3.0255·H14/H24 · Stucco-Dessin
+- EN AW-2017A (AlCu4MgSi(A)) 3.1325·T451
 - EN AW-5754 (AlMg3) 3.3535·H22 Mill-finish
 - EN AW-5754 (AlMg3) 3.3535·H111 Mill-finish · Laserfolie einseitig
 - EN AW-5754 (AlMg3) 3.3535·H114 Mill-finish · Riffelblech Quintett
 - EN AW-5005 (AlMg1)·H14/24 · farblos bandeloxiert · Laserfolie einseitig
 - EN AW-5005 (AlMg1)·H14/24 · bandeloxiert E6/EV1 · Laserfolie einseitig
+- EN AW-5005A (AlMg1) 3.3315·H14/24 · walzblank
 - EN AW-5083 (AlMg4,5Mn0,7) 3.3547·H111 Mill-finish
 - EN AW-5083 (AlMg4,5Mn0,7) 3.3547·H22 Mill-finish
 - EN AW-6082 (AlMgSi1) 3.2315·T6 Mill-finish
+- EN AW-7075 (AlZnMgCu1,5) 3.4365·T6 · walzblank
 
 ### Stahl
 
@@ -54,7 +59,7 @@ Registered values for `Q_SHEET_MATERIAL`.
 - 1.0038·S235JR · warmgewalzt · gebeizt + geölt
 - 1.0038·S235JR · warmgewalzt · walzblau
 - 1.0038·S235JR · warmgewalzt
-- 1.0038·S235JR · warmgewalzt · schwarz Tränenblech
+- 1.0038·S235JR · warmgewalzt · Tränenblech
 - 1.0045·S355JR+N · warmgewalzt · gebeizt + geölt
 - 1.0226·DX51D+Z · gewalzt · feuerverzinkt
 - 1.0226·DX51D+AS120 · gewalzt · AS-beschichtet
@@ -62,6 +67,9 @@ Registered values for `Q_SHEET_MATERIAL`.
 - 1.0330·DC01 · kaltgewalzt · geölt
 - 1.0330·DC01 + ZE 25/25 · kaltgewalzt · elektrolytisch verzinkt
 - 1.0332·DD11 · warmgewalzt · gebeizt + geölt
+- 1.0347·DC03 · kaltgewalzt · walzblank
+- 1.0398·DD12 · warmgewalzt · gebeizt + geölt
+- 1.0398·DD12 · warmgewalzt · walzblank
 - 1.0425·P265GH · warmgewalzt · walzblau
 - 1.0425·P265GH · warmgewalzt
 - 1.0503·C45 · warmgewalzt · walzblau
@@ -73,34 +81,60 @@ Registered values for `Q_SHEET_MATERIAL`.
 - 1.0980·S420MC · warmgewalzt · gebeizt + geölt
 - 1.5415·16Mo3 · warmfester Baustahl
 - 1.8928·S690QL · warmgewalzt · walzblau
+- 1.8946·S355J2WP (COR-TEN A) · warmgewalzt · blank
 - 1.8965·COR-TEN B (S355J2W) · warmgewalzt · blank
+- 1.0984·S500MC · warmgewalzt · gebeizt + geölt
+- 1.0984·S500MC · warmgewalzt · walzblau
 - 1.8974·S700MC · warmgewalzt · gebeizt + geölt
 - 1.8974·S700MC · warmgewalzt · walzblau
 
 ### Edelstahl
 
 - Beliebiger Edelstahl·blank
-- 1.4301·2B (alt: III C) · kaltgewalzt
-- 1.4301·1D (alt: III A) · warmgewalzt
-- 1.4301·1D (alt: III A) · warmgewalzt · Tränenblech
-- 1.4404·1D (alt: III A) · hot-rolled · chequer plate
-- 1.4301·2B (alt: III C) · kaltgewalzt · Laserfolie einseitig
-- 1.4301·2G · kaltgewalzt · Laserfolie einseitig · eins. geschliffen Korn 240
-- 1.4301·2G · warmgewalzt · Laserfolie einseitig · eins. geschliffen Korn 240
-- 1.4301·2G · kaltgewalzt · Laserfolie einseitig · eins. geschliffen Korn 32
-- 1.4301·2J · kaltgewalzt · Laserfolie einseitig · eins. gebürstet
 - 1.4016·2B · kaltgewalzt
 - 1.4016·2R · kaltgewalzt · blankgeglüht
+- 1.4016·Korn 240 · einseitig geschliffen, einseitig foliert
+- 1.4301·1D (alt: III A) · warmgewalzt
+- 1.4301·1D (alt: III A) · warmgewalzt · Tränenblech
+- 1.4301·2B (alt: III C) · kaltgewalzt
+- 1.4301·2B (alt: III C) · kaltgewalzt · Laserfolie einseitig
+- 1.4301·2G · kaltgewalzt · Laserfolie einseitig · einseitig geschliffen Korn 240
+- 1.4301·2G · warmgewalzt · Laserfolie einseitig · einseitig geschliffen Korn 240
+- 1.4301·2G · kaltgewalzt · Laserfolie einseitig · einseitig geschliffen Korn 320
+- 1.4301·2J · kaltgewalzt · Laserfolie einseitig · einseitig gebürstet
+- 1.4301·Korn 180 · einseitig geschliffen, einseitig foliert
+- 1.4301·Korn 240 · beidseitig geschliffen, beidseitig foliert
+- 1.4301·Korn 240 · beidseitig geschliffen, einseitig foliert
+- 1.4301·Korn 320 · einseitig geschliffen, einseitig foliert
+- 1.4301·5WL · mustergewalzt, einseitig foliert
+- 1.4301·Karo · mustergewalzt, einseitig foliert
+- 1.4301·Leinen · mustergewalzt, einseitig foliert
+- 1.4301·Raute · mustergewalzt, einseitig foliert
+- 1.4301·spiegelpoliert No. 8
+- 1.4301·warmgewalzt · Tränenblech
+- 1.4401·warmgewalzt · gebeizt
+- 1.4401·kaltgewalzt · visuell glatte Oberfläche
+- 1.4401·kaltgewalzt · visuell glatte Oberfläche, einseitig foliert
+- 1.4401·Korn 320 · einseitig geschliffen, einseitig foliert
 - 1.4404·1D (alt: III A) · warmgewalzt
+- 1.4404·1D (alt: III A) · warmgewalzt · Riffelblech
 - 1.4404·2B (alt: III C) · kaltgewalzt
 - 1.4404·2B (alt: III C) · kaltgewalzt · Laserfolie einseitig
-- 1.4404·2G · kaltgewalzt · Laserfolie einseitig · eins. geschliffen Korn 240
-- 1.4462·1D (alt: IIA) · hot-rolled
-- 1.4509·2B (alt: IIIC) · cold-rolled
+- 1.4404·2G · kaltgewalzt · Laserfolie einseitig · einseitig geschliffen Korn 240
+- 1.4404·gebürstet · foliert
+- 1.4404·kaltgewalzt · blank, reflektierend
+- 1.4404·kaltgewalzt · federhart
+- 1.4404·Korn 320 · einseitig geschliffen, einseitig foliert
+- 1.4462·1D (alt: IIA) · warmgewalzt
+- 1.4462·kaltgewalzt · rau, stumpf, mechanisch entzundert
+- 1.4501·warmgewalzt · gebeizt
+- 1.4509·2B (alt: IIIC) · kaltgewalzt
 - 1.4539·X1NiCrMoCu 25-20-5 · kaltgewalzt
 - 1.4541·2B (alt: III C) · kaltgewalzt
 - 1.4571·1D (alt: III A) · warmgewalzt
 - 1.4571·2B (alt: III C) · kaltgewalzt
+- 1.4571·Korn 240 · einseitig geschliffen, einseitig foliert
+- 1.4571·kaltgewalzt · visuell glatte Oberfläche, einseitig foliert
 - 1.4828·1D (alt: III A) · warmgewalzt
 - 1.4828·2B (alt: III C) · kaltgewalzt
 - 1.4841·1D (alt: III A) · warmgewalzt
@@ -114,13 +148,31 @@ Registered values for `Q_SHEET_MATERIAL`.
 
 - 1.3401·Manganstahl
 - 1.4713·X10CrAlSi7
+- HB 300·warmgewalzt · schwarz
 - HB 400·warmgewalzt · schwarz
+- HB 450·warmgewalzt · schwarz
 - HB 500·warmgewalzt · schwarz
 
 ### Kupferlegierung
 
 - 2.0060·Kupfer CW004A
+- 2.009·Kupfer CW021A
+- 2.0090·Kupfer CW024A
 - 2.0321·Messing CW508L (CuZn37)
+- 2.0321·Messing CW508L · geschliffen · foliert
+- 2.0402·Messing CW612N
+
+### Nickellegierung
+
+- 2.4610·NiMo16Cr16Ti · warmgewalzt · gebeizt
+- 2.4610·NiMo16Cr16Ti · kaltgewalzt · visuell glatte Oberfläche
+- 2.4668·NiCr19Fe19Nb5Mo3 · kaltgewalzt · visuell glatte Oberfläche
+- 2.4819·NiMo16Cr15W · kaltgewalzt · visuell glatte Oberfläche
+
+### Titan
+
+- 3.7025·Ti995-Ti-grade1 · gewalzt · walzblank
+- 3.7035·Ti994-Ti-grade2 · gewalzt · walzblank
 
 ---
 

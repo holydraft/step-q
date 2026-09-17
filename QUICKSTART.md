@@ -14,6 +14,7 @@ What you can validate today:
 - malformed or unterminated STEP entity statements in the `DATA;` section
 - documented versus undocumented extension fields
 - example conformance classification: full, partial, non
+- generic mapping-library structure and the verified Orderspot subset
 
 What is not covered yet:
 
@@ -88,6 +89,19 @@ Expected outcome:
 - errors: `0`
 - warnings: at least `2` (`PROPERTY_SET` missing and no STEP-Q fields found)
 
+6. Validate the external mapping layer:
+
+```powershell
+python tools/validate_mappings.py
+python -m unittest mappings/orderspot/tests/test_mapping_contract.py -v
+```
+
+Expected outcome:
+
+- mapping validation passes
+- all mapping contract tests pass
+- `partial` and `unmapped` source values are not silently converted
+
 ## How To Read The Output
 
 The validator prints structured JSON.
@@ -106,6 +120,8 @@ Key fields:
 - Read `spec/fields.md` and `spec/enumerations.md` for the registered metadata model.
 - Read `examples/README.md` for the purpose of each example file.
 - Read `tools/README.md` for the current validator scope and limits.
+- Read `mappings/README.md` for the external mapping contract and Orderspot library.
+- Read `integrations/three91-quote.md` for the planned orchestration boundary.
 
 ## Browser Form
 

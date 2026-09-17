@@ -28,33 +28,20 @@ Backward compatibility is expected within major versions.
 
 ## 3. Current Status
 
-### v0.2 — Validation and Examples (Current)
+### v0.3.0 — Integration Preview (Current planned scope)
 
 Focus:
 
-- normative clarification for parser tolerance vs. conformance
-- complete example STEP files
-- minimal reference validator/parser for evaluable draft releases
-- local evaluation tooling and quickstart guidance
+- preserve the v0.3 STEP-Q Core registry as the integration boundary
+- define a generic mapping contract outside the Core
+- establish Orderspot as the first reference mapping library
+- document `three91:quote` as orchestration for downstream producer and manufacturing integrations
 
-Status: Released
+Status: Planned, not yet released
 
 ---
 
 ## 4. Short-Term Roadmap (v0.x Series)
-
-### v0.3 — STEP-Q Core Stabilization
-
-Planned features:
-
-- stabilize STEP-Q Core terminology and scope
-- align repository documentation to the carrier-agnostic STEP-Q model
-- document current examples and tools as AP-agnostic repository assets
-- improve extension handling and embedding-profile clarity across current examples and tools
-
-Target: clearer draft semantics and lower implementation ambiguity
-
----
 
 ### v0.4 — Integration and Exchange Profiles
 
