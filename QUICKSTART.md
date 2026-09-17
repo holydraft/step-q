@@ -93,6 +93,7 @@ Expected outcome:
 
 ```powershell
 python tools/validate_mappings.py
+python mappings/orderspot/validate.py
 python -m unittest mappings/orderspot/tests/test_mapping_contract.py -v
 ```
 

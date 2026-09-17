@@ -35,7 +35,7 @@ Focus:
 - preserve the v0.3 STEP-Q Core registry as the integration boundary
 - define a generic mapping contract outside the Core
 - establish Orderspot as the first reference mapping library
-- document `three91:quote` as orchestration for downstream producer and manufacturing integrations
+- document `three91:quote` as a possible STEP-Q producer and orchestration layer for downstream integrations
 
 Status: Planned, not yet released
 

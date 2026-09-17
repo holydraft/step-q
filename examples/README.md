@@ -40,3 +40,7 @@ These outcomes reflect the current validator behavior against v0.3 spec registri
 Mapping examples are maintained separately under `mappings/orderspot/examples/`.
 They demonstrate source resolution and explicit unmapped handling without
 changing STEP-Q example conformance fixtures.
+
+Mapping examples are maintained separately under `mappings/orderspot/examples/`.
+They demonstrate source resolution and explicit unmapped handling without
+changing STEP-Q example conformance fixtures.

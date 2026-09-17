@@ -5,8 +5,9 @@
     "productionMethod": "gewalzt H111"
   },
   "resolved": {
-    "step_q_field": "Q_SHEET_MATERIAL",
-    "step_q_label": "EN AW-5754 (AlMg3) 3.3535·H111 Mill-finish · Laserfolie einseitig",
+    "step_q_field": "Q_MATERIAL",
+    "step_q_enum": "Q_SHEET_MATERIAL",
+    "step_q_value": "EN AW-5754 (AlMg3) 3.3535·H111 Mill-finish · Laserfolie einseitig",
     "status": "exact",
     "lossiness": "lossless"
   },

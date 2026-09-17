@@ -7,9 +7,9 @@ Orderspot source: `spec/materials_orderspot.csv`
 
 ## 1. Purpose
 
-This document maps every registered `Q_SHEET_MATERIAL` catalog label to the
-closest Orderspot material record. The STEP-Q catalog label remains the
-canonical value. Orderspot is referenced by `materialTypeNumber` and
+This document maps registered `Q_SHEET_MATERIAL` enum values used by the
+STEP-Q field `Q_MATERIAL` to the closest Orderspot material record. The STEP-Q
+catalog label remains the canonical value. Orderspot is referenced by `materialTypeNumber` and
 `surfaceNorm` because one material number can have multiple production and
 surface variants.
 

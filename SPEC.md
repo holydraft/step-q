@@ -160,10 +160,10 @@ Orderspot is the first reference mapping library. It is not a normative Core
 dependency, and unresolved source values must remain explicit as `partial` or
 `unmapped` rather than being replaced with generic values.
 
-`three91:quote` is documented as an orchestration and interpretation system for
-downstream producer, manufacturer, and fabricator integrations. It is not a
-producer and does not add confidence, provenance, or internal reasoning fields
-to STEP-Q Core.
+`three91:quote` is documented as a possible STEP-Q producer and orchestration
+and interpretation system for downstream platform, producer, manufacturer, and
+fabricator integrations. It does not add confidence, provenance, or internal
+reasoning fields to STEP-Q Core.
 
 ---
 
@@ -181,7 +181,7 @@ Parsers and validators shall identify STEP-Q by file content, not by filename.
 
 ---
 
-## 9. Validation and Parser Requirements
+## 10. Validation and Parser Requirements
 
 Validation rules are defined in:
 
@@ -206,7 +206,7 @@ No hard failures shall occur solely due to metadata issues.
 
 ---
 
-## 10. Conformance
+## 11. Conformance
 
 For conformance evaluation, STEP-Q distinguishes between parser tolerance and specification conformance.
 
@@ -227,7 +227,7 @@ Non-conformance applies when core structural or syntactic rules are violated.
 
 ---
 
-## 11. Extensions
+## 12. Extensions
 
 Custom extensions are permitted if:
 
@@ -243,7 +243,7 @@ Parsers shall ignore unsupported extensions for import continuity, while validat
 
 ---
 
-## 12. Intellectual Property
+## 13. Intellectual Property
 
 STEP-Q is developed and maintained by holydraft.
 
@@ -253,7 +253,7 @@ No rights are waived by publication.
 
 ---
 
-## 13. Versioning
+## 14. Versioning
 
 Semantic versioning is applied.
 
@@ -265,7 +265,7 @@ Backward compatibility shall be maintained within a major version.
 
 ---
 
-## 14. Governance
+## 15. Governance
 
 Changes to this specification are managed via GitHub pull requests.
 
@@ -273,7 +273,7 @@ All changes are subject to maintainer review.
 
 ---
 
-## 15. Document Control
+## 16. Document Control
 
 This document is the normative umbrella reference for STEP-Q.
 

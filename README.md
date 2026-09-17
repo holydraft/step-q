@@ -31,7 +31,7 @@ Practical goal:
 
 ## Architecture
 
-STEP-Q is organized into four linked parts:
+STEP-Q is organized into five linked parts:
 
 - **STEP-Q Core**: field names, data types, meanings, required or optional status, and validation semantics
 - **STEP carrier compatibility**: how the same STEP-Q metadata can travel with AP203, AP214, AP242, or neutral sidecar exchange
@@ -132,7 +132,7 @@ Current priorities:
 - keep examples and tooling aligned with the draft field registry
 - document carrier-agnostic usage clearly
 - define reusable mapping libraries without extending STEP-Q Core
-- document downstream producer and manufacturing integrations behind `three91:quote`
+- document `three91:quote` as a possible STEP-Q producer and orchestration layer for downstream integrations
 - provide a short, reproducible evaluation path for implementers and partners
 
 Current distribution convention:

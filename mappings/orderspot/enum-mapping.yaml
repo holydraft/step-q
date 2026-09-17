@@ -1,11 +1,12 @@
 {
   "library_id": "orderspot",
-  "mapping_schema": "../../mapping-schema.yaml",
+  "mapping_schema": "../mapping-schema.yaml",
   "enum_mappings": [
     {
       "source_enum": "orderspot.material",
+      "step_q_field": "Q_MATERIAL",
       "step_q_enum": "Q_SHEET_MATERIAL",
-      "direction": "orderspot_to_step_q",
+      "direction": "source_to_step_q",
       "transformation": "resolve_by_materialTypeNumber_surfaceNorm_productionMethod",
       "fallback": "report_unmapped_without_generic_material",
       "lossiness": "normalized",

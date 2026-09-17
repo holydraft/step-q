@@ -1,11 +1,12 @@
 {
   "schema_id": "step-q-mapping",
-  "schema_version": "0.1.0",
+  "schema_version": "0.2.0",
   "description": "Platform-neutral mapping contract for translating external RFQ data to or from STEP-Q.",
   "mapping_directions": ["source_to_step_q", "step_q_to_source", "bidirectional"],
   "lossiness_values": ["lossless", "normalized", "lossy", "unmapped"],
   "mapping_status_values": ["exact", "normalized", "partial", "unmapped"],
   "required_mapping_fields": [
+    "mapping_id",
     "source_field",
     "step_q_field",
     "data_type",
@@ -15,18 +16,26 @@
     "required",
     "lossiness",
     "fallback",
-    "comment"
+    "comment",
+    "status"
   ],
   "mapping_entry": {
+    "mapping_id": "globally unique mapping identifier",
     "source_field": "string or source field path",
     "step_q_field": "registered STEP-Q field",
+    "step_q_enum": "registered STEP-Q enum",
+    "step_q_value": "registered value in step_q_enum",
     "data_type": "STEP-Q field data type",
+    "value_mode": "passthrough | literal",
     "unit": "unit identifier or null",
     "enum_transform": "named transformation or null",
     "direction": "source_to_step_q | step_q_to_source | bidirectional",
     "required": "boolean",
     "lossiness": "lossless | normalized | lossy | unmapped",
     "fallback": "explicit fallback policy or null",
-    "comment": "human-readable mapping rationale"
+    "comment": "human-readable mapping rationale",
+    "status": "exact | normalized | partial | unmapped",
+    "context": "optional generic context object, for example product_type",
+    "bidirectional_safe": "required and true only for lossless, unique bidirectional mappings"
   }
 }

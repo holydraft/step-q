@@ -4,9 +4,9 @@ Status: Planned integration architecture
 
 ## Role
 
-`three91:quote` is an orchestration and interpretation system for later
-producer, manufacturer, and fabricator integrations. It is not itself a
-producer and is not part of the STEP-Q standard.
+`three91:quote` is a possible STEP-Q producer and an orchestration and
+interpretation system for downstream platform, producer, manufacturer, and
+fabricator integrations. It is not part of the STEP-Q standard.
 
 The system may receive heterogeneous RFQ inputs such as:
 
@@ -15,10 +15,9 @@ The system may receive heterogeneous RFQ inputs such as:
 - PDFs and technical drawings
 - ERP or platform data
 
-It can extract requirements, resolve conflicts, normalize the result, and hand
-the resulting RFQ model to a downstream producer or manufacturing integration.
-That downstream integration may export validated STEP-Q metadata for its target
-platform or workflow.
+It can extract requirements, resolve conflicts, normalize the result, and export
+validated STEP-Q metadata. The same normalized RFQ model may also be handed to
+a platform-specific integration without passing through STEP-Q first.
 
 ## Boundary to STEP-Q
 
@@ -37,10 +36,11 @@ The boundary is therefore:
 heterogeneous RFQ inputs
         -> three91:quote orchestration and interpretation
         -> normalized internal RFQ model
-        -> downstream producer/manufacturer/fabricator integration
-        -> validated STEP-Q output where supported
+                   -> validated STEP-Q output
+                   -> platform-specific producer/manufacturer/fabricator integration
 ```
 
 No public API contract or proprietary field list is implied by this document.
-Future producer integrations should use the generic mapping layer under
-`mappings/` rather than adding platform-specific fields to STEP-Q Core.
+Orderspot is a possible consumer and producer integration. Future platform
+integrations should use the generic mapping layer under `mappings/` rather than
+adding platform-specific fields to STEP-Q Core.
