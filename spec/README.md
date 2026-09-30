@@ -11,6 +11,6 @@ Specification files for STEP-Q.
 Integration layer:
 
 - ../mappings/README.md: generic external mapping contract
-- ../mappings/orderspot/README.md: first reference mapping library
+- ../mappings/orderspot-materials/README.md: first reference material mapping library
 - ../integrations/three91-quote.md: orchestration boundary for downstream integrations
 - validation.md: validation and conformance rules

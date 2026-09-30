@@ -65,6 +65,9 @@ The current repository contains working examples and tooling around a p21/proper
     mapping-schema.yaml generic mapping contract
     orderspot/ first reference material mapping library
 
+    /sources/
+    orderspot/ external Orderspot source data used by the mapping library
+
     /integrations/
     three91-quote.md orchestration architecture for downstream integrations
 
@@ -87,7 +90,8 @@ The current repository contains working examples and tooling around a p21/proper
 - spec/enumerations.md: controlled vocabulary and change process
 - spec/validation.md: validation logic and parser resilience requirements
 - mappings/README.md: generic mapping contract and library policy
-- mappings/orderspot/README.md: first reference mapping library
+- mappings/orderspot-materials/README.md: first reference material mapping library
+- sources/orderspot/README.md: external Orderspot source data and provenance
 - integrations/three91-quote.md: planned orchestration architecture
 - QUICKSTART.md: short evaluation path for the current draft
 

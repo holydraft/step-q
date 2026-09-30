@@ -14,8 +14,8 @@ if str(ROOT) not in sys.path:
 from tools.validate_mappings import load_yaml_json
 
 
-MAPPING_PATH = ROOT / "mappings" / "orderspot" / "mapping.yaml"
-SOURCE_PATH = ROOT / "spec" / "materials_orderspot.csv"
+MAPPING_PATH = ROOT / "mappings" / "orderspot-materials" / "mapping.yaml"
+SOURCE_PATH = ROOT / "sources" / "orderspot" / "materials.csv"
 IDENTITY_FIELDS = ("materialTypeNumber", "surfaceNorm", "productionMethod")
 
 

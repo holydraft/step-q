@@ -3,7 +3,7 @@
 Version: v0.3  
 Status: Draft  
 Source catalog: `spec/materials.md`, section 3  
-Orderspot source: `spec/materials_orderspot.csv`
+Orderspot source: `sources/orderspot/materials.csv`
 
 ## 1. Purpose
 

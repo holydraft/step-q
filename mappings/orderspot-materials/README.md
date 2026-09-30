@@ -11,7 +11,7 @@ catalog and the current Orderspot CSV source. The library intentionally excludes
 `partial` and `unmapped` values from automated conversion.
 
 - STEP-Q catalog: `spec/materials.md`
-- Orderspot source: `spec/materials_orderspot.csv`
+- Orderspot source: `sources/orderspot/materials.csv`
 - Existing analysis: `spec/q-sheet-material-orderspot-mapping.md`
 - Declarative mapping: [mapping.yaml](mapping.yaml)
 - Enum policy: [enum-mapping.yaml](enum-mapping.yaml)
@@ -31,7 +31,7 @@ are marked `bidirectional`; normalized entries remain one-way.
 
 ```powershell
 python tools/validate_mappings.py
-python mappings/orderspot/validate.py
+python mappings/orderspot-materials/validate.py
 ```
 
 The validator is deliberately local and deterministic. It does not call an

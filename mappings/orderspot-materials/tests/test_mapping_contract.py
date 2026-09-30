@@ -1,9 +1,19 @@
 import copy
+import importlib.util
 import tempfile
 import unittest
 from pathlib import Path
 
-from mappings.orderspot.validate import source_rows, validate_orderspot
+VALIDATOR_PATH = Path(__file__).resolve().parents[1] / "validate.py"
+VALIDATOR_SPEC = importlib.util.spec_from_file_location(
+    "orderspot_materials_validate", VALIDATOR_PATH
+)
+if VALIDATOR_SPEC is None or VALIDATOR_SPEC.loader is None:
+    raise ImportError(f"Cannot load Orderspot material validator from {VALIDATOR_PATH}")
+VALIDATOR_MODULE = importlib.util.module_from_spec(VALIDATOR_SPEC)
+VALIDATOR_SPEC.loader.exec_module(VALIDATOR_MODULE)
+source_rows = VALIDATOR_MODULE.source_rows
+validate_orderspot = VALIDATOR_MODULE.validate_orderspot
 from tools.validate_mappings import (
     SCHEMA_PATH,
     discover_mapping_libraries,
@@ -327,7 +337,7 @@ class MappingContractTests(unittest.TestCase):
         self.assertTrue(any("duplicate mapping_id" in error for error in errors))
 
     def test_orderspot_source_collision(self):
-        library = load_yaml_json("mappings/orderspot/mapping.yaml")
+        library = load_yaml_json("mappings/orderspot-materials/mapping.yaml")
         duplicate = copy.deepcopy(library["mappings"][0])
         duplicate["mapping_id"] = "orderspot.test.collision"
         library["mappings"].append(duplicate)
@@ -335,13 +345,13 @@ class MappingContractTests(unittest.TestCase):
         self.assertTrue(any("Orderspot source collision" in error for error in errors))
 
     def test_orderspot_source_identity_missing(self):
-        library = load_yaml_json("mappings/orderspot/mapping.yaml")
+        library = load_yaml_json("mappings/orderspot-materials/mapping.yaml")
         library["mappings"][0]["source_identity"]["surfaceNorm"] = "NOT_IN_SOURCE"
         errors = validate_orderspot(library, source_rows())
         self.assertTrue(any("source identity not found" in error for error in errors))
 
     def test_bidirectional_mapping_rejected_when_ambiguous(self):
-        library = load_yaml_json("mappings/orderspot/mapping.yaml")
+        library = load_yaml_json("mappings/orderspot-materials/mapping.yaml")
         second = copy.deepcopy(library["mappings"][1])
         second["mapping_id"] = "orderspot.test.ambiguous"
         second["source_identity"] = {

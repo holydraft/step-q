@@ -24,6 +24,8 @@ This process applies to contributions affecting:
 - Validation rules
 - Examples
 - Schemas and tools
+- Mapping libraries and external source datasets; see the workflow in
+	`mappings/README.md`
 
 ---
 
@@ -86,6 +88,11 @@ All technical proposals must include:
 5. Migration strategy (if applicable)
 
 Incomplete proposals will not be reviewed.
+
+Mapping-library proposals should additionally document the external source's
+provenance, the STEP-Q target scope, mapping direction, status and lossiness,
+fallback behavior, and the results of generic and source-specific validation.
+External source data must remain separate from the STEP-Q Core specification.
 
 For bug reports, conformance questions, or draft feedback, contributors should include the most relevant available evidence, for example:
 

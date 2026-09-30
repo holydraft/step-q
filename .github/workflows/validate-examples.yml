@@ -94,7 +94,7 @@ jobs:
         run: python tools/validate_mappings.py
 
       - name: Validate Orderspot source identities
-        run: python mappings/orderspot/validate.py
+        run: python mappings/orderspot-materials/validate.py
 
       - name: Run mapping contract tests
-        run: python -m unittest mappings/orderspot/tests/test_mapping_contract.py -v
+        run: python -m unittest discover -s mappings/orderspot-materials/tests -p "test_*.py" -v

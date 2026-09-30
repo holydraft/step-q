@@ -3,7 +3,7 @@
   "library_version": "0.2.0",
   "mapping_schema": "../mapping-schema.yaml",
   "source_catalog": "../../spec/materials.md",
-  "source_data": "../../spec/materials_orderspot.csv",
+  "source_data": "../../sources/orderspot/materials.csv",
   "source_identity": ["materialTypeNumber", "surfaceNorm", "productionMethod"],
   "policy": {
     "automatable_statuses": ["exact", "normalized"],

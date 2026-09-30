@@ -1,0 +1,40 @@
+{
+  "library_id": "orderspot-processing",
+  "mapping_schema": "../mapping-schema.yaml",
+  "enum_mappings": [
+    {
+      "source_enum": "orderspot.galvanizing",
+      "step_q_field": "Q_GALVANIZING",
+      "step_q_enum": "Q_GALVANIZING",
+      "values": {
+        "Elektrolytisch verzinkt": "electro_galvanizing",
+        "Feuerverzinkt": "hot_dip_galvanizing"
+      },
+      "unselected_value": "Kein Verzinken",
+      "unselected_behavior": "omit Q_GALVANIZING"
+    },
+    {
+      "source_enum": "orderspot.grindingDegree",
+      "condition": {"respectDirection": true},
+      "step_q_field": "Q_ROLLING_DIRECTION",
+      "step_q_enum": "Q_ORIENTATION",
+      "values": {
+        "0° (horizontal)": "parallel",
+        "90° (vertikal)": "perpendicular"
+      },
+      "condition_false_behavior": "map respectDirection=false to arbitrary"
+    },
+    {
+      "source_field": "orderspot.deburring",
+      "proposed_step_q_field": "Q_DEBURRING",
+      "status": "unmapped",
+      "reason": "The UI exposes only a selected/not-selected switch; STEP-Q requires a concrete deburring method."
+    },
+    {
+      "source_field": "orderspot.certificates",
+      "proposed_step_q_field": "Q_TEST_REPORT",
+      "status": "unmapped",
+      "reason": "The UI exposes only a request switch; STEP-Q requires a concrete EN 10204 test-report type."
+    }
+  ]
+}
