@@ -59,7 +59,7 @@
     .panel { background: var(--header-bg); border: 1px solid var(--line); border-radius: 8px; padding: 20px; margin-top: 18px; box-shadow: var(--shadow); }
     .form-layout { display: grid; grid-template-columns: minmax(280px, 40%) minmax(380px, 60%); gap: 18px; align-items: start; }
     .viewer-column { justify-self: stretch; }
-    .viewer-panel { display: grid; gap: 12px; transition: min-height 2600ms cubic-bezier(0.2, 0.68, 0.18, 1); }
+    .viewer-panel { display: grid; gap: 12px; transition: min-height 1600ms cubic-bezier(0.2, 0.68, 0.18, 1); }
     .viewer-controls { display: flex; justify-content: flex-end; }
     .viewer-toggle {
       display: inline-flex;
@@ -79,8 +79,9 @@
     .viewer-stage { position: relative; margin-top: 20px; width: 100%; min-height: 380px; border: 1px dashed var(--line); border-radius: 8px; background: var(--surface-strong); overflow: hidden; cursor: pointer; }
     .viewer-stage.drag-over { border-color: var(--accent); background: var(--surface); }
     .viewer-placeholder { display: grid; place-items: center; min-height: 405px; color: var(--muted); text-align: center; padding: 20px; }
-    .file-input { display: none; }
     .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
+    .basic-column > .grid { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+    #basicFieldsRoot { display: grid; gap: 12px; min-width: 0; }
     label { display: block; font-weight: 700; margin-bottom: 5px; }
     input, select, textarea, button { font: inherit; }
     input[type="text"], input[type="number"], select, textarea { box-sizing: border-box; width: 100%; border: 1px solid var(--line); border-radius: 6px; padding: 9px 10px; background: var(--white); color: var(--ink); }
@@ -102,11 +103,44 @@
     button:hover { filter: brightness(.96); }
     button:disabled { opacity: .55; cursor: not-allowed; }
     .actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 20px; }
-    .copy-option { display: inline-flex; align-items: center; gap: 8px; padding: 0 4px; font-weight: 600; }
-    .copy-option input { width: 16px; height: 16px; }
+    .skip-animation-option { display: inline-flex; align-items: center; gap: 8px; margin: 0; font-weight: 600; }
+    .skip-animation-option input { width: 16px; height: 16px; accent-color: var(--accent); }
     .status { white-space: pre-wrap; border-radius: 6px; padding: 12px; margin-top: 16px; }
     .status.ok { background: var(--notice-bg); border: 1px solid var(--accent); color: var(--notice-text); }
     .status.error { background: var(--status-error-bg); border: 1px solid var(--status-error-border); }
+    .result-heading { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
+    .result-heading-message { min-width: 0; }
+    .status-details { margin-top: 8px; }
+    .status-details summary { cursor: pointer; }
+    .status-details pre { margin: 8px 0 0; white-space: pre-wrap; overflow-wrap: anywhere; font: inherit; }
+    .result-actions { display: flex; flex: 0 0 auto; align-items: center; flex-wrap: wrap; gap: 8px; }
+    .copy-mode-option { display: inline-flex; align-items: center; gap: 6px; min-width: 0; margin: 0; font-weight: 600; white-space: normal; }
+    .copy-mode-option input { width: 16px; height: 16px; accent-color: var(--accent); }
+    button.danger { border-color: var(--status-error-border); background: var(--status-error-bg); color: var(--ink); }
+    .save-feedback { margin: 8px 0 0; }
+    .batch-panel { margin: 20px 0; }
+    .batch-header { display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; }
+    .batch-header h2 { margin: 0; border: 0; padding: 0; }
+    .batch-upload { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .batch-upload input { display: none; }
+    .batch-list { display: grid; gap: 6px; margin-top: 14px; }
+    .batch-item { display: grid; grid-template-columns: auto minmax(0, 1fr) auto auto; align-items: center; gap: 10px; border: 1px solid var(--line); border-radius: 6px; padding: 8px 10px; background: var(--surface); }
+    .batch-item.active { border-color: var(--accent); background: var(--notice-bg); }
+    .batch-item input[type="checkbox"] { width: 17px; height: 17px; accent-color: var(--accent); }
+    .batch-item-open { min-width: 0; border: 0; padding: 0; background: transparent; color: var(--ink); text-align: left; }
+    .batch-item-open:hover { filter: none; color: var(--accent-dark); }
+    .batch-item-name { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 700; }
+    .batch-item-meta { display: block; color: var(--muted); font-size: 0.88rem; }
+    .batch-item-status { color: var(--muted); font-size: 0.88rem; white-space: nowrap; }
+    .batch-remove { min-width: 32px; padding: 4px 7px; background: transparent; color: var(--muted); border-color: transparent; font-size: 1.15rem; line-height: 1; }
+    .batch-remove:hover { background: var(--surface-strong); color: var(--ink); }
+    .batch-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+    .batch-select-all { display: flex; align-items: center; gap: 10px; margin: 14px 0 0; padding: 0 10px; font-weight: 600; }
+    .batch-select-all input { width: 17px; height: 17px; margin: 0 3px; accent-color: var(--accent); }
+    .batch-actions button { flex: 0 0 auto; }
+    .batch-selection-tools { display: flex; gap: 6px; }
+    .batch-selection-tools button { padding: 6px 9px; font-size: 0.9rem; }
+    .batch-empty { color: var(--muted); margin: 12px 0 0; }
     dialog { width: min(880px, calc(100vw - 28px)); border: 1px solid var(--line); border-radius: 10px; padding: 0; background: var(--white); color: var(--ink); }
     dialog::backdrop { background: var(--dialog-backdrop); }
     .dialog-head { padding: 14px 16px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; gap: 12px; align-items: center; }
@@ -122,6 +156,10 @@
     details.catalog-group .catalog-group-body { padding: 0 12px 12px; }
     .muted { color: var(--muted); }
     .hidden { display: none; }
+    @media (max-width: 900px) {
+      .result-heading { align-items: flex-start; flex-direction: column; }
+      .result-actions { max-width: 100%; }
+    }
     .field {
       transition: opacity 720ms ease, transform 720ms ease, filter 720ms ease;
       will-change: opacity, transform, filter;
@@ -224,7 +262,12 @@
       min-height: var(--viewer-focus-height, 520px);
     }
     #metadataForm.viewer-focus-mode .viewer-stage {
-      transition: min-height 2600ms cubic-bezier(0.2, 0.68, 0.18, 1), height 2600ms cubic-bezier(0.2, 0.68, 0.18, 1);
+      transition: min-height 1600ms cubic-bezier(0.2, 0.68, 0.18, 1), height 1600ms cubic-bezier(0.2, 0.68, 0.18, 1);
+    }
+    #metadataForm.no-focus-transition,
+    #metadataForm.no-focus-transition * {
+      transition: none !important;
+      animation: none !important;
     }
     @media (max-width: 860px) {
       .form-layout { grid-template-columns: 1fr; }
@@ -235,6 +278,29 @@
   <main>
     <h1>STEP-Q Metadatenformular</h1>
     <p class="muted">Wähle zuerst die Produktart. Danach werden die passenden Eingabefelder aus der Spezifikation geladen.</p>
+
+    <section id="batchPanel" class="panel batch-panel" aria-labelledby="batch-title">
+      <div class="batch-header">
+        <h2 id="batch-title">STEP-Dateien</h2>
+        <div class="batch-upload">
+          <input id="batchUpload" type="file" accept=".step,.stp,.STEP,.STP" multiple>
+          <button id="batchUploadButton" type="button">Eine oder mehrere STEP-Dateien auswählen</button>
+        </div>
+      </div>
+      <label id="batchSelectAllRow" class="batch-select-all hidden" for="selectAllBatch">
+        <input id="selectAllBatch" type="checkbox">
+        Alle Dateien auswählen
+      </label>
+      <div id="batchList" class="batch-list" aria-live="polite"></div>
+      <p id="batchEmpty" class="batch-empty">Noch keine Dateien ausgewählt.</p>
+      <div id="batchActions" class="batch-actions hidden">
+        <button id="applyToSelection" class="secondary" type="button" title="Überträgt die Produktart und alle ausgefüllten Spezifikationen des aktuell geöffneten Formulars auf die ausgewählten, noch nicht abgeschlossenen STEP-Dateien. Vorhandene Werte der übertragenen Felder werden überschrieben. Leere Felder werden nicht übertragen. Bei einem Produktartwechsel werden nicht passende bisherige Einträge entfernt. Die Originaldateien werden erst beim späteren Speichern verändert.">Aktuelle Spezifikationen auf Auswahl anwenden</button>
+        <div class="batch-selection-tools">
+          <button id="clearBatchSelection" class="secondary hidden" type="button">Auswahl aufheben</button>
+        </div>
+        <span id="batchSelectionCount" class="muted"></span>
+      </div>
+    </section>
 
     <form id="metadataForm" class="panel" novalidate>
       <div class="form-layout">
@@ -258,7 +324,6 @@
             <div id="viewerStage" class="viewer-stage">
               <div id="viewerPlaceholder" class="viewer-placeholder">STEP-Datei hier ablegen oder klicken.</div>
             </div>
-            <input class="file-input" id="stepUpload" type="file" accept=".step,.stp,.STEP,.STP">
           </div>
         </aside>
       </div>
@@ -266,7 +331,10 @@
       <div id="fieldsRoot" class="hidden"></div>
       <div class="actions">
         <button type="submit">STEP-Q Metadaten übernehmen</button>
-        <label class="copy-option" for="createCopy"><input id="createCopy" type="checkbox">Kopie erstellen</label>
+        <label class="skip-animation-option" for="skipAnimation">
+          <input id="skipAnimation" type="checkbox">
+          Animation überspringen
+        </label>
       </div>
     </form>
 
@@ -287,9 +355,8 @@
   <script src="https://cdn.jsdelivr.net/npm/online-3d-viewer@0.18.0/build/engine/o3dv.min.js"></script>
   <script src="./StepViewer_HTML/js/step-3d-viewer.js?v=neon-toggle-11"></script>
   <script>
-    const VIEWER_FOCUS_VIEWPORT_GAP_PX = 72;
-    const VIEWER_FOCUS_GROWTH_MS = 2600;
-    const VIEWER_FOCUS_MODEL_SCALE = 0.70;
+    const VIEWER_FOCUS_GROWTH_MS = 1600;
+    const VIEWER_FOCUS_MODEL_SCALE = 0.85;
     const PRODUCT_LABELS = { sheet: 'Blech', tube: 'Rohr/Profil', turning: 'Drehteil', milling: 'Frästeil' };
     const TYPE_LABELS = { Enum: 'Auswahl', Integer: 'Ganzzahl', Float: 'Dezimalzahl', Bool: 'Ja/Nein' };
     const ENUM_DESCRIPTIONS_DE = {
@@ -332,10 +399,21 @@
       currentAfterSelect: null,
       stepViewer: null,
       stepFile: null,
-      stepFileHandle: null,
       stepText: '',
+      pendingStepText: '',
+      pendingOutputName: '',
+      pendingMetadata: null,
+      outputCompleted: false,
+      isSavingOutput: false,
+      isLoadingFile: false,
+      batchItems: [],
+      selectedBatchIds: new Set(),
+      activeBatchId: null,
+      nextBatchItemId: 1,
       modelLoaded: false,
       submitAnimationRunning: false,
+      isPreparingOutput: false,
+      viewerGrowthFrame: 0,
       viewerAnnotationTimeouts: []
     };
 
@@ -346,10 +424,15 @@
     const basicFieldsRoot = document.querySelector('#basicFieldsRoot');
     const fieldsRoot = document.querySelector('#fieldsRoot');
     const result = document.querySelector('#result');
-    const stepUpload = document.querySelector('#stepUpload');
-    const createCopyInput = document.querySelector('#createCopy');
+    const skipAnimationInput = document.querySelector('#skipAnimation');
     const viewerStage = document.querySelector('#viewerStage');
-    const viewerPlaceholder = document.querySelector('#viewerPlaceholder');
+    let viewerPlaceholder = document.querySelector('#viewerPlaceholder');
+    const batchUpload = document.querySelector('#batchUpload');
+    const batchUploadButton = document.querySelector('#batchUploadButton');
+    const batchList = document.querySelector('#batchList');
+    const batchEmpty = document.querySelector('#batchEmpty');
+    const batchActions = document.querySelector('#batchActions');
+    const batchSelectionCount = document.querySelector('#batchSelectionCount');
     const catalogDialog = document.querySelector('#catalogDialog');
     const catalogTitle = document.querySelector('#catalogTitle');
     const catalogSearch = document.querySelector('#catalogSearch');
@@ -381,7 +464,21 @@
         renderFields('');
       });
       bindStepUpload();
+      batchUploadButton.addEventListener('click', openStepFilePicker);
+      batchUpload.addEventListener('change', async () => {
+        await addBatchFiles(Array.from(batchUpload.files || []));
+        batchUpload.value = '';
+      });
+      document.querySelector('#applyToSelection').addEventListener('click', applyCurrentValuesToSelection);
       form.addEventListener('submit', onSubmit);
+      result.addEventListener('click', event => {
+        const action = event.target.closest('[data-result-action]')?.dataset.resultAction;
+        if (action === 'edit') returnToEditor();
+        if (action === 'discard') removeActiveBatchItem();
+        if (action === 'save' || action === 'copy') savePendingStep();
+        if (action === 'restart') restartWorkflow();
+        if (action === 'next') editNextBatchItem();
+      });
       document.querySelector('#closeCatalog').addEventListener('click', () => catalogDialog.close());
       catalogSearch.addEventListener('input', renderCatalogItems);
     }
@@ -628,7 +725,7 @@
 
     function bindStepUpload() {
       viewerStage.addEventListener('click', async () => {
-        if (!state.modelLoaded) await openStepFilePicker();
+        if (!state.batchItems.length) await openStepFilePicker();
       });
       viewerStage.addEventListener('dragover', event => {
         event.preventDefault();
@@ -640,15 +737,9 @@
       viewerStage.addEventListener('drop', async event => {
         event.preventDefault();
         viewerStage.classList.remove('drag-over');
-        const { files, fileHandle } = await getDroppedStepSelection(event.dataTransfer);
-        await loadStepFiles(files, fileHandle);
+        const { files, handles } = await getDroppedStepSelection(event.dataTransfer);
+        await addBatchFiles(files, handles);
       });
-      stepUpload.addEventListener('change', async () => {
-        const files = Array.from(stepUpload.files || []);
-        await loadStepFiles(files, null);
-        stepUpload.value = '';
-      });
-
       window.addEventListener('resize', () => {
         if (form.classList.contains('viewer-focus-mode')) {
           updateViewerFocusTargetHeight(true);
@@ -661,22 +752,21 @@
     }
 
     async function openStepFilePicker() {
+      if (state.outputCompleted) return;
       if (typeof window.showOpenFilePicker !== 'function') {
-        stepUpload.click();
+        batchUpload.click();
         return;
       }
       try {
         const handles = await window.showOpenFilePicker({
-          multiple: false,
+          multiple: true,
           types: [{
             description: 'STEP-Dateien',
             accept: { 'application/step': ['.step', '.stp'] }
           }]
         });
-        const fileHandle = handles[0];
-        if (!fileHandle) return;
-        const file = await fileHandle.getFile();
-        await loadStepFiles([file], fileHandle);
+        const files = await Promise.all(handles.map(handle => handle.getFile()));
+        await addBatchFiles(files, handles);
       } catch (error) {
         if (error?.name !== 'AbortError') {
           showResult(false, 'Dateiauswahl konnte nicht geöffnet werden:\n\n' + error.message);
@@ -685,35 +775,333 @@
     }
 
     async function getDroppedStepSelection(dataTransfer) {
-      const files = Array.from(dataTransfer?.files || []);
-      let fileHandle = null;
-      const firstStepFile = files.find(file => /\.(step|stp)$/i.test(file.name));
-
-      if (firstStepFile && dataTransfer?.items) {
-        for (const item of dataTransfer.items) {
-          if (item.kind !== 'file' || typeof item.getAsFileSystemHandle !== 'function') continue;
-          try {
-            const handle = await item.getAsFileSystemHandle();
-            if (handle?.kind === 'file' && handle.name === firstStepFile.name) {
-              fileHandle = handle;
-              break;
+      const selections = Array.from(dataTransfer?.items || [])
+        .filter(item => item.kind === 'file')
+        .map(item => {
+          const file = item.getAsFile();
+          let handlePromise = Promise.resolve(null);
+          if (typeof item.getAsFileSystemHandle === 'function') {
+            try {
+              handlePromise = Promise.resolve(item.getAsFileSystemHandle()).catch(() => null);
+            } catch {
+              handlePromise = Promise.resolve(null);
             }
-          } catch {
-            fileHandle = null;
           }
+          return { file, handlePromise };
+        }).filter(selection => selection.file);
+      if (!selections.length) return { files: Array.from(dataTransfer?.files || []), handles: [] };
+      return {
+        files: selections.map(selection => selection.file),
+        handles: await Promise.all(selections.map(selection => selection.handlePromise))
+      };
+    }
+
+    async function addBatchFiles(files, handles = []) {
+      if (state.outputCompleted) return;
+      if (state.pendingStepText) {
+        showResult(false, 'Lade den vorbereiteten Entwurf zuerst herunter, bearbeite ihn weiter oder entferne ihn aus dem Warenkorb.');
+        return;
+      }
+      const stepFiles = files.filter(file => /\.(step|stp)$/i.test(file.name));
+      if (!stepFiles.length) {
+        if (files.length) showResult(false, 'Bitte mindestens eine STEP- oder STP-Datei auswählen.');
+        return;
+      }
+
+      const firstNewId = state.nextBatchItemId;
+      const addedItems = await Promise.all(stepFiles.map(async file => {
+        const id = state.nextBatchItemId++;
+        const fileIndex = files.indexOf(file);
+        try {
+          const text = await file.text();
+          const values = extractStepQMetadata(text);
+          return {
+            id,
+            file,
+            fileHandle: handles[fileIndex] || null,
+            text,
+            values,
+            outputText: '',
+            outputName: '',
+            status: Object.keys(values).length ? 'STEP-Q vorhanden' : 'Offen',
+            error: ''
+          };
+        } catch (error) {
+          return {
+            id,
+            file,
+            fileHandle: handles[fileIndex] || null,
+            text: '',
+            values: {},
+            outputText: '',
+            outputName: '',
+            status: 'Fehler',
+            error: error.message
+          };
+        }
+      }));
+
+      state.batchItems.push(...addedItems);
+      renderBatchCart();
+      if (state.activeBatchId === null) await activateBatchItem(state.batchItems.find(item => item.id >= firstNewId && item.text));
+      else if (addedItems.length) showResult(true, `${addedItems.length} STEP-Datei(en) zum Warenkorb hinzugefügt.`);
+    }
+
+    function renderBatchCart() {
+      batchList.replaceChildren();
+      batchUploadButton.disabled = Boolean(state.pendingStepText) || state.outputCompleted;
+      batchEmpty.classList.toggle('hidden', state.batchItems.length > 0);
+      batchActions.classList.toggle('hidden', state.batchItems.length === 0);
+      batchSelectionCount.textContent = `${state.selectedBatchIds.size} ausgewählt · ${state.batchItems.length} ${state.batchItems.length === 1 ? 'Teil' : 'Teile'}`;
+      document.querySelector('#applyToSelection').disabled = state.selectedBatchIds.size === 0 || Boolean(state.pendingStepText) || state.outputCompleted;
+      const selectableItems = state.batchItems.filter(item => !item.completed);
+      const selectedCount = selectableItems.filter(item => state.selectedBatchIds.has(item.id)).length;
+      const selectAll = document.querySelector('#selectAllBatch');
+      selectAll.onchange = () => {
+        state.selectedBatchIds = selectAll.checked
+          ? new Set(selectableItems.map(item => item.id))
+          : new Set();
+        renderBatchCart();
+      };
+      document.querySelector('#clearBatchSelection').onclick = () => {
+        state.selectedBatchIds.clear();
+        renderBatchCart();
+      };
+      selectAll.checked = selectableItems.length > 0 && selectedCount === selectableItems.length;
+      selectAll.indeterminate = false;
+      selectAll.disabled = Boolean(state.pendingStepText) || state.outputCompleted || state.isSavingOutput;
+      document.querySelector('#batchSelectAllRow').classList.toggle('hidden', state.selectedBatchIds.size === 0);
+      document.querySelector('#clearBatchSelection').classList.toggle('hidden', state.selectedBatchIds.size === 0);
+      document.querySelector('#clearBatchSelection').disabled = state.selectedBatchIds.size === 0 || Boolean(state.pendingStepText) || state.outputCompleted;
+
+      for (const item of state.batchItems) {
+        const row = document.createElement('div');
+        row.className = 'batch-item' + (item.id === state.activeBatchId ? ' active' : '');
+
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.checked = state.selectedBatchIds.has(item.id);
+        checkbox.disabled = state.outputCompleted || Boolean(state.pendingStepText) || state.isSavingOutput;
+        checkbox.setAttribute('aria-label', `${item.file.name} für Stapeländerungen auswählen`);
+        checkbox.addEventListener('change', () => {
+          if (checkbox.checked) state.selectedBatchIds.add(item.id);
+          else state.selectedBatchIds.delete(item.id);
+          renderBatchCart();
+        });
+
+        const openButton = document.createElement('button');
+        openButton.type = 'button';
+        openButton.className = 'batch-item-open';
+        openButton.disabled = state.isPreparingOutput || state.isSavingOutput || state.isLoadingFile;
+        const name = document.createElement('span');
+        name.className = 'batch-item-name';
+        name.textContent = item.file.name;
+        const meta = document.createElement('span');
+        meta.className = 'batch-item-meta';
+        meta.textContent = `${PRODUCT_LABELS[item.values.Q_PRODUCT_TYPE] || 'Produktart offen'} · ${formatFileSize(item.file.size)}`;
+        openButton.append(name, meta);
+        openButton.addEventListener('click', () => activateBatchItem(item));
+
+        const status = document.createElement('span');
+        status.className = 'batch-item-status';
+        status.textContent = item.error || item.status;
+        const removeButton = document.createElement('button');
+        removeButton.type = 'button';
+        removeButton.className = 'batch-remove';
+        removeButton.textContent = '×';
+        removeButton.setAttribute('aria-label', `${item.file.name} aus dem Warenkorb entfernen`);
+        removeButton.title = 'Aus dem Warenkorb entfernen';
+        removeButton.disabled = Boolean(state.pendingStepText) || state.outputCompleted;
+        removeButton.addEventListener('click', () => removeBatchItem(item));
+        row.append(checkbox, openButton, status, removeButton);
+        batchList.appendChild(row);
+      }
+    }
+
+    function formatFileSize(size) {
+      if (!Number.isFinite(size)) return 'STEP-Datei';
+      if (size < 1024 * 1024) return `${Math.max(1, Math.round(size / 1024))} KB`;
+      return `${(size / (1024 * 1024)).toFixed(1)} MB`;
+    }
+
+    function collectCurrentMetadataValues() {
+      const values = { Q_PRODUCT_TYPE: productTypeInput.value };
+      for (const fieldNode of form.querySelectorAll('#basicFieldsRoot .field, #fieldsRoot .field')) {
+        const key = fieldNode.dataset.fieldKey;
+        if (!key || key === 'Q_PRODUCT_TYPE') continue;
+        const type = fieldNode.dataset.type;
+        const control = fieldNode.querySelector('input, select, textarea');
+        if (!control) continue;
+        const value = type === 'Bool' ? (control.checked ? 'true' : '') : control.value.trim();
+        if (value) values[key] = value;
+        else values[key] = '';
+      }
+      return values;
+    }
+
+    function saveActiveBatchValues() {
+      const item = state.batchItems.find(entry => entry.id === state.activeBatchId);
+      if (!item) return;
+      const previousValues = JSON.stringify(item.values);
+      const editedValues = collectCurrentMetadataValues();
+      const productChanged = Boolean(item.values.Q_PRODUCT_TYPE && editedValues.Q_PRODUCT_TYPE && item.values.Q_PRODUCT_TYPE !== editedValues.Q_PRODUCT_TYPE);
+      if (productChanged) {
+        for (const key of Object.keys(item.values)) {
+          if (key !== 'Q_PRODUCT_TYPE' && !getField(editedValues.Q_PRODUCT_TYPE, key)) delete item.values[key];
+        }
+      }
+      item.values = { ...item.values, ...editedValues };
+      for (const field of form.querySelectorAll('#basicFieldsRoot .field, #fieldsRoot .field')) {
+        const key = field.dataset.fieldKey;
+        if (editedValues[key] === '') delete item.values[key];
+      }
+      if (!editedValues.Q_PRODUCT_TYPE) delete item.values.Q_PRODUCT_TYPE;
+      const valuesChanged = JSON.stringify(item.values) !== previousValues;
+      if (valuesChanged && item.outputText) {
+        item.outputText = '';
+        item.outputName = '';
+        item.status = 'Geändert · neu erstellen';
+      }
+      else if (valuesChanged && item.status !== 'Heruntergeladen') item.status = 'In Bearbeitung';
+      renderBatchCart();
+    }
+
+    async function activateBatchItem(item, showResultScreen = form.classList.contains('viewer-focus-mode')) {
+      if (!item || item.id === state.activeBatchId || state.isPreparingOutput || state.isSavingOutput || state.isLoadingFile) return;
+      state.isLoadingFile = true;
+      renderBatchCart();
+      try {
+      if (state.activeBatchId !== null && !form.classList.contains('viewer-focus-mode')) saveActiveBatchValues();
+
+      state.activeBatchId = null;
+      state.outputCompleted = false;
+      returnToEditor();
+
+      state.activeBatchId = item.id;
+      state.stepFile = item.file;
+      state.stepText = item.text;
+      await loadStepFiles([item.file]);
+      productTypeInput.value = '';
+      renderProductTypeSelect();
+      renderBasicFields('');
+      fieldsRoot.replaceChildren();
+      fieldsRoot.classList.add('hidden');
+      form.classList.remove('hidden');
+      clearResult();
+      if (Object.keys(item.values).length) applyMetadataToForm(item.values);
+      if (item.status === 'Offen') item.status = 'In Bearbeitung';
+      if (showResultScreen && !item.completed && !item.outputText) {
+        try {
+          const product = item.values.Q_PRODUCT_TYPE;
+          if (!state.enums.Q_PRODUCT_TYPE?.some(option => option.value === product)) {
+            throw new Error('Für diese Datei fehlt eine gültige Produktart. Über „Bearbeiten“ die Produktart festlegen.');
+          }
+          for (const [key, value] of Object.entries(item.values)) {
+            if (key === 'Q_PRODUCT_TYPE') continue;
+            const field = getField(product, key);
+            const validation = field && validateValue(field.type, field.type === 'Bool' ? value === 'true' : value, field.enumName);
+            if (!validation?.ok) throw new Error(`${key}: ungültiger Wert für die Produktart.`);
+          }
+          item.outputName = item.file.name;
+          item.outputText = annotateStepText(item.text, item.values, item.outputName);
+          item.status = 'Bereit';
+          item.error = '';
+        } catch (error) {
+          item.status = 'Prüfung fehlgeschlagen';
+          item.error = error.message;
+          enterViewerFocusMode(false);
+          showResult(false, `${item.file.name}: ${error.message}`);
+          const actions = document.createElement('div');
+          actions.className = 'result-actions';
+          actions.append(createResultAction('Bearbeiten', 'edit', 'secondary'));
+          result.append(actions);
+          renderBatchCart();
+          return;
+        }
+      }
+      if (item.completed) {
+        enterViewerFocusMode(false);
+        renderPendingOutputResult();
+        state.outputCompleted = true;
+        renderCompletedOutput(item);
+      } else if (item.outputText) {
+        state.pendingStepText = item.outputText;
+        state.pendingOutputName = item.outputName;
+        state.pendingMetadata = { ...item.values };
+        enterViewerFocusMode(false);
+        renderPendingOutputResult();
+      }
+      renderBatchCart();
+      } finally {
+        state.isLoadingFile = false;
+        renderBatchCart();
+      }
+    }
+
+    function applyCurrentValuesToSelection() {
+      saveActiveBatchValues();
+      const sourceValues = collectCurrentMetadataValues();
+      const sourceProduct = sourceValues.Q_PRODUCT_TYPE;
+      if (!sourceProduct) {
+        showResult(false, 'Wähle zuerst eine Produktart und trage die gemeinsamen Werte ein.');
+        return;
+      }
+
+      let appliedCount = 0;
+      let skippedCount = 0;
+      for (const item of state.batchItems) {
+        if (!state.selectedBatchIds.has(item.id) || item.completed) continue;
+        const targetProduct = sourceProduct;
+        if (item.values.Q_PRODUCT_TYPE !== targetProduct) {
+          for (const [key, value] of Object.entries(item.values)) {
+            if (key === 'Q_PRODUCT_TYPE') continue;
+            const field = getField(targetProduct, key);
+            if (!field || !validateValue(field.type, value, field.enumName).ok) delete item.values[key];
+          }
+        }
+        item.values.Q_PRODUCT_TYPE = targetProduct;
+
+        let itemChanged = true;
+        for (const [key, value] of Object.entries(sourceValues)) {
+          if (key === 'Q_PRODUCT_TYPE' || value === '') continue;
+          const targetField = getField(targetProduct, key);
+          if (!targetField) {
+            skippedCount += 1;
+            continue;
+          }
+          const validation = validateValue(targetField.type, value, targetField.enumName);
+          if (!validation.ok) {
+            skippedCount += 1;
+            continue;
+          }
+          item.values[key] = serializeMetadataValue(targetField.type, validation.value);
+          itemChanged = true;
+        }
+
+        if (itemChanged) {
+          item.outputText = '';
+          item.outputName = '';
+          item.status = 'Änderungen angewendet';
+          appliedCount += 1;
         }
       }
 
-      return { files, fileHandle };
+      const activeItem = state.batchItems.find(item => item.id === state.activeBatchId);
+      if (activeItem && Object.keys(activeItem.values).length) applyMetadataToForm(activeItem.values);
+      renderBatchCart();
+      const appliedLabel = appliedCount === 1 ? 'Teil' : 'Teile';
+      const skippedMessage = skippedCount
+        ? ` ${skippedCount} ${skippedCount === 1 ? 'Feld wurde' : 'Felder wurden'} wegen unterschiedlicher Produktarten oder Auswahlwerte übersprungen.`
+        : '';
+      showResult(true, `Werte auf ${appliedCount} ${appliedLabel} angewendet.${skippedMessage}`);
     }
 
-    async function loadStepFiles(files, fileHandle = null) {
+    async function loadStepFiles(files) {
       const stepFiles = files.filter(file => /\.(step|stp)$/i.test(file.name));
       if (!stepFiles.length) return;
       const stepFile = stepFiles[0];
 
       state.stepFile = stepFile;
-      state.stepFileHandle = fileHandle;
       state.stepText = await stepFile.text();
 
       if (!window.Step3DViewer) {
@@ -729,7 +1117,9 @@
             state.modelLoaded = true;
             updateViewerModelScaleForFocus(true);
           },
-          onModelLoadFailed: () => showResult(false, 'Die STEP-Datei konnte nicht angezeigt werden.')
+          onModelLoadFailed: () => {
+            if (!form.classList.contains('viewer-focus-mode')) showResult(false, 'Die STEP-Datei konnte nicht angezeigt werden.');
+          }
         });
       }
       state.stepViewer.loadFromFiles(stepFiles);
@@ -810,6 +1200,8 @@
 
     async function onSubmit(event) {
       event.preventDefault();
+      if (state.isPreparingOutput || state.outputCompleted || state.isLoadingFile) return;
+      state.isPreparingOutput = true;
       const errors = [];
       const values = { Produktart: PRODUCT_LABELS[productTypeInput.value] || productTypeInput.value };
       const metadata = {};
@@ -833,81 +1225,344 @@
       }
 
       if (errors.length) {
+        const activeItem = state.batchItems.find(item => item.id === state.activeBatchId);
+        if (activeItem) {
+          activeItem.status = 'Prüfung fehlgeschlagen';
+          renderBatchCart();
+        }
         showResult(false, 'Syntaxprüfung fehlgeschlagen:\n\n' + errors.map(error => '- ' + error).join('\n'));
+        state.isPreparingOutput = false;
+        renderBatchCart();
         return;
       }
+
+      saveActiveBatchValues();
 
       if (!state.stepFile || !state.stepText) {
-        showResult(true, 'Syntaxprüfung erfolgreich. Lade eine STEP-Datei, um eine STEP-Q Kopie zu erzeugen.\n\n' + JSON.stringify(values, null, 2));
+        showResult(true, 'Syntaxprüfung erfolgreich. Lade eine STEP-Datei, um eine STEP-Q Datei vorzubereiten.\n\n' + JSON.stringify(values, null, 2));
+        state.isPreparingOutput = false;
+        renderBatchCart();
         return;
       }
 
-      const createCopy = createCopyInput.checked;
-      const outputName = createCopy ? deriveAnnotatedName(state.stepFile.name) : state.stepFile.name;
-      let overwriteWriter = null;
-
-      if (!createCopy) {
-        try {
-          overwriteWriter = await prepareOverwriteWriter();
-        } catch (error) {
-          showResult(false, 'STEP-Q Metadaten konnten nicht gespeichert werden:\n\n' + error.message);
-          return;
-        }
-      }
-
-      clearViewerAnnotations();
-      const filledFieldEntries = collectFilledFieldEntries();
-      const perFieldFlightMs = 1500;
-
-      await ensureViewerFullyVisible();
-
-      const glowDurationMs = filledFieldEntries.length * perFieldFlightMs;
-      triggerSubmitSpinStart(glowDurationMs);
-      triggerSubmitNeonRamp(glowDurationMs);
-
-      await playSubmitFieldFlightAnimation(filledFieldEntries, perFieldFlightMs);
-      triggerSubmitSpinStop();
-
       try {
-        const annotatedText = annotateStepText(state.stepText, metadata, outputName);
-        if (createCopy) {
-          await writeStepCopy(annotatedText, outputName);
-          showResult(true, `Syntaxprüfung erfolgreich. STEP-Q Kopie wurde gespeichert.\n\n` + JSON.stringify(values, null, 2));
-          enterViewerFocusMode();
-        } else {
-          await overwriteOriginalStepFile(annotatedText, overwriteWriter);
-          overwriteWriter = null;
-          state.stepText = annotatedText;
-          state.stepFile = await state.stepFileHandle.getFile();
-          showResult(true, `Syntaxprüfung erfolgreich. Originaldatei wurde mit STEP-Q Metadaten überschrieben.\n\n` + JSON.stringify(values, null, 2));
-          enterViewerFocusMode();
+        clearViewerAnnotations();
+        state.pendingMetadata = { ...metadata };
+        state.pendingOutputName = state.stepFile.name;
+        state.pendingStepText = annotateStepText(state.stepText, state.pendingMetadata, state.pendingOutputName);
+        renderBatchCart();
+
+        const skipAnimation = skipAnimationInput.checked;
+        if (!skipAnimation) {
+          const filledFieldEntries = collectFilledFieldEntries();
+          const perFieldFlightMs = 900;
+          await ensureViewerFullyVisible();
+
+          const glowDurationMs = filledFieldEntries.length * perFieldFlightMs;
+          triggerSubmitSpinStart(glowDurationMs);
+          triggerSubmitNeonRamp(glowDurationMs);
+          await playSubmitFieldFlightAnimation(filledFieldEntries, perFieldFlightMs);
+          triggerSubmitSpinStop();
         }
+
+        const activeItem = state.batchItems.find(item => item.id === state.activeBatchId);
+        if (activeItem) {
+          activeItem.values = { ...metadata };
+          activeItem.outputText = state.pendingStepText;
+          activeItem.outputName = state.pendingOutputName;
+          activeItem.status = 'Bereit';
+          renderBatchCart();
+        }
+        enterViewerFocusMode(!skipAnimation);
+        renderPendingOutputResult();
+        if (skipAnimation) result.scrollIntoView({ behavior: 'instant', block: 'nearest' });
       } catch (error) {
-        showResult(false, 'STEP-Q Metadaten konnten nicht gespeichert werden:\n\n' + error.message);
-      } finally {
-        if (overwriteWriter && typeof overwriteWriter.abort === 'function') {
-          try {
-            await overwriteWriter.abort();
-          } catch {
-            // ignore cleanup errors when stream was already finalized
-          }
+        state.pendingStepText = '';
+        state.pendingOutputName = '';
+        state.pendingMetadata = null;
+        const activeItem = state.batchItems.find(item => item.id === state.activeBatchId);
+        if (activeItem) {
+          activeItem.status = 'Fehler';
+          activeItem.error = error.message;
+          renderBatchCart();
         }
+        showResult(false, 'STEP-Q konnte nicht vorbereitet werden:\n\n' + error.message);
+      } finally {
+        state.isPreparingOutput = false;
+        renderBatchCart();
       }
     }
 
-    async function prepareOverwriteWriter() {
-      if (!state.stepFileHandle || typeof state.stepFileHandle.createWritable !== 'function') {
-        throw new Error('Überschreiben ist nur möglich, wenn die Datei über Klick-Auswahl oder Handle-fähiges Drag-and-drop geladen wurde. Aktiviere alternativ "Kopie erstellen".');
-      }
+    function renderPendingOutputResult() {
+      result.className = 'status ok';
+      result.replaceChildren();
 
-      if (typeof state.stepFileHandle.requestPermission === 'function') {
-        const permission = await state.stepFileHandle.requestPermission({ mode: 'readwrite' });
-        if (permission !== 'granted') {
-          throw new Error('Schreibzugriff wurde nicht erlaubt.');
+      const heading = document.createElement('div');
+      heading.className = 'result-heading';
+      const statusMessage = document.createElement('div');
+      statusMessage.className = 'result-heading-message';
+      statusMessage.textContent = 'STEP-Q erfolgreich erstellt. Metadaten wurden übernommen.';
+      const fileName = document.createElement('div');
+      fileName.textContent = state.stepFile?.name || '';
+      statusMessage.prepend(fileName);
+
+      const actions = document.createElement('div');
+      actions.className = 'result-actions';
+      const copyLabel = document.createElement('label');
+      copyLabel.className = 'copy-mode-option';
+      copyLabel.title = 'Erstellt eine separate STEP-Q-Datei. Die Originaldatei bleibt unverändert; der Dateiname erhält einen STEP-Q-Zusatz.';
+      const copyCheckbox = document.createElement('input');
+      copyCheckbox.type = 'checkbox';
+      copyCheckbox.id = 'saveAsCopy';
+      const copyText = document.createElement('span');
+      copyText.textContent = 'STEP-Q-Kopie erstellen (Original behalten)';
+      copyLabel.append(copyCheckbox, copyText);
+
+      const saveButton = createResultAction('Originaldatei mit STEP-Q überschreiben', 'save');
+      saveButton.title = 'Ergänzt STEP-Q-Metadaten in der Originaldatei. Dateiname und Endung bleiben gleich. STEP-Q beeinflusst den gewohnten STEP-Prozess nicht; die Datei kann wie gewohnt im Bestellprozess weiterverwendet werden.';
+      copyCheckbox.addEventListener('change', () => {
+        const feedback = result.querySelector('.save-feedback');
+        feedback.textContent = '';
+        feedback.hidden = true;
+        updateSaveActionUI();
+      });
+      actions.append(
+        createResultAction('Löschen', 'discard', 'danger'),
+        createResultAction('Bearbeiten', 'edit', 'secondary'),
+        saveButton,
+        copyLabel
+      );
+
+      heading.append(statusMessage, actions);
+      const saveHint = document.createElement('p');
+      saveHint.className = 'save-hint';
+      const feedback = document.createElement('p');
+      feedback.className = 'save-feedback';
+      feedback.setAttribute('role', 'status');
+      feedback.hidden = true;
+      result.append(heading, saveHint, feedback);
+      updateSaveActionUI();
+    }
+
+    function createResultAction(label, action, className = '') {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.dataset.resultAction = action;
+      button.textContent = label;
+      if (className) button.className = className;
+      return button;
+    }
+
+    function updateSaveActionUI() {
+      if (state.outputCompleted) return;
+      const checkbox = result.querySelector('#saveAsCopy');
+      const button = result.querySelector('[data-result-action="save"], [data-result-action="copy"]');
+      const hint = result.querySelector('.save-hint');
+      if (!checkbox || !button || !hint) return;
+      const copyMode = checkbox.checked;
+      const activeItem = state.batchItems.find(item => item.id === state.activeBatchId);
+      const canOverwrite = Boolean(activeItem?.fileHandle && typeof activeItem.fileHandle.createWritable === 'function');
+      button.dataset.resultAction = copyMode ? 'copy' : 'save';
+      button.textContent = copyMode ? 'STEP-Q-Kopie speichern' : 'Originaldatei mit STEP-Q überschreiben';
+      button.disabled = state.isSavingOutput;
+      button.title = copyMode
+        ? 'Öffnet den Speichern-unter-Dialog für eine separate STEP-Q-Datei. Die Originaldatei bleibt unverändert.'
+        : 'Ergänzt STEP-Q-Metadaten in der Originaldatei. Dateiname und Endung bleiben gleich. STEP-Q beeinflusst den gewohnten STEP-Prozess nicht; die Datei kann wie gewohnt im Bestellprozess weiterverwendet werden.';
+      hint.hidden = copyMode || canOverwrite;
+      hint.textContent = 'Für diesen Upload fehlt der Originaldatei-Zugriff. Zum direkten Überschreiben muss die Datei beim Upload über den Dateiauswahl-Button in Edge oder Chrome über localhost geöffnet werden. Alternativ kannst du ausdrücklich eine STEP-Q-Kopie erstellen. Beim Überschreiben wird kein Dateidialog geöffnet.';
+    }
+
+    async function savePendingStep() {
+      if (state.isLoadingFile || state.isSavingOutput || state.outputCompleted || !state.pendingStepText || !state.pendingMetadata) return;
+      state.isSavingOutput = true;
+      renderBatchCart();
+      const copyMode = result.querySelector('#saveAsCopy')?.checked || false;
+      const button = result.querySelector('[data-result-action="save"], [data-result-action="copy"]');
+      const feedback = result.querySelector('.save-feedback');
+      if (button) button.disabled = true;
+
+      try {
+        const activeItem = state.batchItems.find(item => item.id === state.activeBatchId);
+        const hasSavePicker = typeof window.showSaveFilePicker === 'function';
+        const outputName = copyMode ? deriveAnnotatedName(state.stepFile.name) : state.stepFile.name;
+        const outputText = annotateStepText(state.stepText, state.pendingMetadata, outputName);
+        if (copyMode) {
+          await writeStepCopy(outputText, outputName);
+        } else {
+          if (!activeItem?.fileHandle || typeof activeItem.fileHandle.createWritable !== 'function') {
+            throw new Error('Die Originaldatei wurde ohne Datei-Zugriff geladen. Es wurde nichts überschrieben und kein Dateidialog geöffnet. Öffne die Datei beim Upload über den Dateiauswahl-Button in einem unterstützten Browser oder wähle ausdrücklich „STEP-Q-Kopie erstellen“.');
+          }
+          const permission = typeof activeItem.fileHandle.requestPermission === 'function'
+            ? await activeItem.fileHandle.requestPermission({ mode: 'readwrite' })
+            : 'granted';
+          if (permission !== 'granted') throw new Error('Schreibzugriff wurde nicht erteilt. Die Originaldatei wurde nicht verändert.');
+          await overwriteStepFile(activeItem.fileHandle, outputText);
+          const updatedFile = await activeItem.fileHandle.getFile();
+          activeItem.file = updatedFile;
+          activeItem.text = outputText;
+          state.stepFile = updatedFile;
+          state.stepText = outputText;
         }
-      }
 
-      return state.stepFileHandle.createWritable();
+        if (feedback) {
+          feedback.textContent = copyMode
+            ? (hasSavePicker ? 'STEP-Q-Kopie wurde gespeichert.' : 'Download der STEP-Q-Kopie wurde gestartet.')
+            : 'STEP-Q wurde in der Originaldatei gespeichert. Dateiname und Endung sind unverändert.';
+          feedback.hidden = false;
+        }
+        if (activeItem) {
+          activeItem.status = copyMode ? (hasSavePicker ? 'Kopie gespeichert' : 'Download gestartet') : 'STEP-Q übernommen';
+          activeItem.outputText = outputText;
+          activeItem.outputName = outputName;
+          activeItem.completed = true;
+          activeItem.saveMessage = feedback?.textContent || '';
+          state.pendingStepText = '';
+          state.pendingOutputName = '';
+          state.pendingMetadata = null;
+          state.outputCompleted = true;
+          renderBatchCart();
+          renderCompletedOutput(activeItem);
+        }
+      } catch (error) {
+        if (error?.name !== 'AbortError' && feedback) {
+          feedback.textContent = 'Speichern fehlgeschlagen: ' + error.message;
+          feedback.hidden = false;
+        }
+      } finally {
+        state.isSavingOutput = false;
+        renderBatchCart();
+        if (button?.isConnected && state.pendingMetadata) updateSaveActionUI();
+      }
+    }
+
+    async function overwriteStepFile(fileHandle, text) {
+      const writer = await fileHandle.createWritable();
+      try {
+        await writer.write(text);
+        await writer.close();
+      } catch (error) {
+        if (typeof writer.abort === 'function') {
+          try {
+            await writer.abort();
+          } catch {
+            // Keep the original write error when cleanup also fails.
+          }
+        }
+        throw error;
+      }
+    }
+
+    function renderCompletedOutput(item) {
+      const actions = result.querySelector('.result-actions');
+      actions.replaceChildren();
+      if (state.batchItems.some(entry => !entry.completed && entry.text && !entry.error)) {
+        actions.append(createResultAction('Nächste Datei', 'next'));
+      }
+      actions.append(createResultAction('Neu starten', 'restart', 'secondary'));
+      result.querySelector('.result-heading-message').textContent = `${item.file.name}: Abgeschlossen. ${item.status}.`;
+      result.querySelector('.save-hint').hidden = true;
+      const feedback = result.querySelector('.save-feedback');
+      feedback.textContent = item.saveMessage || '';
+      feedback.hidden = !item.saveMessage;
+    }
+
+    function returnToEditor() {
+      if (state.outputCompleted) return;
+      if (state.viewerGrowthFrame) {
+        cancelAnimationFrame(state.viewerGrowthFrame);
+        state.viewerGrowthFrame = 0;
+      }
+      state.pendingStepText = '';
+      state.pendingOutputName = '';
+      state.pendingMetadata = null;
+      skipAnimationInput.checked = false;
+      const activeItem = state.batchItems.find(item => item.id === state.activeBatchId);
+      if (activeItem) {
+        activeItem.outputText = '';
+        activeItem.outputName = '';
+        activeItem.status = 'In Bearbeitung';
+      }
+      form.classList.remove('viewer-focus-mode', 'no-focus-transition');
+      form.style.removeProperty('--viewer-focus-height');
+      viewerStage.style.removeProperty('height');
+      viewerStage.style.removeProperty('min-height');
+      viewerStage.style.removeProperty('transition');
+      const viewerPanel = viewerStage.closest('.viewer-panel');
+      viewerPanel?.style.removeProperty('min-height');
+      for (const field of form.querySelectorAll('.field')) {
+        field.classList.remove('flight-source', 'vanished', 'gone');
+      }
+      clearViewerAnnotations();
+      updateViewerModelScaleForFocus(true);
+      state.stepViewer?.resize();
+      clearResult();
+      renderBatchCart();
+    }
+
+    function restartWorkflow() {
+      state.outputCompleted = false;
+      state.batchItems = [];
+      state.selectedBatchIds.clear();
+      state.activeBatchId = null;
+      resetToUploadStart();
+      window.scrollTo({ top: 0, behavior: 'auto' });
+    }
+
+    async function editNextBatchItem() {
+      const nextItem = state.batchItems.find(item => !item.completed && item.text && !item.error);
+      if (!nextItem) return;
+      await activateBatchItem(nextItem, true);
+      form.scrollIntoView({ block: 'start', behavior: 'auto' });
+    }
+
+    async function removeActiveBatchItem() {
+      const activeItem = state.batchItems.find(item => item.id === state.activeBatchId);
+      if (activeItem) await removeBatchItem(activeItem);
+      else resetToUploadStart();
+    }
+
+    async function removeBatchItem(item) {
+      const activeIndex = state.batchItems.findIndex(entry => entry.id === item.id);
+      if (activeIndex < 0 || state.pendingStepText) return;
+      const [removedItem] = state.batchItems.splice(activeIndex, 1);
+      state.selectedBatchIds.delete(removedItem.id);
+      const wasActive = state.activeBatchId === removedItem.id;
+      if (!wasActive) {
+        renderBatchCart();
+        return;
+      }
+      state.activeBatchId = null;
+      resetToUploadStart();
+      renderBatchCart();
+      if (state.batchItems.length) {
+        await activateBatchItem(state.batchItems[Math.min(activeIndex, state.batchItems.length - 1)]);
+      }
+    }
+
+    function resetToUploadStart() {
+      returnToEditor();
+      state.stepViewer?.destroy();
+      state.stepViewer = null;
+      state.stepFile = null;
+      state.stepText = '';
+      state.modelLoaded = false;
+
+      productTypeInput.value = '';
+      renderProductTypeSelect();
+      renderBasicFields('');
+      fieldsRoot.replaceChildren();
+      fieldsRoot.classList.add('hidden');
+      form.classList.remove('hidden');
+
+      viewerPlaceholder = document.createElement('div');
+      viewerPlaceholder.id = 'viewerPlaceholder';
+      viewerPlaceholder.className = 'viewer-placeholder';
+      viewerPlaceholder.textContent = 'STEP-Datei hier ablegen oder klicken.';
+      viewerStage.replaceChildren(viewerPlaceholder);
+      viewerStage.classList.remove('drag-over');
+      viewerStage.style.removeProperty('filter');
+      state.stepViewer?.resize();
+      renderBatchCart();
     }
 
     async function playSubmitFieldFlightAnimation(preparedEntries = null, perFieldMs = 1500) {
@@ -1064,8 +1719,17 @@
       requestAnimationFrame(() => callout.classList.add('is-visible'));
     }
 
-    function enterViewerFocusMode() {
+    function enterViewerFocusMode(animate = true) {
       if (form.classList.contains('viewer-focus-mode')) {
+        return;
+      }
+
+      if (!animate) {
+        form.classList.add('viewer-focus-mode', 'no-focus-transition');
+        updateViewerFocusTargetHeight(true);
+        updateViewerModelScaleForFocus(true);
+        state.stepViewer?.resize();
+        refreshViewerCalloutPointers();
         return;
       }
 
@@ -1084,6 +1748,7 @@
 
       requestAnimationFrame(() => {
         window.setTimeout(() => {
+          if (!form.classList.contains('viewer-focus-mode')) return;
           viewerStage.style.height = targetHeight + 'px';
           viewerStage.style.minHeight = targetHeight + 'px';
           if (viewerPanel) {
@@ -1096,21 +1761,24 @@
       });
 
       window.setTimeout(() => {
+        if (!form.classList.contains('viewer-focus-mode')) return;
         state.stepViewer?.resize();
         refreshViewerCalloutPointers();
       }, 280);
       window.setTimeout(() => {
+        if (!form.classList.contains('viewer-focus-mode')) return;
         state.stepViewer?.resize();
         refreshViewerCalloutPointers();
-      }, 1300);
+      }, 800);
       window.setTimeout(() => {
+        if (!form.classList.contains('viewer-focus-mode')) return;
         state.stepViewer?.resize();
         refreshViewerCalloutPointers();
-      }, 2750);
+      }, 1750);
     }
 
     function updateViewerFocusTargetHeight(applyImmediately) {
-      const targetHeight = Math.max(260, window.innerHeight - VIEWER_FOCUS_VIEWPORT_GAP_PX);
+      const targetHeight = Math.max(240, Math.min(360, Math.floor(window.innerHeight * 0.42)));
 
       form.style.setProperty('--viewer-focus-height', targetHeight + 'px');
 
@@ -1151,21 +1819,27 @@
     }
 
     function keepViewerCenteredDuringGrowth(durationMs) {
+      if (state.viewerGrowthFrame) cancelAnimationFrame(state.viewerGrowthFrame);
       const start = performance.now();
 
       const step = now => {
+        if (!form.classList.contains('viewer-focus-mode')) {
+          state.viewerGrowthFrame = 0;
+          return;
+        }
         scrollViewerStageToViewportCenter(false);
         refreshViewerCalloutPointers();
 
         if ((now - start) < durationMs) {
-          requestAnimationFrame(step);
+          state.viewerGrowthFrame = requestAnimationFrame(step);
           return;
         }
 
+        state.viewerGrowthFrame = 0;
         scrollViewerStageToViewportCenter(true);
       };
 
-      requestAnimationFrame(step);
+      state.viewerGrowthFrame = requestAnimationFrame(step);
     }
 
     function scrollViewerStageToViewportCenter(smooth) {
@@ -1453,15 +2127,6 @@
       return fileName.replace(/(\.stp|\.step)$/i, '.step-q$1');
     }
 
-    async function overwriteOriginalStepFile(text, writableOverride = null) {
-      if (!state.stepFileHandle || typeof state.stepFileHandle.createWritable !== 'function') {
-        throw new Error('Überschreiben ist nur möglich, wenn die Datei über Klick-Auswahl oder Handle-fähiges Drag-and-drop geladen wurde. Aktiviere alternativ "Kopie erstellen".');
-      }
-      const writer = writableOverride || await state.stepFileHandle.createWritable();
-      await writer.write(text);
-      await writer.close();
-    }
-
     async function writeStepCopy(text, suggestedName) {
       if (typeof window.showSaveFilePicker === 'function') {
         const handle = await window.showSaveFilePicker({
@@ -1502,12 +2167,37 @@
 
     function showResult(ok, message) {
       result.className = 'status ' + (ok ? 'ok' : 'error');
+      result.replaceChildren();
+
+      const separatorIndex = message.indexOf('\n\n');
+      if (ok && separatorIndex >= 0) {
+        const summaryText = message.slice(0, separatorIndex);
+        const detailsText = message.slice(separatorIndex + 2);
+        try {
+          const metadata = JSON.parse(detailsText);
+          const statusMessage = document.createElement('div');
+          statusMessage.textContent = summaryText;
+
+          const details = document.createElement('details');
+          details.className = 'status-details';
+          const summary = document.createElement('summary');
+          summary.textContent = 'Metadaten anzeigen';
+          const pre = document.createElement('pre');
+          pre.textContent = JSON.stringify(metadata, null, 2);
+          details.append(summary, pre);
+          result.append(statusMessage, details);
+          return;
+        } catch {
+          // Non-JSON success details remain part of the plain status message.
+        }
+      }
+
       result.textContent = message;
     }
 
     function clearResult() {
       result.className = 'status hidden';
-      result.textContent = '';
+      result.replaceChildren();
     }
 
     function escapeHtml(value) {
@@ -1515,6 +2205,9 @@
     }
 
     function getOptionDescription(enumName, option) {
+      if (enumName === 'Q_PRODUCT_TYPE') {
+        return { sheet: 'Sheet', tube: 'Tube', turning: 'Turning', milling: 'Milling' }[option.value] || option.value;
+      }
       return ENUM_DESCRIPTIONS_DE[enumName]?.[option.value] || option.description || option.extra || '';
     }
 
@@ -1525,6 +2218,7 @@
     }
 
     function getCatalogOptionLabel(enumName, option) {
+      if (enumName === 'Q_PRODUCT_TYPE') return ENUM_DESCRIPTIONS_DE.Q_PRODUCT_TYPE[option.value] || option.value;
       if (enumName === 'Q_SHEET_THICKNESS') return ENUM_DESCRIPTIONS_DE.Q_SHEET_THICKNESS[option.value] || option.value;
       return option.value;
     }
