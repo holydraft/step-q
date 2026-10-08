@@ -138,7 +138,29 @@ Then open:
 
 The form lets you:
 
-- choose product type and fill v0.3 fields from spec-driven catalogs
-- load STEP files and prefill existing STEP-Q metadata
-- overwrite the original file (with file-handle permission) or create a copy
-- validate syntax before writing metadata
+- choose one or more STEP files with the browser file picker and manage them in a per-part cart
+- select one part for individual editing while keeping each part's own metadata
+- explicitly apply the active product type and compatible, non-empty field values to selected unfinished parts; incompatible old values are removed when the product type changes
+- review each part's status and prepare its STEP-Q result independently without changing source files
+- remove individual parts from the cart; a validation or preparation error does not stop the other parts
+- review the model, then edit or discard the prepared result
+- overwrite the original file with STEP-Q while keeping its name when the browser provides a writable file handle; grant write access when prompted
+- optionally save a separate STEP-Q copy and leave the original untouched
+- use the Save As dialog for copies when supported, with a regular download fallback
+- overwrite only through the original file handle retained during upload; without that handle, the draft is retained and an explanatory message is shown, with no additional file dialog or automatic copy
+
+The Save As dialog is used only when the copy checkbox is explicitly selected.
+Overwriting never opens a file selection or Save As dialog, regardless of whether
+the source already contains STEP-Q metadata. The browser may ask for write
+permission; if that permission was already granted, no new warning is guaranteed.
+
+Each part is saved separately. After overwriting the original or saving a copy,
+the saved part cannot be saved again in that session but remains selectable.
+In the result view, clicking another file or choosing **Next file** opens its
+save screen directly. If needed, its result is prepared from its stored metadata;
+invalid metadata shows an error with an **Edit** action. Prepared results are
+retained when switching between files. In the editing view, selecting a file
+still opens its editing form unless it already has a prepared result.
+Choose **Restart** to clear the cart and return to upload. There is no combined ZIP
+download in the current form. A fallback browser download reports only that
+the download was started, not that the file was saved successfully.
