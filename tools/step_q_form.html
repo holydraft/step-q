@@ -52,6 +52,16 @@
 
     body { margin: 0; background: var(--hero-bg); color: var(--ink); }
     main { max-width: 1180px; margin: 0 auto; padding: 36px 22px 52px; }
+    .page-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .page-header h1 { margin-bottom: 8px; }
+    .language-switch { display: inline-flex; flex: 0 0 auto; gap: 2px; padding: 3px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
+    .language-switch button { min-width: 44px; padding: 6px 9px; border: 0; background: transparent; color: var(--ink); }
+    .language-switch button[aria-pressed="true"] { background: var(--accent); color: var(--white); }
+    @media (max-width: 520px) {
+      main { padding: 22px 14px 36px; }
+      .page-header { align-items: flex-start; }
+      .page-header h1 { font-size: 26px; }
+    }
     h1 { margin: 0 0 8px; font-size: 32px; letter-spacing: 0; }
     h2 { margin-top: 20px; font-size: 20px; border-bottom: 1px solid var(--line); padding-bottom: 8px; }
     h3 { margin: 24px 0 12px; font-size: 16px; }
@@ -87,6 +97,7 @@
     input[type="text"], input[type="number"], select, textarea { box-sizing: border-box; width: 100%; border: 1px solid var(--line); border-radius: 6px; padding: 9px 10px; background: var(--white); color: var(--ink); }
     input:focus, select:focus, textarea:focus { outline: 2px solid var(--focus); border-color: var(--accent); }
     textarea { min-height: 82px; resize: vertical; }
+    button:focus-visible, summary:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
     .field { border: 1px solid var(--line); border-radius: 8px; padding: 13px; background: var(--white); }
     .field small { display: block; color: var(--muted); margin-top: 6px; }
     .enum-row { display: block; }
@@ -114,6 +125,10 @@
     .status-details summary { cursor: pointer; }
     .status-details pre { margin: 8px 0 0; white-space: pre-wrap; overflow-wrap: anywhere; font: inherit; }
     .result-actions { display: flex; flex: 0 0 auto; align-items: center; flex-wrap: wrap; gap: 8px; }
+    .result-action-help { margin-top: 12px; }
+    .result-action-help summary { cursor: pointer; color: var(--accent-dark); font-weight: 700; }
+    .result-action-help ul { margin: 8px 0 0; padding-left: 22px; }
+    .result-action-help li + li { margin-top: 6px; }
     .copy-mode-option { display: inline-flex; align-items: center; gap: 6px; min-width: 0; margin: 0; font-weight: 600; white-space: normal; }
     .copy-mode-option input { width: 16px; height: 16px; accent-color: var(--accent); }
     button.danger { border-color: var(--status-error-border); background: var(--status-error-bg); color: var(--ink); }
@@ -276,27 +291,33 @@
 </head>
 <body>
   <main>
-    <h1>STEP-Q Metadatenformular</h1>
-    <p class="muted">Wähle zuerst die Produktart. Danach werden die passenden Eingabefelder aus der Spezifikation geladen.</p>
+    <header class="page-header">
+      <h1 data-i18n-key="app.title">STEP-Q Metadatenformular</h1>
+      <div class="language-switch" role="group" aria-label="Sprache" data-i18n-aria-label="app.language">
+        <button type="button" data-language="de" aria-pressed="true">DE</button>
+        <button type="button" data-language="en" aria-pressed="false">EN</button>
+      </div>
+    </header>
+    <p class="muted" data-i18n-key="app.intro">Wähle zuerst die Produktart. Danach werden die passenden Eingabefelder aus der Spezifikation geladen.</p>
 
     <section id="batchPanel" class="panel batch-panel" aria-labelledby="batch-title">
       <div class="batch-header">
-        <h2 id="batch-title">STEP-Dateien</h2>
+        <h2 id="batch-title" data-i18n-key="files.title">STEP-Dateien</h2>
         <div class="batch-upload">
           <input id="batchUpload" type="file" accept=".step,.stp,.STEP,.STP" multiple>
-          <button id="batchUploadButton" type="button">Eine oder mehrere STEP-Dateien auswählen</button>
+          <button id="batchUploadButton" type="button" data-i18n-key="files.pick">Eine oder mehrere STEP-Dateien auswählen</button>
         </div>
       </div>
       <label id="batchSelectAllRow" class="batch-select-all hidden" for="selectAllBatch">
         <input id="selectAllBatch" type="checkbox">
-        Alle Dateien auswählen
+        <span data-i18n-key="files.selectAll">Alle Dateien auswählen</span>
       </label>
       <div id="batchList" class="batch-list" aria-live="polite"></div>
-      <p id="batchEmpty" class="batch-empty">Noch keine Dateien ausgewählt.</p>
+      <p id="batchEmpty" class="batch-empty" data-i18n-key="files.empty">Noch keine Dateien ausgewählt.</p>
       <div id="batchActions" class="batch-actions hidden">
-        <button id="applyToSelection" class="secondary" type="button" title="Überträgt die Produktart und alle ausgefüllten Spezifikationen des aktuell geöffneten Formulars auf die ausgewählten, noch nicht abgeschlossenen STEP-Dateien. Vorhandene Werte der übertragenen Felder werden überschrieben. Leere Felder werden nicht übertragen. Bei einem Produktartwechsel werden nicht passende bisherige Einträge entfernt. Die Originaldateien werden erst beim späteren Speichern verändert.">Aktuelle Spezifikationen auf Auswahl anwenden</button>
+        <button id="applyToSelection" class="secondary" type="button" title="Überträgt die Produktart und alle ausgefüllten Spezifikationen des aktuell geöffneten Formulars auf die ausgewählten, noch nicht abgeschlossenen STEP-Dateien. Vorhandene Werte der übertragenen Felder werden überschrieben. Leere Felder werden nicht übertragen. Bei einem Produktartwechsel werden nicht passende bisherige Einträge entfernt. Die Originaldateien werden erst beim späteren Speichern verändert." data-i18n-key="files.applySelection">Aktuelle Spezifikationen auf Auswahl anwenden</button>
         <div class="batch-selection-tools">
-          <button id="clearBatchSelection" class="secondary hidden" type="button">Auswahl aufheben</button>
+          <button id="clearBatchSelection" class="secondary hidden" type="button" data-i18n-key="files.clearSelection">Auswahl aufheben</button>
         </div>
         <span id="batchSelectionCount" class="muted"></span>
       </div>
@@ -305,13 +326,13 @@
     <form id="metadataForm" class="panel" novalidate>
       <div class="form-layout">
         <section class="basic-column" aria-labelledby="basic-title">
-          <h2 id="basic-title">Grund-Spezifikationen</h2>
+          <h2 id="basic-title" data-i18n-key="form.basicTitle">Grund-Spezifikationen</h2>
           <div class="grid">
             <div class="field" data-field-key="Q_PRODUCT_TYPE" data-type="Enum" data-enum-name="Q_PRODUCT_TYPE" data-label="Produktart">
               <label for="productType">Produktart</label>
               <div class="selection-control">
-                <div id="productTypeDisplay" class="selected-value empty" role="button" tabindex="0">Hinzufügen</div>
-                <button id="productTypeClear" class="clear-selection hidden" type="button" aria-label="Auswahl löschen">X</button>
+                <div id="productTypeDisplay" class="selected-value empty" role="button" tabindex="0" data-i18n-key="catalog.add">Hinzufügen</div>
+                <button id="productTypeClear" class="clear-selection hidden" type="button" aria-label="Auswahl löschen" data-i18n-aria-label="selection.clear">X</button>
               </div>
               <input id="productType" type="hidden" required>
             </div>
@@ -319,10 +340,10 @@
           </div>
         </section>
 
-        <aside class="viewer-column" aria-label="STEP-Vorschau">
+        <aside class="viewer-column" aria-label="STEP-Vorschau" data-i18n-aria-label="viewer.title">
           <div class="viewer-panel">
             <div id="viewerStage" class="viewer-stage">
-              <div id="viewerPlaceholder" class="viewer-placeholder">STEP-Datei hier ablegen oder klicken.</div>
+              <div id="viewerPlaceholder" class="viewer-placeholder" data-i18n-key="viewer.placeholder">STEP-Datei hier ablegen oder klicken.</div>
             </div>
           </div>
         </aside>
@@ -330,10 +351,10 @@
 
       <div id="fieldsRoot" class="hidden"></div>
       <div class="actions">
-        <button type="submit">STEP-Q Metadaten übernehmen</button>
+        <button type="submit" data-i18n-key="form.submit">STEP-Q Metadaten übernehmen</button>
         <label class="skip-animation-option" for="skipAnimation">
           <input id="skipAnimation" type="checkbox">
-          Animation überspringen
+          <span data-i18n-key="form.skipAnimation">Animation überspringen</span>
         </label>
       </div>
     </form>
@@ -343,22 +364,225 @@
 
   <dialog id="catalogDialog">
     <div class="dialog-head">
-      <strong id="catalogTitle">Auswahlkatalog</strong>
-      <button class="secondary" type="button" id="closeCatalog">Schließen</button>
+      <strong id="catalogTitle" data-i18n-key="catalog.title">Auswahlkatalog</strong>
+      <button class="secondary" type="button" id="closeCatalog" data-i18n-key="catalog.close">Schließen</button>
     </div>
     <div class="dialog-body">
-      <input class="catalog-search" id="catalogSearch" type="text" placeholder="Katalog durchsuchen">
+      <input class="catalog-search" id="catalogSearch" type="text" placeholder="Katalog durchsuchen" data-i18n-placeholder="catalog.search">
       <div id="catalogItems"></div>
     </div>
   </dialog>
 
   <script src="https://cdn.jsdelivr.net/npm/online-3d-viewer@0.18.0/build/engine/o3dv.min.js"></script>
   <script src="./StepViewer_HTML/js/step-3d-viewer.js?v=neon-toggle-11"></script>
+  <script src="./step_q_i18n.js"></script>
   <script>
     const VIEWER_FOCUS_GROWTH_MS = 1600;
     const VIEWER_FOCUS_MODEL_SCALE = 0.85;
+    const LANGUAGE_STORAGE_KEY = 'stepq-language';
+    const I18N = window.STEPQ_I18N;
+    const UI_TRANSLATIONS_EN = {
+      'STEP-Q Metadatenformular': 'STEP-Q metadata form',
+      'Sprache': 'Language',
+      'Wähle zuerst die Produktart. Danach werden die passenden Eingabefelder aus der Spezifikation geladen.': 'Select a product type first. The relevant fields will then be loaded from the specification.',
+      'STEP-Dateien': 'STEP files',
+      'Eine oder mehrere STEP-Dateien auswählen': 'Select one or more STEP files',
+      'Alle Dateien auswählen': 'Select all files',
+      'Noch keine Dateien ausgewählt.': 'No files selected yet.',
+      'Aktuelle Spezifikationen auf Auswahl anwenden': 'Apply current specifications to selection',
+      'Auswahl aufheben': 'Clear selection',
+      'Grund-Spezifikationen': 'Basic specifications',
+      'Produktart': 'Product type',
+      'Hinzufügen': 'Add',
+      'Auswahl löschen': 'Clear selection',
+      'STEP-Vorschau': 'STEP preview',
+      'STEP-Datei hier ablegen oder klicken.': 'Drop a STEP file here or click.',
+      'STEP-Q Metadaten übernehmen': 'Apply STEP-Q metadata',
+      'Animation überspringen': 'Skip animation',
+      'Auswahlkatalog': 'Selection catalog',
+      'Schließen': 'Close',
+      'Katalog durchsuchen': 'Search catalog',
+      'Menge angeben': 'Enter quantity',
+      'z. B. 2.5': 'e.g. 2.5',
+      'Freitext nur für dokumentierte Ausnahmen': 'Free text for documented exceptions only',
+      'Erst Produktart wählen': 'Select a product type first',
+      'Keine Treffer.': 'No results.',
+      'Keine Beschreibung': 'No description',
+      'Weiterbearbeitung': 'Further processing',
+      'Oberfläche': 'Surface',
+      'Zertifikate & Sonstiges': 'Certificates & other',
+      'Stückzahl': 'Quantity',
+      'Blech': 'Sheet metal',
+      'Rohr/Profil': 'Tube/profile',
+      'Drehteil': 'Turned part',
+      'Frästeil': 'Milled part',
+      'Produktart offen': 'Product type not set',
+      'Material': 'Material',
+      'Mikrosteg(e) entfernen?': 'Remove micro-tabs?',
+      'Entgraten': 'Deburring',
+      'Kanten verrunden': 'Round edges',
+      'Gravuren': 'Engraving',
+      'Passungen': 'Fits',
+      'Gewinde': 'Threads',
+      'Gewindedurchzüge': 'Extruded threads',
+      'Senkungen': 'Countersinks',
+      'Ecken freistellen': 'Corner relief',
+      'Richten': 'Straightening',
+      'Bolzenschweißen': 'Welding studs',
+      'Einpressmuttern': 'Press nuts',
+      'Schneidtechnologie': 'Cutting technology',
+      'Oberseite': 'Top side',
+      'Walzrichtung': 'Rolling direction',
+      'Verzinken': 'Galvanizing',
+      'Pulverbeschichtungsanwendung': 'Powder coating application',
+      'Pulverbeschichtungs-Glanzgrad': 'Powder coating gloss',
+      'Pulverbeschichtungs-Textur': 'Powder coating texture',
+      'Abnahmeprüfzeugnis nach EN 10204': 'Inspection certificate according to EN 10204',
+      'Musterteile': 'Sample parts',
+      'Laserschnittverfahren': 'Laser cutting method',
+      'Allgemeintoleranzen für Längen und Winkel': 'General tolerances for lengths and angles',
+      'Allgemeintoleranzen für Form und Lage': 'General tolerances for form and position',
+      'Weitere Toleranzen: IT-Klasse': 'Additional tolerances: IT class',
+      'Weitere Toleranzen: Toleranzbereich': 'Additional tolerances: tolerance range',
+      'Gewindeart': 'Thread type',
+      'Oberflächengüte': 'Surface finish',
+      'Dicke': 'Thickness',
+      'Dicke.': 'Thickness.',
+      'Entgraten.': 'Deburring.',
+      'Kanten verrunden.': 'Round edges.',
+      'Gravuren.': 'Engraving.',
+      'Passungen.': 'Fits.',
+      'Gewinde.': 'Threads.',
+      'Gewindedurchzüge.': 'Extruded threads.',
+      'Senkungen.': 'Countersinks.',
+      'Ecken freistellen.': 'Corner relief.',
+      'Richten.': 'Straightening.',
+      'Bolzenschweißen.': 'Welding studs.',
+      'Einpressmuttern.': 'Press nuts.',
+      'Schneidtechnologie.': 'Cutting technology.',
+      'Oberseite.': 'Top side.',
+      'Walzrichtung.': 'Rolling direction.',
+      'Verzinken.': 'Galvanizing.',
+      'Pulverbeschichtungsanwendung.': 'Powder coating application.',
+      'Pulverbeschichtungs-Glanzgrad.': 'Powder coating gloss.',
+      'Pulverbeschichtungs-Textur.': 'Powder coating texture.',
+      'Abnahmeprüfzeugnis nach EN 10204.': 'Inspection certificate according to EN 10204.',
+      'Musterteile.': 'Sample parts.',
+      'Laserschnittverfahren.': 'Laser cutting method.',
+      'Allgemeintoleranzen für Längen und Winkel.': 'General tolerances for lengths and angles.',
+      'Allgemeintoleranzen für Form und Lage.': 'General tolerances for form and position.',
+      'Weitere Toleranzen: IT-Klasse.': 'Additional tolerances: IT class.',
+      'Weitere Toleranzen: Toleranzbereich.': 'Additional tolerances: tolerance range.',
+      'Gewindeart.': 'Thread type.',
+      'Oberflächengüte.': 'Surface finish.',
+      'Eloxieren.': 'Anodizing.',
+      'Brünieren.': 'Black oxide coating.',
+      'Eloxieren': 'Anodizing',
+      'Brünieren': 'Black oxide coating',
+      'Aus dem Warenkorb entfernen': 'Remove from cart',
+      'Ausgewählt': 'Selected',
+      'Teil': 'part',
+      'Teile': 'parts',
+      'Offen': 'Open',
+      'In Bearbeitung': 'In progress',
+      'Bereit': 'Ready',
+      'Fehler': 'Error',
+      'Prüfung fehlgeschlagen': 'Validation failed',
+      'Geändert · neu erstellen': 'Changed · prepare again',
+      'Änderungen angewendet': 'Changes applied',
+      'Heruntergeladen': 'Downloaded',
+      'Kopie gespeichert': 'Copy saved',
+      'Download gestartet': 'Download started',
+      'STEP-Q übernommen': 'STEP-Q applied',
+      'STEP-Q erfolgreich erstellt. Metadaten wurden übernommen.': 'STEP-Q created successfully. Metadata has been applied.',
+      'Löschen': 'Discard',
+      'Bearbeiten': 'Edit',
+      'Originaldatei mit STEP-Q überschreiben': 'Overwrite original file with STEP-Q',
+      'STEP-Q-Kopie erstellen (Original behalten)': 'Create STEP-Q copy (keep original)',
+      'Aktionen erklären': 'Explain actions',
+      'Bearbeiten:': 'Edit:',
+      'Löschen:': 'Discard:',
+      'Originaldatei überschreiben:': 'Overwrite original file:',
+      'STEP-Q-Kopie erstellen:': 'Create STEP-Q copy:',
+      'Nächste Datei': 'Next file',
+      'Neu starten': 'Restart',
+      'Metadaten anzeigen': 'Show metadata',
+      'Erstellt eine separate STEP-Q-Datei. Die Originaldatei bleibt unverändert; der Dateiname erhält einen STEP-Q-Zusatz.': 'Creates a separate STEP-Q file. The original remains unchanged; the filename gets a STEP-Q suffix.',
+      'Kehrt zu den Spezifikationen zurück, damit sie neu ausgewählt oder angepasst werden können.': 'Returns to the specifications so they can be selected again or adjusted.',
+      'Entfernt die aktuelle Datei aus der Bearbeitung und kehrt zur Dateiauswahl zurück. Bei weiteren Dateien wird die nächste geöffnet.': 'Removes the current file from editing and returns to file selection. If more files remain, the next one opens.',
+      'Speichert STEP-Q in der Originaldatei. Dafür muss Schreibzugriff erteilt sein; bei verweigertem Zugriff bleibt die Originaldatei unverändert.': 'Saves STEP-Q to the original file. Write access is required; if access is denied, the original remains unchanged.',
+      'Speichert eine separate Datei und lässt die Originaldatei unverändert.': 'Saves a separate file and leaves the original unchanged.',
+      'STEP-Q-Kopie speichern': 'Save STEP-Q copy',
+      'Öffnet den Speichern-unter-Dialog für eine separate STEP-Q-Datei. Die Originaldatei bleibt unverändert.': 'Opens Save As for a separate STEP-Q file. The original remains unchanged.',
+      'Für diesen Upload fehlt der Originaldatei-Zugriff. Zum direkten Überschreiben muss die Datei beim Upload über den Dateiauswahl-Button in Edge oder Chrome über localhost geöffnet werden. Alternativ kannst du ausdrücklich eine STEP-Q-Kopie erstellen. Beim Überschreiben wird kein Dateidialog geöffnet.': 'This upload has no access to the original file. To overwrite it, open the file during upload using the file picker in Edge or Chrome over localhost. Alternatively, explicitly create a STEP-Q copy. Overwriting does not open a file dialog.',
+      'Datei': 'File',
+      'Feld': 'Field',
+      'Ja': 'Yes',
+      'Nein': 'No',
+      'Formular konnte die Spec-Dateien nicht laden. Starte diese HTML-Datei über einen lokalen Webserver aus dem Repository-Root.': 'Could not load the specification files. Serve this HTML file from the repository root using a local web server.',
+      'Dateiauswahl konnte nicht geöffnet werden:': 'Could not open the file picker:',
+      'Lade den vorbereiteten Entwurf zuerst herunter, bearbeite ihn weiter oder entferne ihn aus dem Warenkorb.': 'First download the prepared draft, continue editing it, or remove it from the cart.',
+      'Keine unterstützte STEP-Datei ausgewählt. Bitte eine Datei mit der Endung .STEP oder .STP auswählen.': 'No supported STEP file selected. Choose a file with the .STEP or .STP extension.',
+      'Nicht unterstützte Dateien wurden übersprungen:': 'Unsupported files were skipped:',
+      'Nur .STEP- und .STP-Dateien werden geladen.': 'Only .STEP and .STP files are loaded.',
+      'STEP-Dateien konnten nicht gelesen werden:': 'Could not read STEP files:',
+      'Syntaxprüfung fehlgeschlagen:': 'Validation failed:',
+      'Wähle zuerst eine Produktart und trage die gemeinsamen Werte ein.': 'Select a product type and enter the common values first.',
+      'Produktart ist erforderlich.': 'Product type is required.',
+      'Für diese Datei fehlt eine gültige Produktart. Über „Bearbeiten“ die Produktart festlegen.': 'This file has no valid product type. Choose one using “Edit”.',
+      'ungültiger Wert für die Produktart.': 'invalid value for the selected product type.',
+      'ist kein aktiver v0.3 Feldtyp und benötigt eine dokumentierte Ausnahme.': 'is not an active v0.3 field type and requires a documented exception.',
+      'Syntaxprüfung erfolgreich. Lade eine STEP-Datei, um eine STEP-Q Datei vorzubereiten.': 'Validation succeeded. Load a STEP file to prepare a STEP-Q file.',
+      'STEP-Datei geladen. Vorhandene STEP-Q Werte wurden übernommen:': 'STEP file loaded. Existing STEP-Q values were imported:',
+      'Werte auf': 'Values applied to',
+      'STEP-Q vorhanden': 'STEP-Q metadata present',
+      'STEP-Q beeinflusst den gewohnten STEP-Prozess nicht; die Datei kann wie gewohnt im Bestellprozess weiterverwendet werden.': 'STEP-Q does not change the usual STEP workflow. The file remains available for its intended use.',
+      'Ergänzt STEP-Q-Metadaten in der Originaldatei. Dateiname und Endung bleiben gleich. STEP-Q beeinflusst den gewohnten STEP-Prozess nicht. Die Datei kann wie gewohnt für ihre Zwecke weiterverwendet werden.': 'Adds STEP-Q metadata to the original file. The filename and extension stay the same. STEP-Q does not change the usual STEP workflow. The file remains available for its intended use.',
+      'Überträgt die Produktart und alle ausgefüllten Spezifikationen des aktuell geöffneten Formulars auf die ausgewählten, noch nicht abgeschlossenen STEP-Dateien. Vorhandene Werte der übertragenen Felder werden überschrieben. Leere Felder werden nicht übertragen. Bei einem Produktartwechsel werden nicht passende bisherige Einträge entfernt. Die Originaldateien werden erst beim späteren Speichern verändert.': 'Applies the product type and all completed specifications from the current form to the selected unfinished STEP files. Existing values for transferred fields are replaced. Empty fields are not transferred. When the product type changes, incompatible existing values are removed. Original files are changed only when you save later.',
+      'Ergänzt STEP-Q-Metadaten in der Originaldatei. Dateiname und Endung bleiben gleich. STEP-Q beeinflusst den gewohnten STEP-Prozess nicht. Die Datei kann wie gewohnt für ihre Zwecke weiterverwendet werden.': 'Adds STEP-Q metadata to the original file. The filename and extension stay the same. STEP-Q does not change the usual STEP workflow. The file remains available for its intended use.',
+      'STEP-Q wurde in der Originaldatei gespeichert. Dateiname und Endung sind unverändert.': 'STEP-Q was saved to the original file. The filename and extension are unchanged.',
+      'Kopie wurde gespeichert.': 'The copy was saved.',
+      'Download der STEP-Q-Kopie wurde gestartet.': 'The STEP-Q copy download has started.',
+      'Speichern fehlgeschlagen:': 'Save failed:',
+      'Datei konnte nicht angezeigt werden.': 'Could not display the file.',
+      'Der 3D-Viewer konnte nicht geladen werden. Prüfe die Netzwerkverbindung und die Viewer-Dateien.': 'Could not load the 3D viewer. Check the network connection and viewer files.',
+      'Die STEP-Datei konnte nicht angezeigt werden.': 'Could not display the STEP file.',
+      'STEP-Datei geladen. Keine vorhandenen STEP-Q Metadaten gefunden.': 'STEP file loaded. No existing STEP-Q metadata was found.',
+      'STEP-Datei enthält keinen DATA-Abschnitt.': 'The STEP file has no DATA section.',
+      'STEP-Datei DATA-Abschnitt ist nicht korrekt beendet.': 'The STEP file DATA section is not properly terminated.',
+      'STEP-Datei enthält einen fehlerhaften Entity-Eintrag.': 'The STEP file contains a malformed entity statement.',
+      'STEP-Datei enthält einen nicht abgeschlossenen Entity-Eintrag.': 'The STEP file contains an unterminated entity statement.',
+      'STEP-Q konnte nicht vorbereitet werden:': 'Could not prepare STEP-Q:',
+      'Abgeschlossen.': 'Completed.',
+      'Die Originaldatei wurde ohne Datei-Zugriff geladen. Es wurde nichts überschrieben und kein Dateidialog geöffnet. Öffne die Datei beim Upload über den Dateiauswahl-Button in einem unterstützten Browser oder wähle ausdrücklich „STEP-Q-Kopie erstellen“.': 'The original file was loaded without file access. Nothing was overwritten and no file dialog was opened. Upload the file using the file picker in a supported browser, or explicitly choose “Create STEP-Q copy”.',
+      'Schreibzugriff wurde nicht erteilt. Die Originaldatei wurde nicht verändert.': 'Write access was not granted. The original file was not changed.',
+      'Für diesen Upload fehlt der Originaldatei-Zugriff.': 'This upload has no access to the original file.'
+    };
+    let currentLanguage = (() => {
+      try {
+        return localStorage.getItem(LANGUAGE_STORAGE_KEY) === 'en' ? 'en' : 'de';
+      } catch {
+        return 'de';
+      }
+    })();
     const PRODUCT_LABELS = { sheet: 'Blech', tube: 'Rohr/Profil', turning: 'Drehteil', milling: 'Frästeil' };
+    const PRODUCT_LABELS_EN = { sheet: 'Sheet metal', tube: 'Tube/profile', turning: 'Turned part', milling: 'Milled part' };
     const TYPE_LABELS = { Enum: 'Auswahl', Integer: 'Ganzzahl', Float: 'Dezimalzahl', Bool: 'Ja/Nein' };
+    const GERMAN_PRIMARY_FIELDS = new Set([
+      'Q_TEST_REPORT',
+      'Q_DEBURRING',
+      'Q_SHEET_METAL_FIT_TYPE',
+      'Q_CUTTING_TECHNOLOGY',
+      'Q_TOP_SIDE',
+      'Q_ROLLING_DIRECTION',
+      'Q_GALVANIZING',
+      'Q_POWDER_COATING_APPLICATION',
+      'Q_POWDER_COATING_GLOSS',
+      'Q_POWDER_COATING_TEXTURE',
+      'Q_SURFACE_FINISH',
+      'Q_ANODIZING',
+      'Q_BURNISHING'
+    ]);
     const ENUM_DESCRIPTIONS_DE = {
       Q_PRODUCT_TYPE: { sheet: 'Blechbauteil', tube: 'Rohr- oder Profilteil', turning: 'Drehteil', milling: 'Frästeil' },
       Q_CUTTING_TECHNOLOGY: { '2d_cutting': '2D-Laserschneiden', '3d_cutting': '3D-Laserschneiden', plasma_cutting: 'Plasmaschneiden', flame_cutting: 'Brennschneiden' },
@@ -393,6 +617,7 @@
       enums: {},
       currentCatalog: null,
       currentEnumName: null,
+      currentFieldKey: null,
       currentInput: null,
       currentDisplay: null,
       currentClearButton: null,
@@ -437,6 +662,147 @@
     const catalogTitle = document.querySelector('#catalogTitle');
     const catalogSearch = document.querySelector('#catalogSearch');
     const catalogItems = document.querySelector('#catalogItems');
+
+    const originalTextNodes = new WeakMap();
+    const originalAttributes = new WeakMap();
+
+    function translateUiText(value, language = currentLanguage) {
+      const text = String(value ?? '');
+      const leading = text.match(/^\s*/)?.[0] || '';
+      const trailing = text.match(/\s*$/)?.[0] || '';
+      const content = text.slice(leading.length, text.length - trailing.length || undefined);
+      if (language === 'de') return text;
+      const periodlessContent = content.endsWith('.') ? content.slice(0, -1) : content;
+      const translated = UI_TRANSLATIONS_EN[content] || UI_TRANSLATIONS_EN[periodlessContent] || translateDynamicUiText(content);
+      return leading + translated + trailing;
+    }
+
+    function translateDynamicUiText(text) {
+      let match = text.match(/^(\d+) STEP-Datei\(en\) zum Warenkorb hinzugefügt\.$/);
+      if (match) return `${match[1]} STEP ${match[1] === '1' ? 'file' : 'files'} added to the cart.`;
+      match = text.match(/^(\d+) ausgewählt · (\d+) (Teil|Teile)$/);
+      if (match) return `${match[1]} selected · ${match[2]} ${match[2] === '1' ? 'part' : 'parts'}`;
+      match = text.match(/^(.+) · (\d+(?:\.\d+)? (?:KB|MB))$/);
+      if (match) return `${translateUiText(match[1])} · ${match[2]}`;
+      match = text.match(/^(.+) für Stapeländerungen auswählen$/);
+      if (match) return `Select ${match[1]} for batch changes`;
+      match = text.match(/^(.+) aus dem Warenkorb entfernen$/);
+      if (match) return `Remove ${match[1]} from the cart`;
+      match = text.match(/^(.+): Abgeschlossen\. (.+)\.$/);
+      if (match) return `${match[1]}: Completed. ${translateUiText(match[2])}.`;
+      match = text.match(/^Nicht unterstützte Dateien wurden übersprungen: (.+)\. Nur \.STEP- und \.STP-Dateien werden geladen\.$/);
+      if (match) return `Unsupported files were skipped: ${match[1]}. Only .STEP and .STP files are loaded.`;
+      match = text.match(/^STEP-Dateien konnten nicht gelesen werden: (.+)$/);
+      if (match) return `Could not read STEP files: ${translateUiText(match[1])}`;
+      match = text.match(/^Werte auf (\d+) (Teil|Teile) angewendet\.(.*)$/);
+      if (match) {
+        let skippedText = match[3];
+        const skipped = skippedText.match(/^ (\d+) (Feld wurde|Felder wurden) wegen unterschiedlicher Produktarten oder Auswahlwerte übersprungen\.$/);
+        if (skipped) skippedText = ` ${skipped[1]} ${skipped[1] === '1' ? 'field was' : 'fields were'} skipped because of different product types or selected values.`;
+        return `${match[1]} ${match[1] === '1' ? 'part' : 'parts'} updated.${skippedText}`;
+      }
+      match = text.match(/^STEP-Datei geladen\. Vorhandene STEP-Q Werte wurden übernommen:\n\n([\s\S]+)$/);
+      if (match) return `STEP file loaded. Existing STEP-Q values were imported:\n\n${match[1]}`;
+      match = text.match(/^Syntaxprüfung fehlgeschlagen:\n\n([\s\S]+)$/);
+      if (match) return `Validation failed:\n\n${translateUiText(match[1])}`;
+      match = text.match(/^STEP-Q konnte nicht vorbereitet werden:\n\n([\s\S]+)$/);
+      if (match) return `Could not prepare STEP-Q:\n\n${translateUiText(match[1])}`;
+      return text;
+    }
+
+    function translateNode(node) {
+      if (node.nodeType === 3) {
+        const current = node.nodeValue;
+        const previous = originalTextNodes.get(node);
+        const source = previous && current === previous.translated ? previous.source : current;
+        const translated = translateUiText(source);
+        originalTextNodes.set(node, { source, translated });
+        if (translated !== node.nodeValue) node.nodeValue = translated;
+        return;
+      }
+      if (node.nodeType !== 1) return;
+      if (node.tagName === 'SCRIPT' || node.tagName === 'STYLE') return;
+      if (node.hasAttribute('data-i18n-key')) {
+        node.textContent = I18N.translate(node.getAttribute('data-i18n-key'), currentLanguage);
+      }
+      if (node.hasAttribute('data-i18n-field-key')) {
+        const key = node.getAttribute('data-i18n-field-key');
+        node.textContent = I18N.fieldLabel(key, currentLanguage, node.textContent);
+      }
+      if (node.hasAttribute('data-i18n-group')) {
+        const group = node.getAttribute('data-i18n-group');
+        node.textContent = I18N.groupLabel(group, currentLanguage, group);
+      }
+      let originalValues = originalAttributes.get(node);
+      if (!originalValues) {
+        originalValues = new Map();
+        originalAttributes.set(node, originalValues);
+      }
+      for (const attribute of ['title', 'aria-label', 'placeholder', 'data-label']) {
+        if (node.hasAttribute(attribute)) {
+          const value = node.getAttribute(attribute);
+          const previous = originalValues.get(attribute);
+          const source = previous && value === previous.translated ? previous.source : value;
+          const translated = translateUiText(source);
+          originalValues.set(attribute, { source, translated });
+          if (translated !== value) node.setAttribute(attribute, translated);
+        }
+      }
+      for (const attribute of ['aria-label', 'placeholder', 'title']) {
+        const key = node.getAttribute(`data-i18n-${attribute}`);
+        if (key) node.setAttribute(attribute, I18N.translate(key, currentLanguage));
+      }
+      for (const child of node.childNodes) translateNode(child);
+    }
+
+    function applyLanguage(language) {
+      currentLanguage = language === 'en' ? 'en' : 'de';
+      document.documentElement.lang = currentLanguage;
+      document.title = I18N.translate('app.title', currentLanguage);
+      document.querySelectorAll('[data-language]').forEach(button => {
+        button.setAttribute('aria-pressed', String(button.dataset.language === currentLanguage));
+      });
+      translateNode(document.body);
+      applySemanticTranslations();
+      for (const fieldNode of form.querySelectorAll('.field[data-enum-name]')) {
+        const labelNode = fieldNode.querySelector(':scope > label');
+        const fieldLabel = I18N.fieldLabel(fieldNode.dataset.fieldKey, currentLanguage, '');
+        if (labelNode && fieldLabel) {
+          labelNode.textContent = fieldLabel;
+          fieldNode.dataset.label = fieldLabel;
+        }
+        const input = fieldNode.querySelector('input[type="hidden"]');
+        const display = fieldNode.querySelector('.selected-value');
+        if (input?.value && display) {
+          display.textContent = I18N.enumLabel(fieldNode.dataset.enumName, input.value, currentLanguage, '')
+            || getSelectedDisplayValue(fieldNode.dataset.enumName, input.value);
+        }
+      }
+      renderBatchCart();
+      if (catalogDialog.open) renderCatalogItems();
+      try {
+        localStorage.setItem(LANGUAGE_STORAGE_KEY, currentLanguage);
+      } catch {
+        // The language still works for this page load if storage is unavailable.
+      }
+    }
+
+    function applySemanticTranslations() {
+      for (const node of document.querySelectorAll('[data-i18n-key]')) {
+        node.textContent = I18N.translate(node.dataset.i18nKey, currentLanguage);
+      }
+      for (const attribute of ['aria-label', 'placeholder', 'title']) {
+        const keyAttribute = `data-i18n-${attribute}`;
+        for (const node of document.querySelectorAll(`[${keyAttribute}]`)) {
+          node.setAttribute(attribute, I18N.translate(node.getAttribute(keyAttribute), currentLanguage));
+        }
+      }
+    }
+
+    document.querySelectorAll('[data-language]').forEach(button => {
+      button.addEventListener('click', () => applyLanguage(button.dataset.language));
+    });
+    applyLanguage(currentLanguage);
 
     init().catch(error => {
       showResult(false, 'Formular konnte die Spec-Dateien nicht laden. Starte diese HTML-Datei über einen lokalen Webserver aus dem Repository-Root.\n\n' + error.message);
@@ -610,9 +976,10 @@
 
     function renderProductTypeSelect() {
       productTypeInput.value = '';
-      productTypeDisplay.textContent = 'Hinzufügen';
+      productTypeDisplay.textContent = I18N.translate('catalog.add', currentLanguage);
       productTypeDisplay.classList.add('empty');
       productTypeClear.classList.add('hidden');
+      translateNode(productTypeDisplay);
     }
 
     function renderBasicFields(productType) {
@@ -633,6 +1000,7 @@
       if (productType === 'sheet' && thicknessField) {
         basicFieldsRoot.appendChild(renderField(thicknessField, productType));
       }
+      translateNode(basicFieldsRoot);
     }
 
     function renderFields(productType) {
@@ -640,7 +1008,6 @@
       fieldsRoot.innerHTML = '';
       if (!productType) {
         fieldsRoot.classList.add('hidden');
-        form.classList.add('hidden');
         return;
       }
       form.classList.remove('hidden');
@@ -650,9 +1017,11 @@
 
       for (const [group, groupFields] of Object.entries(grouped)) {
         const section = document.createElement('section');
-        section.innerHTML = `<h2>${escapeHtml(group)}</h2><div class="grid"></div>`;
+        const groupLabel = I18N.groupLabel(group, currentLanguage, translateUiText(group));
+        section.innerHTML = `<h2 data-i18n-group="${escapeHtml(group)}">${escapeHtml(groupLabel)}</h2><div class="grid"></div>`;
         const grid = section.querySelector('.grid');
         for (const field of groupFields) grid.appendChild(renderField(field, productType));
+        translateNode(section);
         fieldsRoot.appendChild(section);
       }
     }
@@ -663,15 +1032,17 @@
       wrapper.dataset.fieldKey = field.key;
       wrapper.dataset.type = field.type;
       wrapper.dataset.enumName = field.enumName || '';
-      wrapper.dataset.label = field.description;
+      const fieldLabel = I18N.fieldLabel(field.key, currentLanguage, trimTrailingPeriod(field.description));
+      wrapper.dataset.label = fieldLabel;
       const id = 'field_' + field.key;
-      const label = `<label for="${id}">${escapeHtml(trimTrailingPeriod(field.description))}</label>`;
+      const label = `<label for="${id}" data-i18n-field-key="${escapeHtml(field.key)}">${escapeHtml(fieldLabel)}</label>`;
       wrapper.innerHTML = label + renderControl(field, id, productType);
       const selectedValue = wrapper.querySelector('.selected-value');
       const clearButton = wrapper.querySelector('.clear-selection');
       const hiddenInput = wrapper.querySelector('input[type="hidden"]');
       if (selectedValue) bindCatalogTrigger(selectedValue, field, hiddenInput, selectedValue, clearButton);
       if (clearButton) bindClearTrigger(clearButton, hiddenInput, selectedValue);
+      translateNode(wrapper);
       return wrapper;
     }
 
@@ -687,10 +1058,12 @@
       const wrapper = renderField(materialField, productType);
       const selectedValue = wrapper.querySelector('.selected-value');
       if (!productType) {
-        selectedValue.textContent = 'Erst Produktart wählen';
+        selectedValue.textContent = I18N.translate('field.selectProductFirst', currentLanguage);
         selectedValue.classList.add('empty');
         selectedValue.setAttribute('aria-disabled', 'true');
+        selectedValue.setAttribute('data-i18n-key', 'field.selectProductFirst');
       }
+      translateNode(wrapper);
       return wrapper;
     }
 
@@ -700,12 +1073,12 @@
 
     function renderControl(field, id) {
       if (field.type === 'Enum') {
-        return `<div class="enum-row"><div class="selection-control"><div class="selected-value empty" role="button" tabindex="0">Hinzufügen</div><button class="clear-selection hidden" type="button" aria-label="Auswahl löschen">X</button></div></div><input id="${id}" name="${escapeHtml(field.key)}" type="hidden">`;
+        return `<div class="enum-row"><div class="selection-control"><div class="selected-value empty" role="button" tabindex="0" data-i18n-key="catalog.add">${escapeHtml(I18N.translate('catalog.add', currentLanguage))}</div><button class="clear-selection hidden" type="button" aria-label="${escapeHtml(I18N.translate('selection.clear', currentLanguage))}" data-i18n-aria-label="selection.clear">X</button></div></div><input id="${id}" name="${escapeHtml(field.key)}" type="hidden">`;
       }
-      if (field.type === 'Integer') return `<input id="${id}" name="${escapeHtml(field.key)}" type="number" step="1" min="0" placeholder=" Menge angeben">`;
-      if (field.type === 'Float') return `<input id="${id}" name="${escapeHtml(field.key)}" type="text" inputmode="decimal" placeholder="z. B. 2.5">`;
-      if (field.type === 'Bool') return `<label><input id="${id}" name="${escapeHtml(field.key)}" type="checkbox"> Ja</label>`;
-      return `<input id="${id}" name="${escapeHtml(field.key)}" type="text" placeholder="Freitext nur für dokumentierte Ausnahmen">`;
+      if (field.type === 'Integer') return `<input id="${id}" name="${escapeHtml(field.key)}" type="number" step="1" min="0" placeholder="${escapeHtml(I18N.translate('field.addQuantity', currentLanguage))}">`;
+      if (field.type === 'Float') return `<input id="${id}" name="${escapeHtml(field.key)}" type="text" inputmode="decimal" placeholder="${escapeHtml(I18N.translate('field.decimalExample', currentLanguage))}">`;
+      if (field.type === 'Bool') return `<label><input id="${id}" name="${escapeHtml(field.key)}" type="checkbox"> <span data-i18n-key="form.yes">${escapeHtml(I18N.translate('form.yes', currentLanguage))}</span></label>`;
+      return `<input id="${id}" name="${escapeHtml(field.key)}" type="text" placeholder="${escapeHtml(I18N.translate('field.freeText', currentLanguage))}">`;
     }
 
     function openCatalog(field, input, display, clearButton = null, afterSelect = null) {
@@ -713,11 +1086,13 @@
       if (!options.length) return;
       state.currentCatalog = options;
       state.currentEnumName = field.enumName;
+      state.currentFieldKey = field.key;
       state.currentInput = input;
       state.currentDisplay = display;
       state.currentClearButton = clearButton;
       state.currentAfterSelect = afterSelect;
-      catalogTitle.textContent = trimTrailingPeriod(field.description);
+      catalogTitle.textContent = I18N.fieldLabel(field.key, currentLanguage, trimTrailingPeriod(field.description));
+      translateNode(catalogTitle);
       catalogSearch.value = '';
       renderCatalogItems();
       if (!catalogDialog.open) catalogDialog.showModal();
@@ -804,9 +1179,10 @@
       }
       const stepFiles = files.filter(file => /\.(step|stp)$/i.test(file.name));
       if (!stepFiles.length) {
-        if (files.length) showResult(false, 'Bitte mindestens eine STEP- oder STP-Datei auswählen.');
+        if (files.length) showResult(false, 'Keine unterstützte STEP-Datei ausgewählt. Bitte eine Datei mit der Endung .STEP oder .STP auswählen.');
         return;
       }
+      const unsupportedFiles = files.filter(file => !/\.(step|stp)$/i.test(file.name));
 
       const firstNewId = state.nextBatchItemId;
       const addedItems = await Promise.all(stepFiles.map(async file => {
@@ -814,6 +1190,7 @@
         const fileIndex = files.indexOf(file);
         try {
           const text = await file.text();
+          validateStepDataSection(text);
           const values = extractStepQMetadata(text);
           return {
             id,
@@ -843,8 +1220,20 @@
 
       state.batchItems.push(...addedItems);
       renderBatchCart();
-      if (state.activeBatchId === null) await activateBatchItem(state.batchItems.find(item => item.id >= firstNewId && item.text));
-      else if (addedItems.length) showResult(true, `${addedItems.length} STEP-Datei(en) zum Warenkorb hinzugefügt.`);
+      if (state.activeBatchId === null) {
+        const firstReadableItem = state.batchItems.find(item => item.id >= firstNewId && item.text);
+        if (firstReadableItem) await activateBatchItem(firstReadableItem);
+      }
+      const uploadIssues = [];
+      if (unsupportedFiles.length) {
+        uploadIssues.push(`Nicht unterstützte Dateien wurden übersprungen: ${unsupportedFiles.map(file => file.name).join(', ')}. Nur .STEP- und .STP-Dateien werden geladen.`);
+      }
+      const unreadableFiles = addedItems.filter(item => item.status === 'Fehler');
+      if (unreadableFiles.length) {
+        uploadIssues.push(`STEP-Dateien konnten nicht gelesen werden: ${unreadableFiles.map(item => `${item.file.name}: ${item.error}`).join('; ')}`);
+      }
+      if (uploadIssues.length) showResult(false, uploadIssues.join('\n\n'));
+      else if (state.activeBatchId !== null && addedItems.length) showResult(true, `${addedItems.length} STEP-Datei(en) zum Warenkorb hinzugefügt.`);
     }
 
     function renderBatchCart() {
@@ -898,7 +1287,7 @@
         name.textContent = item.file.name;
         const meta = document.createElement('span');
         meta.className = 'batch-item-meta';
-        meta.textContent = `${PRODUCT_LABELS[item.values.Q_PRODUCT_TYPE] || 'Produktart offen'} · ${formatFileSize(item.file.size)}`;
+        meta.textContent = `${getProductLabel(item.values.Q_PRODUCT_TYPE) || 'Produktart offen'} · ${formatFileSize(item.file.size)}`;
         openButton.append(name, meta);
         openButton.addEventListener('click', () => activateBatchItem(item));
 
@@ -916,6 +1305,8 @@
         row.append(checkbox, openButton, status, removeButton);
         batchList.appendChild(row);
       }
+      translateNode(batchList);
+      translateNode(batchSelectionCount);
     }
 
     function formatFileSize(size) {
@@ -1015,6 +1406,7 @@
           actions.className = 'result-actions';
           actions.append(createResultAction('Bearbeiten', 'edit', 'secondary'));
           result.append(actions);
+          translateNode(actions);
           renderBatchCart();
           return;
         }
@@ -1153,6 +1545,7 @@
           if (state.currentAfterSelect) state.currentAfterSelect(item.dataset.value);
         });
       }
+      translateNode(catalogItems);
     }
 
     function bindCatalogTrigger(trigger, field, input, display, clearButton = null, afterSelect = null) {
@@ -1175,6 +1568,7 @@
         event.stopPropagation();
         input.value = '';
         display.textContent = 'Hinzufügen';
+        translateNode(display);
         display.classList.add('empty');
         button.classList.add('hidden');
         if (afterClear) afterClear();
@@ -1182,7 +1576,7 @@
     }
 
     function renderCatalogMarkup(options) {
-      if (!options.length) return '<p class="muted">Keine Treffer.</p>';
+      if (!options.length) return `<p class="muted">${escapeHtml(I18N.translate('catalog.noResults', currentLanguage))}</p>`;
       if (options.some(option => option.group)) {
         return Object.entries(groupBy(options, option => option.group || 'Material')).map(([group, groupOptions]) => {
           return `<details class="catalog-group"><summary>${escapeHtml(group)}</summary><div class="catalog-group-body">${groupOptions.map(renderCatalogButton).join('')}</div></details>`;
@@ -1192,6 +1586,19 @@
     }
 
     function renderCatalogButton(option) {
+      if (currentLanguage === 'en') {
+        const label = I18N.enumTitle(state.currentEnumName, option.value, currentLanguage, getCatalogOptionTitle(state.currentEnumName, option));
+        const description = I18N.enumLabel(state.currentEnumName, option.value, currentLanguage, getOptionDescription(state.currentEnumName, option))
+          || `STEP-Q value: ${String(option.value).replace(/_/g, ' ')}`;
+        const detail = description === label ? `STEP-Q value: ${String(option.value).replace(/_/g, ' ')}` : description;
+        const descriptionMarkup = `<span>${escapeHtml(detail)}</span>`;
+        return `<button class="catalog-item" type="button" data-value="${escapeHtml(option.value)}"><strong>${escapeHtml(label)}</strong>${descriptionMarkup}</button>`;
+      }
+      if (GERMAN_PRIMARY_FIELDS.has(state.currentFieldKey)) {
+        const label = ENUM_DESCRIPTIONS_DE[state.currentEnumName]?.[option.value] || option.value;
+        const description = [option.description, option.extra].filter(Boolean).join(' · ');
+        return `<button class="catalog-item" type="button" data-value="${escapeHtml(option.value)}"><strong>${escapeHtml(label)}</strong><span>${escapeHtml(description || 'Keine Beschreibung')}</span></button>`;
+      }
       const description = getOptionDescription(state.currentEnumName, option);
       const compactClass = state.currentEnumName === 'Q_SHEET_THICKNESS' ? ' compact' : '';
       const label = getCatalogOptionLabel(state.currentEnumName, option);
@@ -1203,7 +1610,7 @@
       if (state.isPreparingOutput || state.outputCompleted || state.isLoadingFile) return;
       state.isPreparingOutput = true;
       const errors = [];
-      const values = { Produktart: PRODUCT_LABELS[productTypeInput.value] || productTypeInput.value };
+      const values = { [currentLanguage === 'en' ? 'Product type' : 'Produktart']: getProductLabel(productTypeInput.value) || productTypeInput.value };
       const metadata = {};
 
       if (!productTypeInput.value) errors.push('Produktart ist erforderlich.');
@@ -1295,6 +1702,9 @@
 
     function renderPendingOutputResult() {
       result.className = 'status ok';
+      result.setAttribute('role', 'status');
+      result.setAttribute('aria-live', 'polite');
+      result.setAttribute('aria-atomic', 'true');
       result.replaceChildren();
 
       const heading = document.createElement('div');
@@ -1308,6 +1718,25 @@
 
       const actions = document.createElement('div');
       actions.className = 'result-actions';
+      const actionHelp = document.createElement('details');
+      actionHelp.className = 'result-action-help';
+      const actionHelpSummary = document.createElement('summary');
+      actionHelpSummary.textContent = 'Aktionen erklären';
+      const actionHelpList = document.createElement('ul');
+      const actionDescriptions = [
+        ['Bearbeiten', 'Kehrt zu den Spezifikationen zurück, damit sie neu ausgewählt oder angepasst werden können.'],
+        ['Löschen', 'Entfernt die aktuelle Datei aus der Bearbeitung und kehrt zur Dateiauswahl zurück. Bei weiteren Dateien wird die nächste geöffnet.'],
+        ['Originaldatei überschreiben', 'Speichert STEP-Q in der Originaldatei. Dafür muss Schreibzugriff erteilt sein; bei verweigertem Zugriff bleibt die Originaldatei unverändert.'],
+        ['STEP-Q-Kopie erstellen', 'Speichert eine separate Datei und lässt die Originaldatei unverändert.']
+      ];
+      for (const [actionLabel, description] of actionDescriptions) {
+        const item = document.createElement('li');
+        const label = document.createElement('strong');
+        label.textContent = `${actionLabel}: `;
+        item.append(label, document.createTextNode(description));
+        actionHelpList.appendChild(item);
+      }
+      actionHelp.append(actionHelpSummary, actionHelpList);
       const copyLabel = document.createElement('label');
       copyLabel.className = 'copy-mode-option';
       copyLabel.title = 'Erstellt eine separate STEP-Q-Datei. Die Originaldatei bleibt unverändert; der Dateiname erhält einen STEP-Q-Zusatz.';
@@ -1319,7 +1748,7 @@
       copyLabel.append(copyCheckbox, copyText);
 
       const saveButton = createResultAction('Originaldatei mit STEP-Q überschreiben', 'save');
-      saveButton.title = 'Ergänzt STEP-Q-Metadaten in der Originaldatei. Dateiname und Endung bleiben gleich. STEP-Q beeinflusst den gewohnten STEP-Prozess nicht; die Datei kann wie gewohnt im Bestellprozess weiterverwendet werden.';
+      saveButton.title = 'Ergänzt STEP-Q-Metadaten in der Originaldatei. Dateiname und Endung bleiben gleich. STEP-Q beeinflusst den gewohnten STEP-Prozess nicht. Die Datei kann wie gewohnt für ihre Zwecke weiterverwendet werden.';
       copyCheckbox.addEventListener('change', () => {
         const feedback = result.querySelector('.save-feedback');
         feedback.textContent = '';
@@ -1340,8 +1769,9 @@
       feedback.className = 'save-feedback';
       feedback.setAttribute('role', 'status');
       feedback.hidden = true;
-      result.append(heading, saveHint, feedback);
+      result.append(heading, actionHelp, saveHint, feedback);
       updateSaveActionUI();
+      translateNode(result);
     }
 
     function createResultAction(label, action, className = '') {
@@ -1349,6 +1779,8 @@
       button.type = 'button';
       button.dataset.resultAction = action;
       button.textContent = label;
+      if (action === 'edit') button.title = 'Kehrt zu den Spezifikationen zurück, damit sie neu ausgewählt oder angepasst werden können.';
+      if (action === 'discard') button.title = 'Entfernt die aktuelle Datei aus der Bearbeitung und kehrt zur Dateiauswahl zurück. Bei weiteren Dateien wird die nächste geöffnet.';
       if (className) button.className = className;
       return button;
     }
@@ -1367,9 +1799,11 @@
       button.disabled = state.isSavingOutput;
       button.title = copyMode
         ? 'Öffnet den Speichern-unter-Dialog für eine separate STEP-Q-Datei. Die Originaldatei bleibt unverändert.'
-        : 'Ergänzt STEP-Q-Metadaten in der Originaldatei. Dateiname und Endung bleiben gleich. STEP-Q beeinflusst den gewohnten STEP-Prozess nicht; die Datei kann wie gewohnt im Bestellprozess weiterverwendet werden.';
+        : 'Ergänzt STEP-Q-Metadaten in der Originaldatei. Dateiname und Endung bleiben gleich. STEP-Q beeinflusst den gewohnten STEP-Prozess nicht. Die Datei kann wie gewohnt für ihre Zwecke weiterverwendet werden.';
       hint.hidden = copyMode || canOverwrite;
       hint.textContent = 'Für diesen Upload fehlt der Originaldatei-Zugriff. Zum direkten Überschreiben muss die Datei beim Upload über den Dateiauswahl-Button in Edge oder Chrome über localhost geöffnet werden. Alternativ kannst du ausdrücklich eine STEP-Q-Kopie erstellen. Beim Überschreiben wird kein Dateidialog geöffnet.';
+      translateNode(button);
+      translateNode(hint);
     }
 
     async function savePendingStep() {
@@ -1405,10 +1839,12 @@
         }
 
         if (feedback) {
+          feedback.setAttribute('role', 'status');
           feedback.textContent = copyMode
             ? (hasSavePicker ? 'STEP-Q-Kopie wurde gespeichert.' : 'Download der STEP-Q-Kopie wurde gestartet.')
             : 'STEP-Q wurde in der Originaldatei gespeichert. Dateiname und Endung sind unverändert.';
           feedback.hidden = false;
+          translateNode(feedback);
         }
         if (activeItem) {
           activeItem.status = copyMode ? (hasSavePicker ? 'Kopie gespeichert' : 'Download gestartet') : 'STEP-Q übernommen';
@@ -1425,8 +1861,10 @@
         }
       } catch (error) {
         if (error?.name !== 'AbortError' && feedback) {
+          feedback.setAttribute('role', 'alert');
           feedback.textContent = 'Speichern fehlgeschlagen: ' + error.message;
           feedback.hidden = false;
+          translateNode(feedback);
         }
       } finally {
         state.isSavingOutput = false;
@@ -1455,6 +1893,7 @@
     function renderCompletedOutput(item) {
       const actions = result.querySelector('.result-actions');
       actions.replaceChildren();
+      result.querySelector('.result-action-help')?.remove();
       if (state.batchItems.some(entry => !entry.completed && entry.text && !entry.error)) {
         actions.append(createResultAction('Nächste Datei', 'next'));
       }
@@ -1464,6 +1903,7 @@
       const feedback = result.querySelector('.save-feedback');
       feedback.textContent = item.saveMessage || '';
       feedback.hidden = !item.saveMessage;
+      translateNode(result);
     }
 
     function returnToEditor() {
@@ -1517,8 +1957,14 @@
 
     async function removeActiveBatchItem() {
       const activeItem = state.batchItems.find(item => item.id === state.activeBatchId);
-      if (activeItem) await removeBatchItem(activeItem);
-      else resetToUploadStart();
+      if (activeItem) {
+        state.pendingStepText = '';
+        state.pendingOutputName = '';
+        state.pendingMetadata = null;
+        await removeBatchItem(activeItem);
+      } else {
+        resetToUploadStart();
+      }
     }
 
     async function removeBatchItem(item) {
@@ -1558,6 +2004,7 @@
       viewerPlaceholder.id = 'viewerPlaceholder';
       viewerPlaceholder.className = 'viewer-placeholder';
       viewerPlaceholder.textContent = 'STEP-Datei hier ablegen oder klicken.';
+      translateNode(viewerPlaceholder);
       viewerStage.replaceChildren(viewerPlaceholder);
       viewerStage.classList.remove('drag-over');
       viewerStage.style.removeProperty('filter');
@@ -1707,6 +2154,7 @@
       const labelNode = document.createElement('div');
       labelNode.className = 'viewer-callout-label';
       labelNode.textContent = label;
+      translateNode(labelNode);
       callout.appendChild(labelNode);
       layer.appendChild(callout);
 
@@ -2092,6 +2540,43 @@
       return { start, end };
     }
 
+    function validateStepDataSection(text) {
+      const bounds = findDataBounds(text);
+      const statementParts = [];
+      for (const rawLine of text.slice(bounds.start, bounds.end).split(/\r?\n/)) {
+        const line = rawLine.trim();
+        if (!line) continue;
+        statementParts.push(line);
+        if (!line.endsWith(';')) continue;
+
+        const statement = statementParts.join(' ');
+        statementParts.length = 0;
+        const assignment = statement.match(/^#\d+\s*=\s*(.+)\s*;$/i);
+        if (!assignment || !hasBalancedStepDelimiters(assignment[1])) {
+          throw new Error('STEP-Datei enthält einen fehlerhaften Entity-Eintrag.');
+        }
+      }
+      if (statementParts.length) throw new Error('STEP-Datei enthält einen nicht abgeschlossenen Entity-Eintrag.');
+    }
+
+    function hasBalancedStepDelimiters(text) {
+      let nestedDepth = 0;
+      let inString = false;
+      for (let index = 0; index < text.length; index += 1) {
+        const character = text[index];
+        if (character === "'") {
+          if (inString && text[index + 1] === "'") index += 1;
+          else inString = !inString;
+        } else if (!inString && character === '(') {
+          nestedDepth += 1;
+        } else if (!inString && character === ')') {
+          nestedDepth -= 1;
+          if (nestedDepth < 0) return false;
+        }
+      }
+      return !inString && nestedDepth === 0;
+    }
+
     function allocateEntityIds(text, count) {
       const used = new Set(Array.from(text.matchAll(/#(?<id>\d+)\s*=/g)).map(match => Number(match.groups.id)));
       const ids = [];
@@ -2167,6 +2652,9 @@
 
     function showResult(ok, message) {
       result.className = 'status ' + (ok ? 'ok' : 'error');
+      result.setAttribute('role', ok ? 'status' : 'alert');
+      result.setAttribute('aria-live', ok ? 'polite' : 'assertive');
+      result.setAttribute('aria-atomic', 'true');
       result.replaceChildren();
 
       const separatorIndex = message.indexOf('\n\n');
@@ -2186,6 +2674,7 @@
           pre.textContent = JSON.stringify(metadata, null, 2);
           details.append(summary, pre);
           result.append(statusMessage, details);
+          translateNode(result);
           return;
         } catch {
           // Non-JSON success details remain part of the plain status message.
@@ -2193,6 +2682,7 @@
       }
 
       result.textContent = message;
+      translateNode(result);
     }
 
     function clearResult() {
@@ -2205,6 +2695,12 @@
     }
 
     function getOptionDescription(enumName, option) {
+      const localizedLabel = I18N.enumLabel(enumName, option.value, currentLanguage, '');
+      if (localizedLabel) return localizedLabel;
+      if (currentLanguage === 'en') {
+        const description = option.description || option.extra || '';
+        return enumName === 'Q_SHEET_THICKNESS' ? description.replace(/(\d),(\d)/g, '$1.$2') : description;
+      }
       if (enumName === 'Q_PRODUCT_TYPE') {
         return { sheet: 'Sheet', tube: 'Tube', turning: 'Turning', milling: 'Milling' }[option.value] || option.value;
       }
@@ -2212,15 +2708,57 @@
     }
 
     function getSelectedDisplayValue(enumName, value) {
-      if (enumName === 'Q_PRODUCT_TYPE') return PRODUCT_LABELS[value] || value;
+      if (enumName === 'Q_PRODUCT_TYPE') return getProductLabel(value) || value;
+      const localizedLabel = I18N.enumLabel(enumName, value, currentLanguage, '');
+      if (localizedLabel) return localizedLabel;
+      if (currentLanguage === 'en') {
+        const option = state.enums[enumName]?.find(candidate => candidate.value === value) || { value };
+        return option.description || getCatalogOptionLabel(enumName, option);
+      }
+      if (ENUM_DESCRIPTIONS_DE[enumName]?.[value]) return ENUM_DESCRIPTIONS_DE[enumName][value];
       if (enumName === 'Q_SHEET_THICKNESS') return ENUM_DESCRIPTIONS_DE.Q_SHEET_THICKNESS[value] || value;
       return value;
     }
 
+    function getCatalogOptionTitle(enumName, option) {
+      if (enumName === 'Q_PRODUCT_TYPE') return getProductLabel(option.value) || option.value;
+      const localizedTitle = I18N.enumTitle(enumName, option.value, currentLanguage, '');
+      if (localizedTitle) return localizedTitle;
+      if (Object.values(MATERIAL_ENUM_BY_PRODUCT).includes(enumName)) return option.value;
+      if (enumName === 'Q_SHEET_THICKNESS') return getOptionDescription(enumName, option) || option.value;
+      const shortLabels = {
+        Q_DEBURRING: {
+          one_sided_rear: 'One-sided rear',
+          two_sided: 'Two-sided',
+          barrel_finish: 'Barrel finishing',
+          manual_rear: 'Manual rear'
+        },
+        Q_POWDER_COATING_TEXTURE: {
+          smooth: 'Smooth finish',
+          fine_texture: 'Fine finish',
+          texture: 'Structured finish',
+          coarse_texture: 'Coarse finish'
+        }
+      };
+      if (shortLabels[enumName]?.[option.value]) return shortLabels[enumName][option.value];
+      return String(option.value).replace(/_/g, ' ').replace(/\b[a-z]/g, character => character.toUpperCase());
+    }
+
     function getCatalogOptionLabel(enumName, option) {
+      const localizedLabel = I18N.enumLabel(enumName, option.value, currentLanguage, '');
+      if (localizedLabel) return localizedLabel;
+      if (currentLanguage === 'en') {
+        if (Object.values(MATERIAL_ENUM_BY_PRODUCT).includes(enumName)) return option.value;
+        const label = option.description || option.extra || option.value;
+        return enumName === 'Q_SHEET_THICKNESS' ? label.replace(/(\d),(\d)/g, '$1.$2') : label;
+      }
       if (enumName === 'Q_PRODUCT_TYPE') return ENUM_DESCRIPTIONS_DE.Q_PRODUCT_TYPE[option.value] || option.value;
       if (enumName === 'Q_SHEET_THICKNESS') return ENUM_DESCRIPTIONS_DE.Q_SHEET_THICKNESS[option.value] || option.value;
       return option.value;
+    }
+
+    function getProductLabel(productType) {
+      return I18N.productLabel(productType, currentLanguage, PRODUCT_LABELS[productType] || PRODUCT_LABELS_EN[productType] || '');
     }
 
     function trimTrailingPeriod(value) {
